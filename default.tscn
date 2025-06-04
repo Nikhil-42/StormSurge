@@ -1,11 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://cda0eqqhfj1el"]
+[gd_scene load_steps=10 format=3 uid="uid://cda0eqqhfj1el"]
 
-[ext_resource type="Material" uid="uid://bpbdodm5upapk" path="res://Materials/heightmap.tres" id="1_cegc5"]
+[ext_resource type="Shader" uid="uid://cgjs8p3xgq6t5" path="res://Shaders/heightmap.gdshader" id="1_erduv"]
+[ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="2_erduv"]
+[ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_w0402"]
+[ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_d51dm"]
+[ext_resource type="Texture2D" uid="uid://bn3ee5bow1wmx" path="res://Assets/heightmap_regions.png" id="5_w0402"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w0402"]
+render_priority = 0
+shader = ExtResource("1_erduv")
+shader_parameter/heightmap = ExtResource("3_w0402")
+shader_parameter/normalmap = ExtResource("4_d51dm")
+shader_parameter/albedo = ExtResource("5_w0402")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_koolx"]
 size = Vector2(28.8, 14.4)
 subdivide_width = 2304
 subdivide_depth = 1152
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwgih"]
+render_priority = 0
+shader = ExtResource("2_erduv")
+shader_parameter/heightmap = ExtResource("3_w0402")
+shader_parameter/normalmap = ExtResource("4_d51dm")
+shader_parameter/albedo = ExtResource("5_w0402")
 
 [sub_resource type="SphereMesh" id="SphereMesh_de8j7"]
 radius = 10.0
@@ -22,13 +40,13 @@ polygon = PackedVector2Array(190, 169, 190, 465, 243, 465, 243, 319, 346, 319, 3
 
 [node name="Spatial" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Spatial"]
-material_override = ExtResource("1_cegc5")
+[node name="Flatmap" type="MeshInstance3D" parent="Spatial"]
+material_override = SubResource("ShaderMaterial_w0402")
 mesh = SubResource("PlaneMesh_koolx")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Spatial"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
-material_override = ExtResource("1_cegc5")
+[node name="Spheremap" type="MeshInstance3D" parent="Spatial"]
+transform = Transform3D(-0.166356, 0, 0.986066, 0, 1, 0, -0.986066, 0, -0.166356, 0, 30, 0)
+material_override = SubResource("ShaderMaterial_vwgih")
 mesh = SubResource("SphereMesh_de8j7")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Spatial"]

@@ -15,7 +15,7 @@ vec3 unpack_norm(vec4 rgba) {
 void vertex() {
 	float height = texture(heightmap, UV).x;
 	NORMAL = unpack_norm(texture(normalmap, UV));
-	VERTEX.y += height / 10.0;
+	VERTEX *= 1.0 + height / 30.0;
 }
 
 void fragment() {
