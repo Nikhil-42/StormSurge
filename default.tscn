@@ -1,6 +1,35 @@
-[gd_scene format=3 uid="uid://cda0eqqhfj1el"]
+[gd_scene load_steps=4 format=3 uid="uid://cda0eqqhfj1el"]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource type="Material" uid="uid://bpbdodm5upapk" path="res://Materials/heightmap.tres" id="1_cegc5"]
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[sub_resource type="PlaneMesh" id="PlaneMesh_koolx"]
+size = Vector2(28.8, 14.4)
+subdivide_width = 2304
+subdivide_depth = 1152
+
+[sub_resource type="SphereMesh" id="SphereMesh_de8j7"]
+radius = 10.0
+height = 20.0
+radial_segments = 1024
+rings = 1024
+
+[node name="Root" type="Node"]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="Node2D"]
 polygon = PackedVector2Array(190, 169, 190, 465, 243, 465, 243, 319, 346, 319, 346, 461, 397, 461, 397, 157, 350, 157, 350, 259, 254, 259, 252, 159, 206, 169)
+
+[node name="Spatial" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Spatial"]
+material_override = ExtResource("1_cegc5")
+mesh = SubResource("PlaneMesh_koolx")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Spatial"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
+material_override = ExtResource("1_cegc5")
+mesh = SubResource("SphereMesh_de8j7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Spatial"]
+transform = Transform3D(-0.999908, 0, -0.0135783, 0, 1, 0, 0.0135783, 0, -0.999908, 0, 0, 0)
