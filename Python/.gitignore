@@ -1,0 +1,6 @@
+.venv
+*.png
+*.zip
+*.nc
+*.npy
+*.json
