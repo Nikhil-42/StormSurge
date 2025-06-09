@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cda0eqqhfj1el"]
+[gd_scene load_steps=16 format=3 uid="uid://dqo2asoutpamd"]
 
 [ext_resource type="Shader" uid="uid://cgjs8p3xgq6t5" path="res://Shaders/heightmap.gdshader" id="1_3gigf"]
 [ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="2_wjear"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_llkvi"]
 [ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="5_q5q25"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
+[ext_resource type="Shader" uid="uid://cunvkjo2byrl0" path="res://Shaders/clouds.gdshader" id="7_d51dm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w0402"]
 render_priority = 0
@@ -32,6 +33,24 @@ height = 20.0
 radial_segments = 1024
 rings = 1024
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_d51dm"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vwgih"]
+width = 2048
+height = 1024
+generate_mipmaps = false
+seamless = true
+noise = SubResource("FastNoiseLite_d51dm")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nnel6"]
+render_priority = 0
+shader = ExtResource("7_d51dm")
+shader_parameter/transparency = SubResource("NoiseTexture2D_vwgih")
+
+[sub_resource type="SphereMesh" id="SphereMesh_hx8ax"]
+radius = 10.1
+height = 20.2
+
 [node name="Root" type="Node"]
 
 [node name="Viewpoints" type="Node3D" parent="."]
@@ -46,9 +65,14 @@ material_override = SubResource("ShaderMaterial_w0402")
 mesh = SubResource("PlaneMesh_koolx")
 
 [node name="GlobeMap" type="MeshInstance3D" parent="Spatial"]
-transform = Transform3D(-0.166356, 0, 0.986066, 0, 1, 0, -0.986066, 0, -0.166356, 0, 30, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30, 0)
 material_override = SubResource("ShaderMaterial_vwgih")
 mesh = SubResource("SphereMesh_de8j7")
+
+[node name="Clouds" type="MeshInstance3D" parent="Spatial/GlobeMap"]
+material_override = SubResource("ShaderMaterial_nnel6")
+mesh = SubResource("SphereMesh_hx8ax")
+skeleton = NodePath("../../..")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Spatial"]
 transform = Transform3D(-0.999908, 0, -0.0135783, 0, 1, 0, 0.0135783, 0, -0.999908, 0, 0, 0)
