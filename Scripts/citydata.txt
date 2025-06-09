@@ -1,0 +1,100 @@
+"Tokyo" Japan 37115035 35.6895 139.6917 40
+"Delhi" Indian Subcontinent 33807403 28.7041 77.1025 216
+"Shanghai" China 29867918 31.2304 121.4737 4
+"Dhaka" Indian Subcontinent 23935652 23.8103 90.4125 4
+"Sao Paulo" Brazil 22806704 -23.5505 -46.6333 760
+"Cairo" Egypt 22623874 30.0444 31.2357 23
+"Mexico City" Mexico 22505315 19.4326 -99.1332 2240
+"Beijing" China 22189082 39.9042 116.4074 43
+"Mumbai" Indian Subcontinent 21673149 19.076 72.8777 14
+"Osaka" Japan 18967459 34.6937 135.5023 15
+"Chongqing" China 17773923 29.4316 106.9123 244
+"Karachi" Durand Region 17648555 24.8607 67.0011 8
+"Kinshasa" Central South Africa 17032322 -4.4419 15.2663 240
+"Lagos" West African Coast 16536018 6.5244 3.3792 41
+"Istanbul" Anatolia 16047350 41.0082 28.9784 40
+"Buenos Aires" Argentina 15618288 -34.6037 -58.3816 25
+"Kolkata" Indian Subcontinent 15570786 22.5726 88.3639 9
+"Manila" Indonesia 14941953 14.5995 120.9842 16
+"Guangzhou" China 14590096 23.1291 113.2644 21
+"Tianjin" China 14470873 39.3434 117.3616 5
+"Lahore" Durand Region 14407074 31.5497 74.3436 217
+"Bangalore" Indian Subcontinent 14008262 12.9716 77.5946 920
+"Rio de Janeiro" Brazil 13824347 -22.9068 -43.1729 2
+"Shenzhen" China 13311855 22.5431 114.0579 6
+"Moscow" Russia 12712305 55.7558 37.6173 156
+"Chennai" Indian Subcontinent 12053697 13.0827 80.2707 6
+"Bogotá" Northern South America 11658211 4.711 -74.0721 2640
+"Jakarta" Indonesia 11436004 -6.2088 106.8456 8
+"Lima" Peru 11361938 -12.0464 -77.0428 154
+"Paris" Western Europe 11276701 48.8566 2.3522 35
+"Bangkok" Malay Peninsula 11233869 13.7563 100.5018 1.5
+"Hyderabad" Indian Subcontinent 11068877 17.385 78.4867 542
+"Seoul" China 10004840 37.5665 126.978 38
+"Nanjing" China 9947548 32.0603 118.7969 20
+"Chengdu" China 9828110 30.5728 104.0668 500
+"London" United Kingdom 9748033 51.5074 -0.1278 11
+"Luanda" Angola 9651032 -8.839 13.2894 6
+"Tehran" Persia 9616007 35.6892 51.389 1200
+"Ho Chi Minh City" Indochina 9567656 10.8231 106.6297 19
+"Nagoya" Japan 9556879 35.1815 136.9066 10
+"Xian" China 9013837 34.3416 108.9398 400
+"Ahmedabad" Indian Subcontinent 8854444 23.0225 72.5714 53
+"Wuhan" China 8850850 30.5928 114.3055 37
+"Kuala Lumpur" Malay Peninsula 8815630 3.139 101.6869 21
+"Hangzhou" China 8419842 30.2741 120.1551 8
+"Suzhou" China 8350625 31.2989 120.5853 4
+"Surat" Indian Subcontinent 8330528 21.1702 72.8311 13
+"Dar es Salaam" Central South Africa 8161231 -6.7924 39.2083 12
+"New York City" United States 8097282 40.7128 -74.006 10
+"Baghdad" Persia 7921134 33.3128 44.3615 34
+"Shenyang" China 7830377 41.8057 123.4315 50
+"Riyadh" Arabia 7820551 24.7136 46.6753 612
+"Hong Kong" China 7725859 22.3193 114.1694 0
+"Foshan" China 7704935 23.0215 113.1214 10
+"Dongguan" China 7675150 23.0207 113.7518 8
+"Pune" Indian Subcontinent 7345850 18.5204 73.8567 560
+"Santiago" Chile 6950950 -33.4489 -70.6693 520
+"Harbin" China 6938010 45.8038 126.5349 150
+"Madrid" Iberica 6783240 40.4168 -3.7038 667
+"Khartoum" Central Africa 6542070 15.5007 32.5599 380
+"Toronto" Canada 6431430 43.6511 -79.347 76
+"Johannesburg" South Africa 6324350 -26.2041 28.0473 1753
+"Belo Horizonte" Brazil 6300410 -19.9167 -43.9345 852
+"Dalian" China 6217490 38.914 121.6147 29
+"Singapore" China 6119200 1.3521 103.8198 15
+"Qingdao" China 6104600 36.0671 120.3826 10
+"Zhengzhou" China 6014890 34.7466 113.6254 110
+"Jinan" China 5940700 36.6512 117.1201 23
+"Abidjan" Saharan Africa 5866700 5.3599 -4.0083 18
+"Barcelona" Iberica 5711920 41.3851 2.1734 12
+"Yangon" Malay Peninsula 5709680 16.8409 96.1735 15
+"Addis Ababa" Ethiopia 5703630 9.03 38.74 2355
+"Alexandria" Egypt 5696130 31.2001 29.9187 5
+"Saint Petersburg" Russia 5581710 59.9343 30.3351 3
+"Nairobi" Ethiopia 5541170 -1.2921 36.8219 1795
+"Chittagong" Indian Subcontinent 5513610 22.3569 91.7832 12
+"Guadalajara" Mexico 5499680 20.6597 -103.3496 1566
+"Fukuoka" Japan 5478080 33.5904 130.4017 10
+"Ankara" Anatolia 5477090 39.9208 32.8541 938
+"Hanoi" Indochina 5431800 21.0285 105.8544 15
+"Melbourne" Australia 5315600 -37.8136 144.9631 31
+"Monterrey" Mexico 5195360 25.6866 -100.3161 540
+"Sydney" Australia 5184900 -33.8688 151.2093 58
+"Changsha" China 5027980 28.2282 112.9388 63
+"Urumqi" China 5005960 43.8256 87.6168 800
+"Cape Town" South Africa 4977830 -33.9249 18.4241 0
+"Jeddah" Arabia 4943210 21.4858 39.1925 12
+"Brasilia" Brazil 4935270 -15.8267 -47.9218 1172
+"Kunming" China 4861080 25.0389 102.718 1891
+"Changchun" China 4802450 43.8171 125.3235 222
+"Kabul" Durand Region 4728380 34.5553 69.2075 1790
+"Hefei" China 4727290 31.8206 117.2272 30
+"Yaounde" West African Coast 4681770 3.848 11.5021 726
+"Ningbo" China 4659830 29.8683 121.544 5
+"Shantou" China 4656520 23.3541 116.6819 5
+"New Taipei" China 4534880 25.0169 121.4628 10
+"Tel Aviv" East Mediterranean 4495730 32.0853 34.7818 5
+"Kano" West African Coast 4490730 12.0022 8.5919 488
+"Shijiazhuang" China 4454130 38.0428 114.5149 83
+"Montreal" Canada 4341640 45.5017 -73.5673 233

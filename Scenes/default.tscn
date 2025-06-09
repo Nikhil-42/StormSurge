@@ -1,0 +1,63 @@
+[gd_scene load_steps=12 format=3 uid="uid://cda0eqqhfj1el"]
+
+[ext_resource type="Shader" uid="uid://cgjs8p3xgq6t5" path="res://Shaders/heightmap.gdshader" id="1_3gigf"]
+[ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="2_wjear"]
+[ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_w2mav"]
+[ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_llkvi"]
+[ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="5_q5q25"]
+[ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
+[ext_resource type="PackedScene" uid="uid://cg3x1ij6p2euc" path="res://Assets/pin.gltf" id="7_mjhu3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w0402"]
+render_priority = 0
+shader = ExtResource("1_3gigf")
+shader_parameter/heightmap = ExtResource("3_w2mav")
+shader_parameter/normalmap = ExtResource("4_llkvi")
+shader_parameter/albedo = ExtResource("2_wjear")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_koolx"]
+size = Vector2(28.8, 14.4)
+subdivide_width = 2304
+subdivide_depth = 1152
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwgih"]
+render_priority = 0
+shader = ExtResource("5_q5q25")
+shader_parameter/heightmap = ExtResource("3_w2mav")
+shader_parameter/normalmap = ExtResource("4_llkvi")
+shader_parameter/albedo = ExtResource("2_wjear")
+
+[sub_resource type="SphereMesh" id="SphereMesh_de8j7"]
+radius = 10.0
+height = 20.0
+radial_segments = 1024
+rings = 1024
+
+[node name="Root" type="Node"]
+
+[node name="Viewpoints" type="Node3D" parent="."]
+
+[node name="StaticCam" type="Camera3D" parent="Viewpoints"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 12, 0)
+
+[node name="Spatial" type="Node3D" parent="."]
+
+[node name="FlatMap" type="MeshInstance3D" parent="Spatial"]
+material_override = SubResource("ShaderMaterial_w0402")
+mesh = SubResource("PlaneMesh_koolx")
+
+[node name="GlobeMap" type="MeshInstance3D" parent="Spatial"]
+transform = Transform3D(-0.166356, 0, 0.986066, 0, 1, 0, -0.986066, 0, -0.166356, 0, 30, 0)
+material_override = SubResource("ShaderMaterial_vwgih")
+mesh = SubResource("SphereMesh_de8j7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Spatial"]
+transform = Transform3D(-0.999908, 0, -0.0135783, 0, 1, 0, 0.0135783, 0, -0.999908, 0, 0, 0)
+
+[node name="Map3DFeatures" type="Node3D" parent="."]
+script = ExtResource("6_p4pkd")
+
+[node name="CityMarkers" type="Sprite3D" parent="Map3DFeatures"]
+
+[node name="pin" parent="Map3DFeatures/CityMarkers" instance=ExtResource("7_mjhu3")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 14.4476, 0.478724, -7.02767)

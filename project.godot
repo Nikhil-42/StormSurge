@@ -12,8 +12,8 @@ config_version=5
 
 config/name="StormSurge"
 run/main_scene="uid://cda0eqqhfj1el"
-config/features=PackedStringArray("4.4", "Mobile")
-config/icon="res://icon.svg"
+config/features=PackedStringArray("4.4", "C#", "Mobile")
+config/icon="res://Assets/icon.svg"
 
 [dotnet]
 
