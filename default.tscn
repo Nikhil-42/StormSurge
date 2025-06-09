@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cda0eqqhfj1el"]
+[gd_scene load_steps=12 format=3 uid="uid://cda0eqqhfj1el"]
 
 [ext_resource type="Shader" uid="uid://cgjs8p3xgq6t5" path="res://Shaders/heightmap.gdshader" id="1_erduv"]
 [ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="2_erduv"]
 [ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_w0402"]
 [ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_d51dm"]
 [ext_resource type="PackedScene" uid="uid://cg3x1ij6p2euc" path="res://Assets/pin.gltf" id="6_d51dm"]
+[ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Map3dFeatures.cs" id="6_hx8ax"]
 [ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="6_vwgih"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w0402"]
@@ -34,18 +35,18 @@ rings = 1024
 
 [node name="Root" type="Node"]
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="Viewpoints" type="Node3D" parent="."]
 
-[node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 0.961262, 0.275637, 0, -0.275637, 0.961262, 0, 35, 17)
+[node name="StaticCam" type="Camera3D" parent="Viewpoints"]
+transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 0, 10, 5)
 
 [node name="Spatial" type="Node3D" parent="."]
 
-[node name="Flatmap" type="MeshInstance3D" parent="Spatial"]
+[node name="FlatMap" type="MeshInstance3D" parent="Spatial"]
 material_override = SubResource("ShaderMaterial_w0402")
 mesh = SubResource("PlaneMesh_koolx")
 
-[node name="Spheremap" type="MeshInstance3D" parent="Spatial"]
+[node name="GlobeMap" type="MeshInstance3D" parent="Spatial"]
 transform = Transform3D(-0.166356, 0, 0.986066, 0, 1, 0, -0.986066, 0, -0.166356, 0, 30, 0)
 material_override = SubResource("ShaderMaterial_vwgih")
 mesh = SubResource("SphereMesh_de8j7")
@@ -53,9 +54,10 @@ mesh = SubResource("SphereMesh_de8j7")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Spatial"]
 transform = Transform3D(-0.999908, 0, -0.0135783, 0, 1, 0, 0.0135783, 0, -0.999908, 0, 0, 0)
 
-[node name="Node3D2" type="Node3D" parent="."]
+[node name="Map3DFeatures" type="Node3D" parent="."]
+script = ExtResource("6_hx8ax")
 
-[node name="Sprite3D" type="Sprite3D" parent="Node3D2"]
+[node name="CityMarkers" type="Sprite3D" parent="Map3DFeatures"]
 
-[node name="pin" parent="Node3D2/Sprite3D" instance=ExtResource("6_d51dm")]
+[node name="pin" parent="Map3DFeatures/CityMarkers" instance=ExtResource("6_d51dm")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 11.2325, 0.0516949, -2.88092)
