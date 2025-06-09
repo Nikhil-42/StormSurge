@@ -13,7 +13,7 @@ public class Asset {
 }
 
 public struct City {
-	public string region;  // region city resides in
+	public string region;
 	public string name;
 	public int population;
 	public int elevation;
@@ -49,15 +49,13 @@ public class CityMarkers {
 
 		using FileAccess cityFile = FileAccess.Open(dataPath, FileAccess.ModeFlags.Read);
 
-		while (!cityFile.EofReached())
-		{
+		while (!cityFile.EofReached()) {
 			var line = cityFile.GetLine().Trim();
 			if (string.IsNullOrEmpty(line)) 
 				continue;
 
 			var match = linePattern.Match(line);
-			if (match.Success)
-			{
+			if (match.Success) {
 				var current = new City
 				{
 					name = match.Groups[1].Value,
@@ -69,8 +67,7 @@ public class CityMarkers {
 				};
 				cities.Add(current);
 			}
-			else
-			{
+			else {
 				GD.PrintErr($"Could not parse line: {line}");
 			}
 		}
@@ -86,18 +83,17 @@ public partial class Map3dFeatures : Node3D
 	Asset pin = new Asset("res://Assets/pin.gltf", 0.5f);
 	
 	public override void _Ready() {
-		GD.Print("Running map 3D features script.");
 		// ===== LOAD MAP DATA =====
+		GD.Print("Running map 3D features script.");
 		CityMarkers cityData = new CityMarkers();
-		
+
 		// ===== MAP PIN ASSET =====
 		var pinPrefab = ResourceLoader.Load<PackedScene>(pin.path);
-		if (pinPrefab == null)
-		{
+		if (pinPrefab == null) {
 			GD.PrintErr($"Failed to load asset at: {pin.path}");
 			return;
 		}
-				
+
 		foreach (City c in cityData.cities) {
 			Node3D pinInstance = pinPrefab.Instantiate<Node3D>();
 			AddChild(pinInstance);
@@ -105,22 +101,10 @@ public partial class Map3dFeatures : Node3D
 			pinInstance.Scale = pin.scale;
 			Vector3 position = new Vector3((c.longitude*mapWidth)/360f, 0, (c.latitude)*mapHeight/-180f);
 			pinInstance.Position = position;
-			c.printInfo();
+			// c.printInfo();
 		}
-
-		//for (int i = 0; i < 5; i++)
-		//{
-		//	Node3D instance = prefab.Instantiate<Node3D>();
-		//	AddChild(instance);
-
-		//	instance.Scale = pin.scale;
-		//	Vector3 position = new Vector3(i * 1, 0, 0); // Place along X-axis
-		//	instance.Position = position;
-		//}
-		
 	}
 	
 	public override void _Process(double delta) {
-		
 	}
 }

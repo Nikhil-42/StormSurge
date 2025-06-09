@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cda0eqqhfj1el"]
+[gd_scene load_steps=11 format=3 uid="uid://cda0eqqhfj1el"]
 
 [ext_resource type="Shader" uid="uid://cgjs8p3xgq6t5" path="res://Shaders/heightmap.gdshader" id="1_3gigf"]
 [ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="2_wjear"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_llkvi"]
 [ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="5_q5q25"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
-[ext_resource type="PackedScene" uid="uid://cg3x1ij6p2euc" path="res://Assets/pin.gltf" id="7_mjhu3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w0402"]
 render_priority = 0
@@ -38,7 +37,7 @@ rings = 1024
 [node name="Viewpoints" type="Node3D" parent="."]
 
 [node name="StaticCam" type="Camera3D" parent="Viewpoints"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 12, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.885271, 12.075, -0.739477)
 
 [node name="Spatial" type="Node3D" parent="."]
 
@@ -58,6 +57,3 @@ transform = Transform3D(-0.999908, 0, -0.0135783, 0, 1, 0, 0.0135783, 0, -0.9999
 script = ExtResource("6_p4pkd")
 
 [node name="CityMarkers" type="Sprite3D" parent="Map3DFeatures"]
-
-[node name="pin" parent="Map3DFeatures/CityMarkers" instance=ExtResource("7_mjhu3")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 14.4476, 0.478724, -7.02767)

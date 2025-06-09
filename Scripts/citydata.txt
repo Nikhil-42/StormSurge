@@ -28,7 +28,7 @@
 "Jakarta" Indonesia 11436004 -6.2088 106.8456 8
 "Lima" Peru 11361938 -12.0464 -77.0428 154
 "Paris" Western Europe 11276701 48.8566 2.3522 35
-"Bangkok" Malay Peninsula 11233869 13.7563 100.5018 1.5
+"Bangkok" Malay Peninsula 11233869 13.7563 100.5018 2
 "Hyderabad" Indian Subcontinent 11068877 17.385 78.4867 542
 "Seoul" China 10004840 37.5665 126.978 38
 "Nanjing" China 9947548 32.0603 118.7969 20
