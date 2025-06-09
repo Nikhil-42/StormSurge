@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://cda0eqqhfj1el"]
+[gd_scene load_steps=10 format=3 uid="uid://cda0eqqhfj1el"]
 
 [ext_resource type="Shader" uid="uid://cgjs8p3xgq6t5" path="res://Shaders/heightmap.gdshader" id="1_erduv"]
 [ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="2_erduv"]
 [ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_w0402"]
 [ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_d51dm"]
-[ext_resource type="Texture2D" path="res://Assets/8081_earthmap10k.png" id="6_d51dm"]
 [ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="6_vwgih"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w0402"]
@@ -12,7 +11,7 @@ render_priority = 0
 shader = ExtResource("1_erduv")
 shader_parameter/heightmap = ExtResource("3_w0402")
 shader_parameter/normalmap = ExtResource("4_d51dm")
-shader_parameter/albedo = ExtResource("6_d51dm")
+shader_parameter/albedo = ExtResource("6_vwgih")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_koolx"]
 size = Vector2(28.8, 14.4)
