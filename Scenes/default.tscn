@@ -23,6 +23,7 @@ subdivide_depth = 1152
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vwgih"]
 render_priority = 0
 shader = ExtResource("5_q5q25")
+shader_parameter/vertical_scale = 0.015
 shader_parameter/heightmap = ExtResource("3_w2mav")
 shader_parameter/normalmap = ExtResource("4_llkvi")
 shader_parameter/albedo = ExtResource("2_wjear")
@@ -75,7 +76,7 @@ mesh = SubResource("SphereMesh_hx8ax")
 skeleton = NodePath("../../..")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Spatial"]
-transform = Transform3D(-0.999908, 0, -0.0135783, 0, 1, 0, 0.0135783, 0, -0.999908, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 
 [node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
