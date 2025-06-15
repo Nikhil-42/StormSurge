@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dqo2asoutpamd"]
+[gd_scene load_steps=20 format=3 uid="uid://dqo2asoutpamd"]
 
 [ext_resource type="Shader" uid="uid://cgjs8p3xgq6t5" path="res://Shaders/heightmap.gdshader" id="1_3gigf"]
 [ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="2_wjear"]
@@ -7,6 +7,8 @@
 [ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="5_q5q25"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
 [ext_resource type="Shader" uid="uid://cunvkjo2byrl0" path="res://Shaders/clouds.gdshader" id="7_d51dm"]
+[ext_resource type="Texture2D" uid="uid://ntmbq4sjwyma" path="res://Assets/NightSkyHDRI003_4K-TONEMAPPED.jpg" id="7_w2mav"]
+[ext_resource type="Script" uid="uid://cf2aqhlheb178" path="res://Scenes/CameraRig.cs" id="8_wjear"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w0402"]
 render_priority = 0
@@ -52,6 +54,15 @@ shader_parameter/transparency = SubResource("NoiseTexture2D_vwgih")
 radius = 10.1
 height = 20.2
 
+[sub_resource type="SphereMesh" id="SphereMesh_wjear"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w2mav"]
+cull_mode = 1
+shading_mode = 0
+albedo_color = Color(0.568973, 0.568973, 0.568973, 1)
+albedo_texture = ExtResource("7_w2mav")
+disable_receive_shadows = true
+
 [node name="Root" type="Node"]
 
 [node name="Viewpoints" type="Node3D" parent="."]
@@ -78,7 +89,20 @@ skeleton = NodePath("../../..")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Spatial"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 
+[node name="WorldsUgliestSkyBox" type="MeshInstance3D" parent="Spatial"]
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 30, 0)
+mesh = SubResource("SphereMesh_wjear")
+surface_material_override/0 = SubResource("StandardMaterial3D_w2mav")
+
 [node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
 
 [node name="CityMarkers" type="Sprite3D" parent="Map3DFeatures"]
+
+[node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("Globe")]
+script = ExtResource("8_wjear")
+Globe = NodePath("../Spatial/GlobeMap")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 30.0844, 18.5812)
+current = true
