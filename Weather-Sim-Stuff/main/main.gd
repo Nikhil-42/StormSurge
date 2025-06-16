@@ -59,8 +59,6 @@ func _initialize_data_textures():
 			var temp_noise_val = temp_noise.get_noise_2d(x, y) * 0.2
 			var temp = clamp(temp_base + temp_noise_val, 0.0, 1.0)
 
-			var center = screen_size / 2.0
-			var dist = (Vector2(x, y) - center).length() / (screen_size.length() / 2.0)
 			var pressure_noise_val = pressure_noise.get_noise_2d(x, y) * 400.0
 			var pressure = pressure_base + pressure_noise_val
 
@@ -109,10 +107,7 @@ func _process(delta):
 
 # GPT Draw function to visualize the wind direction
 func _draw():
-	var spacing = 48 # Larger spacing to reduce overlap
-	var arrow_steps = 6 # Number of segments for curved arrow
-	var arrow_step_len = 8.0 # Length of each segment
-	var max_arrow_len = arrow_steps * arrow_step_len
+	var spacing = 10# Larger spacing to reduce overlap
 
 	var w = weather_data.get_width()
 	var h = weather_data.get_height()
@@ -123,7 +118,7 @@ func _draw():
 			var temp = weather_data.get_pixel(x, y).r
 			var color = Color(temp, 0, 1.0 - temp, 0.3)
 			draw_rect(Rect2(Vector2(x, y), Vector2(spacing, spacing)), color, true)
-
+"""
 	# Draw curved wind arrows
 	for y in range(int(spacing / 2), h, spacing):
 		for x in range(int(spacing / 2), w, spacing):
@@ -155,7 +150,7 @@ func _draw_arrowhead(start: Vector2, end: Vector2, color: Color):
 	var p3 = end - dir * size - perp * size * 0.5
 	draw_polygon(PackedVector2Array([p1, p2, p3]), [color])
 
-
+"""
 
 
 # Helpers to grab weather data and pressure gradients
