@@ -33,7 +33,7 @@ public partial class CameraRig : Node3D
 			Vector2 delta = motion.Relative;
 
 			_yaw -= delta.X * RotationSpeed;
-			_pitch -= delta.Y * RotationSpeed;
+			_pitch += delta.Y * RotationSpeed;
 			_pitch = Mathf.Clamp(_pitch, Mathf.DegToRad(MinPitch), Mathf.DegToRad(MaxPitch));
 
 			UpdateCameraPosition();
