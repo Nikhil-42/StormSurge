@@ -1,0 +1,69 @@
+[gd_scene load_steps=16 format=3 uid="uid://2eewc0lbfv2j"]
+
+[ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="1_0w0uy"]
+[ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="2_d8q2n"]
+[ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_ne2hg"]
+[ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_6fvvo"]
+[ext_resource type="Shader" uid="uid://cunvkjo2byrl0" path="res://Shaders/clouds.gdshader" id="5_wivo2"]
+[ext_resource type="Texture2D" uid="uid://ntmbq4sjwyma" path="res://Assets/NightSkyHDRI003_4K-TONEMAPPED.jpg" id="6_lulko"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwgih"]
+render_priority = 0
+shader = ExtResource("1_0w0uy")
+shader_parameter/vertical_scale = 0.015
+shader_parameter/heightmap = ExtResource("3_ne2hg")
+shader_parameter/normalmap = ExtResource("4_6fvvo")
+shader_parameter/albedo = ExtResource("2_d8q2n")
+
+[sub_resource type="SphereMesh" id="SphereMesh_de8j7"]
+radius = 10.0
+height = 20.0
+radial_segments = 1024
+rings = 1024
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_d51dm"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vwgih"]
+width = 2048
+height = 1024
+generate_mipmaps = false
+seamless = true
+noise = SubResource("FastNoiseLite_d51dm")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nnel6"]
+render_priority = 0
+shader = ExtResource("5_wivo2")
+shader_parameter/transparency = SubResource("NoiseTexture2D_vwgih")
+
+[sub_resource type="SphereMesh" id="SphereMesh_hx8ax"]
+radius = 10.1
+height = 20.2
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_w2mav"]
+panorama = ExtResource("6_lulko")
+
+[sub_resource type="Sky" id="Sky_llkvi"]
+sky_material = SubResource("PanoramaSkyMaterial_w2mav")
+
+[sub_resource type="Environment" id="Environment_q5q25"]
+background_mode = 2
+sky = SubResource("Sky_llkvi")
+sky_rotation = Vector3(0.378736, 0, 0)
+
+[node name="World" type="Node3D"]
+
+[node name="GlobeMap" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_vwgih")
+mesh = SubResource("SphereMesh_de8j7")
+
+[node name="Clouds" type="MeshInstance3D" parent="GlobeMap"]
+material_override = SubResource("ShaderMaterial_nnel6")
+mesh = SubResource("SphereMesh_hx8ax")
+skeleton = NodePath("../../..")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.918446, 0.395546, 0, -0.395546, 0.918446, 0, 0, 0)
+light_color = Color(1, 0.998, 0.94, 1)
+
+[node name="WorldsUgliestSkyBox" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_q5q25")
