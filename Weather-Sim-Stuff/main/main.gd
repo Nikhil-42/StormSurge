@@ -112,46 +112,12 @@ func _draw():
 	var w = weather_data.get_width()
 	var h = weather_data.get_height()
 
-	# Draw temperature heatmap (optional, can comment out if too busy)
+	# Draw temperature heatmap
 	for y in range(0, h, spacing):
 		for x in range(0, w, spacing):
 			var temp = weather_data.get_pixel(x, y).r
 			var color = Color(temp, 0, 1.0 - temp, 0.3)
 			draw_rect(Rect2(Vector2(x, y), Vector2(spacing, spacing)), color, true)
-"""
-	# Draw curved wind arrows
-	for y in range(int(spacing / 2), h, spacing):
-		for x in range(int(spacing / 2), w, spacing):
-			var points = []
-			var pos = Vector2(x, y)
-			points.append(pos)
-			var cur_pos = pos
-			for i in range(arrow_steps):
-				var grad = _get_pressure_gradient(cur_pos)
-				if grad.length() < 0.001:
-					break
-				var dir = grad.normalized()
-				cur_pos += dir * arrow_step_len
-				points.append(cur_pos)
-			# Only draw if arrow is long enough
-			if points.size() > 1:
-				# Draw the curved arrow
-				for i in range(points.size() - 1):
-					draw_line(points[i], points[i + 1], Color.WHITE, 1.5)
-				# Draw arrowhead at the end
-				_draw_arrowhead(points[points.size() - 2], points[points.size() - 1], Color.WHITE)
-
-func _draw_arrowhead(start: Vector2, end: Vector2, color: Color):
-	var dir = (end - start).normalized()
-	var perp = Vector2(-dir.y, dir.x)
-	var size = 6.0
-	var p1 = end
-	var p2 = end - dir * size + perp * size * 0.5
-	var p3 = end - dir * size - perp * size * 0.5
-	draw_polygon(PackedVector2Array([p1, p2, p3]), [color])
-
-"""
-
 
 # Helpers to grab weather data and pressure gradients
 func _get_weather_at(pos: Vector2) -> Color:
