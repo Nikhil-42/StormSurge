@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh7cbk0qyq1vo"]
+
+[ext_resource type="Script" uid="uid://co37uwvnfkt7s" path="res://Weather-Sim-Stuff/main/main.gd" id="1_yh5la"]
+[ext_resource type="PackedScene" uid="uid://okkmb4f3orge" path="res://Weather-Sim-Stuff/storm_particles/storm_particles.tscn" id="2_pjrb6"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_yh5la")
+
+[node name="StormParticles" parent="." instance=ExtResource("2_pjrb6")]
