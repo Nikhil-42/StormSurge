@@ -38,7 +38,6 @@ func _initialize_data_textures():
 	var temp_base = 0.5
 	var pressure_base = 0.7
 
-	# Use FastNoiseLite for more natural patterns
 	var temp_noise = FastNoiseLite.new()
 	temp_noise.seed = randi()
 	temp_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
@@ -57,11 +56,9 @@ func _initialize_data_textures():
 
 	for y in weather_data.get_height():
 		for x in weather_data.get_width():
-			# Temperature: combine gradient, sine wave, and noise
 			var temp_noise_val = temp_noise.get_noise_2d(x, y) * 0.2
 			var temp = clamp(temp_base + temp_noise_val, 0.0, 1.0)
 
-			# Pressure: combine base, radial gradient, sine, and noise
 			var center = screen_size / 2.0
 			var dist = (Vector2(x, y) - center).length() / (screen_size.length() / 2.0)
 			var pressure_noise_val = pressure_noise.get_noise_2d(x, y) * 400.0
@@ -108,6 +105,9 @@ func _process(delta):
 
 	_update_data_texture()
 
+
+
+# GPT Draw function to visualize the wind direction
 func _draw():
 	var spacing = 48 # Larger spacing to reduce overlap
 	var arrow_steps = 6 # Number of segments for curved arrow
@@ -157,6 +157,8 @@ func _draw_arrowhead(start: Vector2, end: Vector2, color: Color):
 
 
 
+
+# Helpers to grab weather data and pressure gradients
 func _get_weather_at(pos: Vector2) -> Color:
 	var img_size = Vector2(weather_data.get_width(), weather_data.get_height())
 	var clamped_x = clamp(pos.x, 0, img_size.x - 1)
