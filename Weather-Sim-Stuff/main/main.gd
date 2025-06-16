@@ -105,9 +105,8 @@ func _process(delta):
 
 
 
-# GPT Draw function to visualize the wind direction
 func _draw():
-	var spacing = 10# Larger spacing to reduce overlap
+	var spacing = 10
 
 	var w = weather_data.get_width()
 	var h = weather_data.get_height()
@@ -118,6 +117,7 @@ func _draw():
 			var temp = weather_data.get_pixel(x, y).r
 			var color = Color(temp, 0, 1.0 - temp, 0.3)
 			draw_rect(Rect2(Vector2(x, y), Vector2(spacing, spacing)), color, true)
+
 
 # Helpers to grab weather data and pressure gradients
 func _get_weather_at(pos: Vector2) -> Color:
