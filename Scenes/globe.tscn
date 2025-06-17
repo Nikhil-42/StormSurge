@@ -1,11 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://2eewc0lbfv2j"]
+[gd_scene load_steps=17 format=3 uid="uid://2eewc0lbfv2j"]
 
 [ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="1_0w0uy"]
+[ext_resource type="Script" uid="uid://dyd24b70mejfk" path="res://Scripts/Globe.cs" id="1_gdeig"]
 [ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="2_d8q2n"]
 [ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_ne2hg"]
 [ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_6fvvo"]
 [ext_resource type="Shader" uid="uid://cunvkjo2byrl0" path="res://Shaders/clouds.gdshader" id="5_wivo2"]
-[ext_resource type="Texture2D" uid="uid://ntmbq4sjwyma" path="res://Assets/NightSkyHDRI003_4K-TONEMAPPED.jpg" id="6_lulko"]
+[ext_resource type="Texture2D" uid="uid://ntmbq4sjwyma" path="res://Assets/colormap_night.jpg" id="6_lulko"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vwgih"]
 render_priority = 0
@@ -51,18 +52,21 @@ sky = SubResource("Sky_llkvi")
 sky_rotation = Vector3(0.378736, 0, 0)
 
 [node name="World" type="Node3D"]
+script = ExtResource("1_gdeig")
 
 [node name="GlobeMap" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_vwgih")
 mesh = SubResource("SphereMesh_de8j7")
 
 [node name="Clouds" type="MeshInstance3D" parent="GlobeMap"]
+visible = false
 material_override = SubResource("ShaderMaterial_nnel6")
 mesh = SubResource("SphereMesh_hx8ax")
 skeleton = NodePath("../../..")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.918446, 0.395546, 0, -0.395546, 0.918446, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.918446, 0.395545, 0, -0.395545, 0.918446, 0, 0, 0)
 light_color = Color(1, 0.998, 0.94, 1)
 
 [node name="WorldsUgliestSkyBox" type="WorldEnvironment" parent="."]
