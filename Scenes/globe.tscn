@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://2eewc0lbfv2j"]
+[gd_scene load_steps=17 format=3 uid="uid://bffbmlgtqwqk0"]
 
 [ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="1_0w0uy"]
 [ext_resource type="Script" uid="uid://dyd24b70mejfk" path="res://Scripts/Globe.cs" id="1_gdeig"]

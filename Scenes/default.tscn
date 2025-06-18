@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=6 format=3 uid="uid://dqo2asoutpamd"]
 
-[ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="3_hj5t5"]
-[ext_resource type="PackedScene" uid="uid://c8ovruwvrfxkn" path="res://Assets/pin.glb" id="4_xe0gy"]
+[ext_resource type="PackedScene" uid="uid://bffbmlgtqwqk0" path="res://Scenes/globe.tscn" id="3_hj5t5"]
+[ext_resource type="Script" uid="uid://dddvt0da2l7p0" path="res://Scripts/Storm.cs" id="4_xe0gy"]
+[ext_resource type="PackedScene" uid="uid://pfby1g05xj6v" path="res://More Weather Stuff/StormParticle3D.tscn" id="5_7ccvn"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
 [ext_resource type="Script" uid="uid://cf2aqhlheb178" path="res://Scenes/CameraRig.cs" id="8_wjear"]
 
@@ -16,7 +17,9 @@ Globe = NodePath("../World")
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 
-[node name="Map3DFeatures" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
+[node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
-_globe = NodePath("../World")
-_pinPrefab = ExtResource("4_xe0gy")
+
+[node name="Storm" type="Node3D" parent="."]
+script = ExtResource("4_xe0gy")
+ParticleScene = ExtResource("5_7ccvn")

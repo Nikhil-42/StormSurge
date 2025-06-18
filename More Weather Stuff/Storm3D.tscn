@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://dn5srqu8v8ab8"]
+
+[ext_resource type="Script" uid="uid://cks2ha2wmwxbd" path="res://More Weather Stuff/storm_3d.gd" id="1_6jw18"]
+[ext_resource type="PackedScene" uid="uid://pfby1g05xj6v" path="res://More Weather Stuff/StormParticle3D.tscn" id="2_pgmuv"]
+[ext_resource type="Script" uid="uid://dghmvmy1ye8iy" path="res://More Weather Stuff/camera_3d.gd" id="3_k2ow3"]
+[ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="4_veh4l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6111o"]
+albedo_texture = ExtResource("4_veh4l")
+
+[sub_resource type="SphereMesh" id="SphereMesh_k2ow3"]
+material = SubResource("StandardMaterial3D_6111o")
+radius = 10.0
+height = 20.0
+
+[node name="Storm3d" type="Node3D"]
+script = ExtResource("1_6jw18")
+particle_scene = ExtResource("2_pgmuv")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.78867, 0)
+script = ExtResource("3_k2ow3")
+
+[node name="Earth" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_k2ow3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
