@@ -62,7 +62,6 @@ public class CityMarkers {
 				GD.PrintErr($"Could not parse line: {line}");
 			}
 		}
-		GD.Print("Finished parsing city data.");
 		cityFile.Close();
 	}
 }
@@ -79,8 +78,6 @@ public partial class Map3dFeatures : Node3D
 	PackedScene _pinPrefab;
 	
 	public override void _Ready() {
-		// ===== LOAD MAP DATA =====
-		GD.Print("Running map 3D features script.");
 		CityMarkers cityData = new CityMarkers();
 
 		foreach (City c in cityData.cities) {
@@ -88,8 +85,7 @@ public partial class Map3dFeatures : Node3D
 			AddChild(pinInstance);
 			
 			pinInstance.Scale = new Vector3(_pin_scale, _pin_scale, _pin_scale);
-			Globe.SurfacePoint point = _globe.GetSurfacePoint(new Vector2(c.latitude, c.longitude));
-			GD.Print($"Placing pin for {c.name} at {point.Position}");
+			Globe.SurfacePoint point = _globe.GetSurfacePoint(new Vector2(Mathf.DegToRad(c.latitude), Mathf.DegToRad(c.longitude)));
 			pinInstance.LookAtFromPosition(point.Position, point.Position + point.Tangent, point.Normal);
 		}
 	}
