@@ -1,7 +1,0 @@
-xarray
-pillow
-opencv-python
-numpy
-matplotlib
-jupyter
-netcdf4
