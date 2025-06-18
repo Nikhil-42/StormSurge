@@ -1,15 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=5 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="3_hj5t5"]
+[ext_resource type="PackedScene" uid="uid://c8ovruwvrfxkn" path="res://Assets/pin.glb" id="4_xe0gy"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
 [ext_resource type="Script" uid="uid://cf2aqhlheb178" path="res://Scenes/CameraRig.cs" id="8_wjear"]
 
 [node name="Root" type="Node"]
 
-[node name="Map3DFeatures" type="Node3D" parent="."]
-script = ExtResource("6_p4pkd")
-
-[node name="CityMarkers" type="Sprite3D" parent="Map3DFeatures"]
+[node name="World" parent="." instance=ExtResource("3_hj5t5")]
 
 [node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("Globe")]
 script = ExtResource("8_wjear")
@@ -18,4 +16,7 @@ Globe = NodePath("../World")
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 
-[node name="World" parent="." instance=ExtResource("3_hj5t5")]
+[node name="Map3DFeatures" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
+script = ExtResource("6_p4pkd")
+_globe = NodePath("../World")
+_pinPrefab = ExtResource("4_xe0gy")
