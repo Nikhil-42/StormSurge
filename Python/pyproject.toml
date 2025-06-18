@@ -3,9 +3,14 @@ name = "stormsurge"
 version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
+    "folium>=0.20.0",
     "geopandas>=1.1.0",
     "ipython>=9.3.0",
+    "jupyter>=1.1.1",
+    "mapclassify>=2.9.0",
     "matplotlib>=3.10.3",
     "numpy>=2.3.0",
     "opencv-python>=4.11.0.86",
+    "rasterio>=1.4.3",
+    "tqdm>=4.67.1",
 ]
