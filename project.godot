@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="StormSurge"
-run/main_scene="uid://bh7cbk0qyq1vo"
+run/main_scene="uid://ean4pdie0k8y"
 config/features=PackedStringArray("4.4", "C#", "Mobile")
 config/icon="res://Assets/icon.svg"
 

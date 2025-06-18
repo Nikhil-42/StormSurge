@@ -3,15 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-public class Asset {
-	public string path;
-	public Vector3 scale;
-	public Asset(string p, float s) {
-		path = p;
-		scale = new Vector3(s, s, s);
-	}
-}
-
 public struct City {
 	public string region;
 	public string name;
@@ -78,30 +69,28 @@ public class CityMarkers {
 
 public partial class Map3dFeatures : Node3D
 {
-	float mapWidth = 28.9f;
-	float mapHeight = 14.04f;
-	Asset pin = new Asset("res://Assets/pin.gltf", 0.5f);
+	[Export]
+	Globe _globe;
+
+	[Export]
+	float _pin_scale = 0.5f; // Scale for the pin asset
+
+	[Export]
+	PackedScene _pinPrefab;
 	
 	public override void _Ready() {
 		// ===== LOAD MAP DATA =====
 		GD.Print("Running map 3D features script.");
 		CityMarkers cityData = new CityMarkers();
 
-		// ===== MAP PIN ASSET =====
-		var pinPrefab = ResourceLoader.Load<PackedScene>(pin.path);
-		if (pinPrefab == null) {
-			GD.PrintErr($"Failed to load asset at: {pin.path}");
-			return;
-		}
-
 		foreach (City c in cityData.cities) {
-			Node3D pinInstance = pinPrefab.Instantiate<Node3D>();
+			Node3D pinInstance = _pinPrefab.Instantiate<Node3D>();
 			AddChild(pinInstance);
 			
-			pinInstance.Scale = pin.scale;
-			Vector3 position = new Vector3((c.longitude*mapWidth)/360f, 0, (c.latitude)*mapHeight/-180f);
-			pinInstance.Position = position;
-			// c.printInfo();
+			pinInstance.Scale = new Vector3(_pin_scale, _pin_scale, _pin_scale);
+			Globe.SurfacePoint point = _globe.GetSurfacePoint(new Vector2(c.latitude, c.longitude));
+			GD.Print($"Placing pin for {c.name} at {point.Position}");
+			pinInstance.LookAtFromPosition(point.Position, point.Position + point.Tangent, point.Normal);
 		}
 	}
 	
