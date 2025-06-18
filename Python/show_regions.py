@@ -5,12 +5,27 @@ import json
 with open('regions.json', 'r') as file:
     regions = json.load(file)
 
-worldmap = cv2.imread("data/8081_earthmap10k.png")
+map = cv2.imread("equirectangularprojection.png")
+print(map.shape)
 
-for region in regions.values():
-    contours = [(np.array(contour) * [[worldmap.shape[1], worldmap.shape[0]]]).astype(np.int32) for contour in region["contours"]]
-    worldmap = cv2.drawContours(worldmap, contours, -1, (0, 255, 0), 3)
+regions_prop = {
+        region: {
+        "contours": [(np.array(contour) / map.shape[1::-1]).tolist() for contour in regions[region]["contours"]],
+            "hierarchy": regions[region]["hierarchy"]
+        }
+        for region in regions
+}
 
-cv2.namedWindow("Map", cv2.WINDOW_GUI_NORMAL)
-cv2.imshow("Map", worldmap)
+with open('regions_prop.json', 'w') as file:
+    json.dump(regions_prop, file)
+
+map = cv2.imread("heightmap.png")
+
+for region in regions_prop.values():
+    contours = [(np.array(contour) * map.shape[1::-1]).astype(np.int32) for contour in region["contours"]]
+    map = cv2.drawContours(map, contours, -1, (0, 255, 0), 3)
+
+cv2.imshow("Map", map)
 cv2.waitKey()
+
+cv2.imwrite("heightmap_regions.png", map)

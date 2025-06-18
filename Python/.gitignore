@@ -1,4 +1,7 @@
 .venv
-uv.lock
-
-data/
+*.png
+*.jpg
+*.zip
+*.nc
+*.npy
+*.json

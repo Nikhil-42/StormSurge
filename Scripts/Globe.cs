@@ -26,11 +26,6 @@ public partial class Globe : Node3D
         _environment = GetNode<WorldEnvironment>("WorldsUgliestSkyBox");
     }
 
-    public override void _Process(double delta)
-    {
-        Transform.Rotated(Vector3.Up, (float)delta * 0.1f);
-    }
-
     public SurfacePoint GetSurfacePoint(Vector2 latLon)
     {
         // Convert latitude and longitude to radians
@@ -45,8 +40,7 @@ public partial class Globe : Node3D
 
         Vector3 position = ToGlobal(new Vector3(x, y, z));
 
-        SurfacePoint point = new()
-        {
+        SurfacePoint point = new() {
             LatLon = latLon,
             Position = position,
             Normal = (new Vector3(x, y, z) - Position).Normalized(),
