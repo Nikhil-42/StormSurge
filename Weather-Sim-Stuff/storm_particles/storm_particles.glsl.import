@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bqrap5sd1qs1l"
+path="res://.godot/imported/storm_particles.glsl-cdd0ee7a8972cb349019461e54ef33ee.res"
+
+[deps]
+
+source_file="res://Weather-Sim-Stuff/storm_particles/storm_particles.glsl"
+dest_files=["res://.godot/imported/storm_particles.glsl-cdd0ee7a8972cb349019461e54ef33ee.res"]
+
+[params]
+

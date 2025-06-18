@@ -29,7 +29,7 @@ void process() {
 
 	/*
 
-	Scale X * Rotation | Scale Y * Rotation | 0 | Translate X 
+	Scale X * Rotation | Scale Y * Rotation | 0 | Translate X
 	Scale X * Rotation | Scale Y * Rotation | 0 | Translate Y
 	0                  | 0                  | 1 | 0
 	0                  | 0                  | 0 | 1
