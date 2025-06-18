@@ -36,7 +36,7 @@ public struct City {
 
 public class CityMarkers {
 	public List<City> cities = new List<City>();
-	public string dataPath = "res://Scripts/citydata.txt";
+	public string dataPath = "res://Library/citydata.txt";
 	
 	private static Regex linePattern = new Regex("^\"([^\"]+)\"\\s+(\\S+(?:\\s+\\S+)*)\\s+(\\d+)\\s+([-+]?[0-9]*\\.?[0-9]+)\\s+([-+]?[0-9]*\\.?[0-9]+)\\s+(\\d+)$");
 	
@@ -101,7 +101,6 @@ public partial class Map3dFeatures : Node3D
 			pinInstance.Scale = pin.scale;
 			Vector3 position = new Vector3((c.longitude*mapWidth)/360f, 0, (c.latitude)*mapHeight/-180f);
 			pinInstance.Position = position;
-			// c.printInfo();
 		}
 	}
 	
