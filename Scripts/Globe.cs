@@ -4,7 +4,7 @@ using Godot.Collections;
 public partial class Globe : Node3D
 {
     [Export]
-    private Json _regions;                    
+    private Json _regions;
 
     [Export]
     private Texture2D _regionmap;
@@ -85,27 +85,27 @@ public partial class Globe : Node3D
     public override void _Input(InputEvent @event)
     {
         if (@event is InputEventMouseButton mouseEvent
-			&& mouseEvent.Pressed
-			&& mouseEvent.ButtonIndex == MouseButton.Right)
-		{
-			var camera = GetViewport().GetCamera3D();
-			if (camera == null)
-				return;
+            && mouseEvent.Pressed
+            && mouseEvent.ButtonIndex == MouseButton.Right)
+        {
+            var camera = GetViewport().GetCamera3D();
+            if (camera == null)
+                return;
 
-			var mousePos = mouseEvent.Position;
-			var from = camera.ProjectRayOrigin(mousePos);
-			var dir = camera.ProjectRayNormal(mousePos);
-			var to = from + (dir * 1000.0f);
+            var mousePos = mouseEvent.Position;
+            var from = camera.ProjectRayOrigin(mousePos);
+            var dir = camera.ProjectRayNormal(mousePos);
+            var to = from + (dir * 1000.0f);
 
-			var result = Geometry3D.SegmentIntersectsSphere(from, to, Position, Radius);
+            var result = Geometry3D.SegmentIntersectsSphere(from, to, Position, Radius);
             if (result != null && result.Length > 0)
             {
                 var hitPoint = result[0];
                 var point = GetSurfacePoint(GetLatLon(hitPoint));
-                Vector2I pointi = new((int)(point.UV.X * _regionmapImage.GetWidth()), (int)((1.0f - point.UV.Y) * _regionmapImage.GetHeight())); 
+                Vector2I pointi = new((int)(point.UV.X * _regionmapImage.GetWidth()), (int)((1.0f - point.UV.Y) * _regionmapImage.GetHeight()));
                 var id = Mathf.RoundToInt(_regionmapImage.GetPixelv(pointi).R * 256);
                 GD.Print("Region: ", ((Array)((Dictionary)_regions.Data)["names"])[id]);
-			}
-		}
+            }
+        }
     }
 }

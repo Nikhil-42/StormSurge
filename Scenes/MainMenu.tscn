@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://ck2ueragucrl1"]
+
+[ext_resource type="Script" uid="uid://ya5j78b4a85b" path="res://Scenes/MainMenu.cs" id="1_koqhg"]
+[ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="1_tt5f1"]
+[ext_resource type="Script" uid="uid://cuj3l7camk0rg" path="res://Scripts/MenuGlobe.cs" id="2_853f1"]
+[ext_resource type="Texture2D" uid="uid://ek3iqqxo0m5p" path="res://Assets/Storm_Logo_Shadowed.png" id="4_cmrfp"]
+[ext_resource type="Texture2D" uid="uid://bgkh7e1f4u3tn" path="res://Assets/Surge_Logo.png" id="4_koqhg"]
+[ext_resource type="Texture2D" uid="uid://b4iah8y48qyon" path="res://Assets/Start.png" id="5_cmrfp"]
+[ext_resource type="Texture2D" uid="uid://b0sojjmna6kku" path="res://Assets/Start_Clicked.png" id="6_loo7a"]
+[ext_resource type="Texture2D" uid="uid://de2wjju1026vx" path="res://Assets/Start_Hover.png" id="7_if7li"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_koqhg")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="World" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_tt5f1")]
+script = ExtResource("2_853f1")
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.91526, 2.41584, 14.4546)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_left = 228.0
+offset_top = 95.0
+offset_right = 2588.0
+offset_bottom = 1735.0
+scale = Vector2(0.3, 0.3)
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer"]
+layout_mode = 2
+texture = ExtResource("4_cmrfp")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="CenterContainer"]
+layout_mode = 2
+texture = ExtResource("4_koqhg")
+
+[node name="TextureButton" type="TextureButton" parent="CenterContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_cmrfp")
+texture_pressed = ExtResource("6_loo7a")
+texture_hover = ExtResource("7_if7li")
+
+[connection signal="pressed" from="CenterContainer/TextureButton" to="." method="_on_start_button_pressed"]
