@@ -53,7 +53,7 @@ public class TechNode {
 	
 	public List<TechNode> children = new List<TechNode>();
 	
-	// public Variables stats;
+	public Variables stats;
 	
 	public TechNode(int c, string n, string cat, bool a, bool b, List<int> positions, List<int> effects) {  // FIX THIS FUNCTION RAHHHHHHHH
 		cost = c;
@@ -62,8 +62,10 @@ public class TechNode {
 		available = a;
 		bought = b;
 		
-		// stats = new Variables{};
-		// FIXME: iterate through lists to adjust effects of node
+		stats = new Variables{};
+		/*for (int i=0; i<positions.Count(); i++) {
+			// FIXME: iterate through lists to adjust effects of node
+		}*/
 	}
 
 	public void addChildNode(TechNode child) {
@@ -71,6 +73,11 @@ public class TechNode {
 	}
 	
 	public void unlock() {
+		available = true;
+	}
+
+	public void buy() {
+		available = false;
 		bought = true;
 	}
 }
@@ -248,12 +255,20 @@ public class StormTechTree {
 		return null;
 	}
 
-	public void unlockNode(TechNode node) {
+	public void buyNode(TechNode node) {
 		available.Remove(node);
-		node.unlock();
+		node.buy();
 		bought.Add(node);
+		foreach (TechNode child in node.children) {
+			if (!available.Contains(child)) {
+				available.Add(child);
+				child.unlock();
+			}
+		}
+		// FIXME: call update stats to put effects of node in effect
+	}
 
-		// FIXME: need to add children to available if not already
-		// FIXME: set available variable of child nodes once added
+	public void updateStats(TechNode node) {
+		// FIXME: take just bought node and add effects to tech tree stats
 	}
 }
