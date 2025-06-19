@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckju04vt6lejr"
-path="res://.godot/imported/Storm_Logo.png-a16084c05474b5ce2832a269b0341423.ctex"
+uid="uid://ek3iqqxo0m5p"
+path="res://.godot/imported/Storm_Logo_Shadowed.png-38b242ff783056f2bdbd0b91e0bface6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Storm_Logo.png"
-dest_files=["res://.godot/imported/Storm_Logo.png-a16084c05474b5ce2832a269b0341423.ctex"]
+source_file="res://Assets/Storm_Logo_Shadowed.png"
+dest_files=["res://.godot/imported/Storm_Logo_Shadowed.png-38b242ff783056f2bdbd0b91e0bface6.ctex"]
 
 [params]
 
