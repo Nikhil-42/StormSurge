@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ya5j78b4a85b" path="res://Scenes/MainMenu.cs" id="1_koqhg"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="1_tt5f1"]
-[ext_resource type="Script" uid="uid://cuj3l7camk0rg" path="res://Scenes/Globe.cs" id="2_853f1"]
+[ext_resource type="Script" uid="uid://cuj3l7camk0rg" path="res://Scripts/MenuGlobe.cs" id="2_853f1"]
 [ext_resource type="Texture2D" uid="uid://ckju04vt6lejr" path="res://Assets/Storm_Logo.png" id="3_xim88"]
 [ext_resource type="Texture2D" uid="uid://bgkh7e1f4u3tn" path="res://Assets/Surge_Logo.png" id="4_koqhg"]
 [ext_resource type="Texture2D" uid="uid://b4iah8y48qyon" path="res://Assets/Start.png" id="5_cmrfp"]

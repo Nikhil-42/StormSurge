@@ -20,7 +20,7 @@ Globe = NodePath("../World")
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 
-[node name="Map3DFeatures" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
+[node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
 _globe = NodePath("../World")
 _pinPrefab = ExtResource("4_xe0gy")

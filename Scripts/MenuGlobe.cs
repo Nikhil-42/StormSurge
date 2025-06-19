@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Globe : Node3D
+public partial class MenuGlobe : Node3D
 {
 	public float RotationSpeed = 4f;
 	
