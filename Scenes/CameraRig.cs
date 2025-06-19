@@ -24,8 +24,19 @@ public partial class CameraRig : Node3D
 	{
 		if (@event is InputEventMouseButton mouseButton)
 		{
-			if (mouseButton.ButtonIndex == MouseButton.Left)
+			if (mouseButton.ButtonIndex == MouseButton.Left){
 				_dragging = mouseButton.Pressed;
+			}		
+				
+			// Zoom controls
+			if(mouseButton.ButtonIndex == MouseButton.WheelUp){
+				Radius -= 1.0f;
+			} 
+			else if (mouseButton.ButtonIndex == MouseButton.WheelDown){
+				Radius += 1.0f;
+			}
+			Radius = Mathf.Clamp(Radius, 12.0f, 50.0f); // Min/Max zoom
+			UpdateCameraPosition();
 		}
 
 		if (_dragging && @event is InputEventMouseMotion motion)

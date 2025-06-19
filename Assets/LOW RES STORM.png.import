@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0sojjmna6kku"
-path="res://.godot/imported/Start_Clicked.png-875670e7dd09d7e3e37965c4bae4382f.ctex"
+uid="uid://dtt0bde5l5ryv"
+path="res://.godot/imported/LOW RES STORM.png-f72a30201e5932aa2529b1c2acb4677c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Start_Clicked.png"
-dest_files=["res://.godot/imported/Start_Clicked.png-875670e7dd09d7e3e37965c4bae4382f.ctex"]
+source_file="res://Assets/LOW RES STORM.png"
+dest_files=["res://.godot/imported/LOW RES STORM.png-f72a30201e5932aa2529b1c2acb4677c.ctex"]
 
 [params]
 

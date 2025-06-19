@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ek3iqqxo0m5p"
-path="res://.godot/imported/Storm_Logo_Shadowed.png-38b242ff783056f2bdbd0b91e0bface6.ctex"
+uid="uid://dvfwev85v71kp"
+path="res://.godot/imported/LOW RES LIGHT GLOW.png-0b5443990c836f47d5f95c144c4c8844.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Storm_Logo_Shadowed.png"
-dest_files=["res://.godot/imported/Storm_Logo_Shadowed.png-38b242ff783056f2bdbd0b91e0bface6.ctex"]
+source_file="res://Assets/LOW RES LIGHT GLOW.png"
+dest_files=["res://.godot/imported/LOW RES LIGHT GLOW.png-0b5443990c836f47d5f95c144c4c8844.ctex"]
 
 [params]
 
