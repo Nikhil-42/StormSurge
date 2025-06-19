@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=8 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="Script" uid="uid://c4wlwenlkjdy3" path="res://Scripts/GameManager.cs" id="1_xe0gy"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="3_hj5t5"]
 [ext_resource type="PackedScene" uid="uid://c8ovruwvrfxkn" path="res://Assets/pin.glb" id="4_xe0gy"]
+[ext_resource type="Script" uid="uid://c0ufklqh0cant" path="res://Scripts/Storm.cs" id="6_7ccvn"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
+[ext_resource type="PackedScene" uid="uid://bdrnkcvvqo6bv" path="res://Scenes/Storm.tscn" id="7_3gigf"]
 [ext_resource type="Script" uid="uid://cf2aqhlheb178" path="res://Scenes/CameraRig.cs" id="8_wjear"]
 
 [node name="Root" type="Node"]
@@ -22,3 +24,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 script = ExtResource("6_p4pkd")
 _globe = NodePath("../World")
 _pinPrefab = ExtResource("4_xe0gy")
+
+[node name="Storm" type="Node3D" parent="."]
+script = ExtResource("6_7ccvn")
+ParticleScene = ExtResource("7_3gigf")
