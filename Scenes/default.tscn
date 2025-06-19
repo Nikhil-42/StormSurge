@@ -20,9 +20,13 @@ Globe = NodePath("../World")
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 
-[node name="Storm" type="Node3D" parent="."]
+[node name="Storm" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
 script = ExtResource("6_7ccvn")
+_globe = NodePath("../World")
 ParticleScene = ExtResource("7_3gigf")
+RadPerUnitX = 0.002
+RadPerUnitY = 0.002
+MoveSpeedRadPerSec = 0.1
 
 [node name="Map3DFeatures" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
 script = ExtResource("6_p4pkd")

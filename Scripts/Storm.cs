@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 public partial class Storm : Node3D
 {
+	[Export]
+	private Globe _globe;
+
 	// Storm Particle Params
 	[Export] public int NumParticles = 750;
 	[Export] public float SpiralRadius = 25.0f;
@@ -11,16 +14,12 @@ public partial class Storm : Node3D
 	[Export] public PackedScene ParticleScene;
 	[Export] public float RotationSpeed = 2.0f;
 
-	// Globe Params
-	[Export] public float EarthRadius = 10.25f;
-	[Export] public Vector3 GlobeCenter = Vector3.Zero;
-
 	// Spacing Params for coordinate transformation
-	[Export] public float DegreesPerUnitX = 0.1f;
-	[Export] public float DegreesPerUnitY = 0.1f;
+	[Export] public float RadPerUnitX = 0.1f;
+	[Export] public float RadPerUnitY = 0.1f;
 
 	// Movement Params
-	[Export] public float MoveSpeedDegPerSec = 2.0f;
+	[Export] public float MoveSpeedRadPerSec = 2.0f;
 	[Export] public Vector2 MoveDirection = new Vector2(1, 0);
 
 	// Internal state
@@ -47,11 +46,11 @@ public partial class Storm : Node3D
 			var dir = camera.ProjectRayNormal(mousePos);
 			var to = from + dir * 1000.0f;
 
-			var result = Geometry3D.SegmentIntersectsSphere(from, to, GlobeCenter, EarthRadius);
+			var result = Geometry3D.SegmentIntersectsSphere(from, to, _globe.Position, _globe.Radius);
 			if (result != null && result.Length > 0)
 			{
 				var hitPoint = result[0];
-				var latlon = Vector3ToLatLon(hitPoint - GlobeCenter);
+				var latlon = _globe.GetLatLon(hitPoint);
 				SpawnStormAt(latlon.X, latlon.Y);
 			}
 		}
@@ -117,10 +116,9 @@ public partial class Storm : Node3D
 			float originLat = (float)storm["origin_lat"];
 			float originLon = (float)storm["origin_lon"];
 
-			var moveDelta = MoveDirection * MoveSpeedDegPerSec * (float)delta;
+			var moveDelta = MoveDirection * MoveSpeedRadPerSec * (float)delta;
 			originLon += moveDelta.X;
 			originLat += moveDelta.Y;
-			originLat = Mathf.Clamp(originLat, -89.9f, 89.9f);
 
 			storm["origin_lat"] = originLat;
 			storm["origin_lon"] = originLon;
@@ -162,36 +160,17 @@ public partial class Storm : Node3D
 			for (int i = 0; i < particles.Count; i++)
 			{
 				var offset = offsets[i].Rotated(rotationAngle);
-				float lat = originLat + offset.Y * DegreesPerUnitY;
-				float lon = originLon + (offset.X * DegreesPerUnitX) / Mathf.Cos(Mathf.DegToRad(lat));
-				var globePos = LatLonToVector3(lat, lon, EarthRadius);
-				particles[i].GlobalPosition = GlobeCenter + globePos;
+				float lat = originLat + offset.Y * RadPerUnitY;
+				float lon = originLon + offset.X * RadPerUnitX / Mathf.Cos(lat);
+				var globePoint = _globe.GetSurfacePoint(new(lat, lon));
+				particles[i].GlobalPosition = 1.025f * (globePoint.Position - _globe.Position) + _globe.Position;
 			}
+
+			// --- Damage Application ---
+			GD.Print($"Storm at ({originLat}, {originLon}) with strength {strength}, is affecting {_globe.GetRegionID(new(originLat, originLon))}");
 		}
 
 		foreach (var s in stormsToRemove)
 			storms.Remove(s);
-}
-
-
-	// Helpers for coordinate transformations
-	private Vector3 LatLonToVector3(float latDeg, float lonDeg, float radius)
-	{
-		float lat = Mathf.DegToRad(latDeg);
-		float lon = Mathf.DegToRad(lonDeg);
-		float x = radius * Mathf.Cos(lat) * Mathf.Sin(lon);
-		float y = radius * Mathf.Sin(lat);
-		float z = radius * Mathf.Cos(lat) * Mathf.Cos(lon);
-		return new Vector3(x, y, z);
-	}
-
-	private Vector2 Vector3ToLatLon(Vector3 pos)
-	{
-		float r = pos.Length();
-		if (r == 0)
-			return Vector2.Zero;
-		float lat = Mathf.Asin(pos.Y / r);
-		float lon = Mathf.Atan2(pos.X, pos.Z);
-		return new Vector2(Mathf.RadToDeg(lat), Mathf.RadToDeg(lon));
 	}
 }

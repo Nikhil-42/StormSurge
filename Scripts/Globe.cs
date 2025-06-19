@@ -9,13 +9,14 @@ public partial class Globe : Node3D
     [Export]
     private Texture2D _regionmap;
 
+    public float Radius => ((SphereMesh)_globe.Mesh).Radius;
+
     private MeshInstance3D _globe;
     private MeshInstance3D _clouds;
     private DirectionalLight3D _sun;
     private WorldEnvironment _environment;
     private Texture2D _heightmap;
     private Image _regionmapImage;
-    private float Radius => ((SphereMesh)_globe.Mesh).Radius;
 
     public struct SurfacePoint
     {
@@ -41,6 +42,33 @@ public partial class Globe : Node3D
         Transform.Rotated(Vector3.Up, (float)delta * 0.1f);
     }
 
+    Vector2 NormalizeLatLon(Vector2 latLon)
+    {
+        float lat = latLon.X;
+        float lon = latLon.Y;
+
+        // Wrap longitude to [-π, π]
+        lon = ((lon + Mathf.Pi) % Mathf.Tau + Mathf.Tau) % Mathf.Tau - Mathf.Pi;
+
+        // Normalize latitude to [-π/2, π/2], flipping over-pole values
+        if (lat > Mathf.Pi / 2)
+        {
+            lat = Mathf.Pi - lat;
+            lon += Mathf.Pi;
+        }
+        else if (lat < -Mathf.Pi / 2)
+        {
+            lat = -Mathf.Pi - lat;
+            lon += Mathf.Pi;
+        }
+
+        // Wrap longitude again in case it was flipped
+        lon = ((lon + Mathf.Pi) % Mathf.Tau + Mathf.Tau) % Mathf.Tau - Mathf.Pi;
+
+        return new Vector2(lat, lon);
+    }
+
+
     public Vector2 GetLatLon(Vector3 worldPosition)
     {
         // Convert world position to latitude and longitude
@@ -61,25 +89,34 @@ public partial class Globe : Node3D
     /// <returns>A SurfacePoint containing position, and normal information</returns>
     public SurfacePoint GetSurfacePoint(Vector2 latLon)
     {
-        // Convert latitude and longitude to radians
-        float lat = latLon.X;
-        float lon = -latLon.Y;
+        var latLonNormalized = NormalizeLatLon(latLon);
+        var lat = latLonNormalized.X; // Latitude in radians
+        var lon = latLonNormalized.Y; // Longitude in radians
 
         // Calculate the position on the globe's surface
         float radius = ((SphereMesh)_globe.Mesh).Radius;
-        float x = radius * Mathf.Cos(lat) * Mathf.Cos(lon);
+        float x = radius * Mathf.Cos(lat) * Mathf.Cos(-lon);
         float y = radius * Mathf.Sin(lat);
-        float z = radius * Mathf.Cos(lat) * Mathf.Sin(lon);
+        float z = radius * Mathf.Cos(lat) * Mathf.Sin(-lon);
 
         Vector3 position = ToGlobal(new Vector3(x, y, z));
 
         SurfacePoint point = new()
         {
-            LatLon = latLon,
+            LatLon = latLonNormalized,
             Position = position,
             Normal = (new Vector3(x, y, z) - Position).Normalized(),
         };
         return point;
+    }
+
+    public int GetRegionID(Vector2 latLon)
+    {
+        // Convert latitude and longitude to a point on the region map
+        var point = GetSurfacePoint(latLon);
+        Vector2I pointi = new((int)(point.UV.X * _regionmapImage.GetWidth()), (int)((1.0f - point.UV.Y) * _regionmapImage.GetHeight()));
+        var id = Mathf.RoundToInt(_regionmapImage.GetPixelv(pointi).R * 256);
+        return id;
     }
 
     public override void _Input(InputEvent @event)
@@ -101,9 +138,7 @@ public partial class Globe : Node3D
             if (result != null && result.Length > 0)
             {
                 var hitPoint = result[0];
-                var point = GetSurfacePoint(GetLatLon(hitPoint));
-                Vector2I pointi = new((int)(point.UV.X * _regionmapImage.GetWidth()), (int)((1.0f - point.UV.Y) * _regionmapImage.GetHeight()));
-                var id = Mathf.RoundToInt(_regionmapImage.GetPixelv(pointi).R * 256);
+                var id = GetRegionID(GetLatLon(hitPoint));
                 GD.Print("Region: ", ((Array)((Dictionary)_regions.Data)["names"])[id]);
             }
         }
