@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://ya5j78b4a85b" path="res://Scenes/MainMenu.cs" id="1_koqhg"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="1_tt5f1"]
 [ext_resource type="Script" uid="uid://cuj3l7camk0rg" path="res://Scripts/MenuGlobe.cs" id="2_853f1"]
-[ext_resource type="Texture2D" uid="uid://ek3iqqxo0m5p" path="res://Assets/Storm_Logo_Shadowed.png" id="4_cmrfp"]
-[ext_resource type="Texture2D" uid="uid://bgkh7e1f4u3tn" path="res://Assets/Surge_Logo.png" id="4_koqhg"]
-[ext_resource type="Texture2D" uid="uid://b4iah8y48qyon" path="res://Assets/Start.png" id="5_cmrfp"]
-[ext_resource type="Texture2D" uid="uid://b0sojjmna6kku" path="res://Assets/Start_Clicked.png" id="6_loo7a"]
-[ext_resource type="Texture2D" uid="uid://de2wjju1026vx" path="res://Assets/Start_Hover.png" id="7_if7li"]
+[ext_resource type="Texture2D" uid="uid://dtt0bde5l5ryv" path="res://Assets/LOW RES STORM.png" id="4_koqhg"]
+[ext_resource type="Texture2D" uid="uid://b1vr5478ailro" path="res://Assets/LOW RES SURGE.png" id="5_cmrfp"]
+[ext_resource type="Texture2D" uid="uid://dkg48finex54b" path="res://Assets/LOW RES NO GLOW.png" id="6_loo7a"]
+[ext_resource type="Texture2D" uid="uid://cqrucp23hdy1g" path="res://Assets/LOW RES DARK GLOW.png" id="7_if7li"]
+[ext_resource type="Texture2D" uid="uid://dvfwev85v71kp" path="res://Assets/LOW RES LIGHT GLOW.png" id="8_rrcx7"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -34,27 +34,34 @@ script = ExtResource("2_853f1")
 [node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.91526, 2.41584, 14.4546)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 0
-offset_left = 228.0
-offset_top = 95.0
-offset_right = 2588.0
-offset_bottom = 1735.0
-scale = Vector2(0.3, 0.3)
-
-[node name="TextureRect" type="TextureRect" parent="CenterContainer"]
+[node name="Storm" type="TextureRect" parent="."]
 layout_mode = 2
-texture = ExtResource("4_cmrfp")
+offset_left = 350.0
+offset_top = 171.0
+offset_right = 1252.0
+offset_bottom = 470.0
+scale = Vector2(0.501612, 0.525859)
+texture = ExtResource("4_koqhg")
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="CenterContainer"]
+[node name="Surge" type="TextureRect" parent="."]
 layout_mode = 2
-texture = ExtResource("4_koqhg")
+offset_left = 350.0
+offset_top = 255.0
+offset_right = 1252.0
+offset_bottom = 554.0
+scale = Vector2(0.501612, 0.525859)
+texture = ExtResource("5_cmrfp")
 
-[node name="TextureButton" type="TextureButton" parent="CenterContainer"]
+[node name="Start" type="TextureButton" parent="."]
 layout_mode = 2
-texture_normal = ExtResource("5_cmrfp")
-texture_pressed = ExtResource("6_loo7a")
-texture_hover = ExtResource("7_if7li")
+offset_left = 447.0
+offset_top = 382.0
+offset_right = 947.0
+offset_bottom = 542.0
+scale = Vector2(0.501612, 0.525859)
+texture_normal = ExtResource("6_loo7a")
+texture_pressed = ExtResource("7_if7li")
+texture_hover = ExtResource("8_rrcx7")
 
-[connection signal="pressed" from="CenterContainer/TextureButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_start_button_pressed"]

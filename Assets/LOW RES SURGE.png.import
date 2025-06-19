@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgkh7e1f4u3tn"
-path="res://.godot/imported/Surge_Logo.png-fd89e6658d5464788da9d37eac158696.ctex"
+uid="uid://b1vr5478ailro"
+path="res://.godot/imported/LOW RES SURGE.png-e456179eaa71a764e0ca4c1c82ac2d04.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Surge_Logo.png"
-dest_files=["res://.godot/imported/Surge_Logo.png-fd89e6658d5464788da9d37eac158696.ctex"]
+source_file="res://Assets/LOW RES SURGE.png"
+dest_files=["res://.godot/imported/LOW RES SURGE.png-e456179eaa71a764e0ca4c1c82ac2d04.ctex"]
 
 [params]
 
