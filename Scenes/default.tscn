@@ -1,15 +1,24 @@
-[gd_scene load_steps=8 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=11 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="Script" uid="uid://c4wlwenlkjdy3" path="res://Scripts/GameManager.cs" id="1_xe0gy"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="3_hj5t5"]
 [ext_resource type="PackedScene" uid="uid://c8ovruwvrfxkn" path="res://Assets/pin.glb" id="4_xe0gy"]
 [ext_resource type="Script" uid="uid://c0ufklqh0cant" path="res://Scripts/Storm.cs" id="6_7ccvn"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
-[ext_resource type="PackedScene" uid="uid://bdrnkcvvqo6bv" path="res://Scenes/Storm.tscn" id="7_3gigf"]
+[ext_resource type="PackedScene" path="res://Scenes/Storm.tscn" id="7_3gigf"]
+[ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/solar_coin.png" id="8_w2mav"]
 [ext_resource type="Script" uid="uid://cf2aqhlheb178" path="res://Scenes/CameraRig.cs" id="8_wjear"]
+
+[sub_resource type="SystemFont" id="SystemFont_wjear"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_w2mav"]
+font = SubResource("SystemFont_wjear")
+font_size = 80
+font_color = Color(0.854902, 0.635294, 0.105882, 1)
 
 [node name="Root" type="Node"]
 script = ExtResource("1_xe0gy")
+printDebug = true
 
 [node name="World" parent="." instance=ExtResource("3_hj5t5")]
 
@@ -24,11 +33,52 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 script = ExtResource("6_7ccvn")
 _globe = NodePath("../World")
 ParticleScene = ExtResource("7_3gigf")
-RadPerUnitX = 0.002
-RadPerUnitY = 0.002
-MoveSpeedRadPerSec = 0.1
 
 [node name="Map3DFeatures" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
 script = ExtResource("6_p4pkd")
 _globe = NodePath("../World")
 _pinPrefab = ExtResource("4_xe0gy")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+visible = false
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -353.0
+offset_top = 58.0
+offset_right = -66.0
+offset_bottom = 168.0
+grow_horizontal = 0
+
+[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer"]
+z_index = 5
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("8_w2mav")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Control/PanelContainer"]
+z_index = 5
+layout_mode = 2
+text = "1200"
+label_settings = SubResource("LabelSettings_w2mav")
+vertical_alignment = 1

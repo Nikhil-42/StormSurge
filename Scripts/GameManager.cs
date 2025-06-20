@@ -10,34 +10,50 @@ public class GameState {
 	public float passive_income = 1.0f;
 	
 	public GameState() {
-		GD.Print("Creating game state object...");
+		if (GameManager.Instance.PrintDebug) GD.Print("Creating game state object...");
 		stormTree = new StormTechTree();
 		stormTree.viewNodes();
 		globalStats = new Variables();
-		globalStats.set_default();
+		globalStats.setGlobalDefault();
 		
 		solar = 0;
 	}
 
 	public void updateGlobalStats() {
-		// FIXME: pull from storm and AI tech tree stats and update globalStats
-		
+		// FIXME: need to call this every time storm/AI node updated
+		int[] default_values = {15, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
+		int temp;
+		for (int i=0; i<default_values.Length; i++) {
+			temp = default_values[i] + stormTree.stormStats.vars[i];
+			// FIXME: add effects of human AI tree
+			if (globalStats.vars[i] != temp) {
+				globalStats.vars[i] = temp;
+			}
+		}
+
 	}
 }
 
-public partial class GameManager : Node
-{
-	GameState game;
+public partial class GameManager : Node {
+	public static GameManager Instance = null;
+	
+	[Export]
+	private bool printDebug = false;
+	public bool PrintDebug => printDebug;
+	
+	GameState game = null;
 	string currentScreen = "start_menu";
 	string currentOption = "";
 	string currentClick = "";
 	// FIXME: where, when, and how to set and reset these variables in loop
 
 	public override void _Ready() {
+		Instance = this;
 		game = new GameState();
 	}
 
 	/*public override void _Process() {
+		
 		// FIXME: determine current screen
 		switch (currentScreen) {
 			case "main_menu":
