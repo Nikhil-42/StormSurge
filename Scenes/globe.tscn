@@ -16,7 +16,10 @@ shader = ExtResource("1_0w0uy")
 shader_parameter/vertical_scale = 0.015
 shader_parameter/heightmap = ExtResource("3_ne2hg")
 shader_parameter/normalmap = ExtResource("4_6fvvo")
+shader_parameter/regionmap = ExtResource("3_27vsr")
 shader_parameter/albedo = ExtResource("2_d8q2n")
+shader_parameter/selected_region = 0
+shader_parameter/hovered_region = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_de8j7"]
 radius = 10.0

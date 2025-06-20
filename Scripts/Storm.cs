@@ -51,7 +51,11 @@ public partial class Storm : Node3D
 			{
 				var hitPoint = result[0];
 				var latlon = _globe.GetLatLon(hitPoint);
-				SpawnStormAt(latlon.X, latlon.Y);
+				var regionID = _globe.GetRegionID(latlon);
+				if (regionID == 0)
+				{
+					SpawnStormAt(latlon.X, latlon.Y);
+				}
 			}
 		}
 	}

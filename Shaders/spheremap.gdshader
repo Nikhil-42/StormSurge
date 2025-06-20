@@ -3,7 +3,12 @@ render_mode diffuse_toon;
 uniform float vertical_scale;
 uniform sampler2D heightmap;
 uniform sampler2D normalmap: hint_normal;
+uniform sampler2D regionmap;
 uniform sampler2D albedo;
+
+uniform uint selected_region = 0u;
+uniform uint hovered_region = 0u;
+
 varying mat3 TBN;
 
 vec3 unpack_normal(vec4 rgba) {
@@ -23,8 +28,9 @@ void fragment() {
 	// Called for every pixel the material is visible on.
 	TBN = mat3(TANGENT, BINORMAL, NORMAL);
 	NORMAL = TBN * unpack_normal(texture(normalmap, UV)).xyz;
-	ALBEDO = texture(albedo, UV).xyz;
-
+	uint region_id = uint(texelFetch(regionmap, ivec2(UV * vec2(10800.0, 5400.0)), 0).x * 256.0 + 0.5);
+	ALBEDO = texture(albedo, UV).rgb;
+	ALBEDO = region_id > 0u && region_id == selected_region ? 2.5f * ALBEDO : ALBEDO;
 }
 
 //void light() {
