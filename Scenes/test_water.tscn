@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://c216i6nr8st0l"]
+
+[ext_resource type="PackedScene" uid="uid://b2a5bjsxw63wr" path="res://water_plane/water_plane.tscn" id="1_m4d82"]
+[ext_resource type="Texture2D" uid="uid://ntmbq4sjwyma" path="res://Assets/colormap_night.jpg" id="2_vkku1"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_5y2s7"]
+panorama = ExtResource("2_vkku1")
+
+[sub_resource type="Sky" id="Sky_a36q0"]
+sky_material = SubResource("PanoramaSkyMaterial_5y2s7")
+
+[sub_resource type="Environment" id="Environment_n7tch"]
+background_mode = 2
+sky = SubResource("Sky_a36q0")
+
+[node name="TestWater" type="Node3D"]
+
+[node name="WaterPlane" parent="." instance=ExtResource("1_m4d82")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.31207, 0.950059, 0, -0.950059, 0.31207, 0, 1.33061, 2.00663)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_n7tch")
