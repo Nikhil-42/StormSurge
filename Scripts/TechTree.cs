@@ -122,7 +122,7 @@ public class TechNode {
 	}
 }
 
-public class StormTechTree {
+public class TechTree {
 	public string dataPath = "res://Library/stormtreedata.txt";
 	public Variables stormStats;
 
@@ -130,7 +130,7 @@ public class StormTechTree {
 	public List<TechNode> available = new List<TechNode>();
 	public List<TechNode> locked = new List<TechNode>();
 
-	public StormTechTree() {
+	public TechTree() {
 		stormStats = new Variables{};
 		
 		if (!Godot.FileAccess.FileExists(dataPath)) {

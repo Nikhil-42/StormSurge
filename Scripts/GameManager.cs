@@ -1,18 +1,21 @@
+using System.Data.Common;
 using Godot;
-using System;
+using Godot.Collections;
 
 public class GameState {
-	
-	public StormTechTree stormTree;
+	public TechTree stormTree;
+	public TechTree humanityTree;
 	public Variables globalStats;
 	
 	public int solar = 0;
-	public float passive_income = 1.0f;
+	public float passiveIncome = 1.0f;
 	
 	public GameState() {
 		if (GameManager.Instance.PrintDebug) GD.Print("Creating game state object...");
-		stormTree = new StormTechTree();
+		stormTree = new TechTree();
+		humanityTree = new TechTree();
 		stormTree.viewNodes();
+
 		globalStats = new Variables();
 		globalStats.setGlobalDefault();
 		
@@ -34,22 +37,61 @@ public class GameState {
 	}
 }
 
-public partial class GameManager : Node {
-	public static GameManager Instance = null;
-	
+public partial class GameManager : Node
+{
+	public static GameManager Instance => _instance;
+	public bool PrintDebug => _printDebug;
+	public GameState Game => _game;
+
 	[Export]
-	private bool printDebug = false;
-	public bool PrintDebug => printDebug;
-	
-	GameState game = null;
-	string currentScreen = "start_menu";
-	string currentOption = "";
-	string currentClick = "";
+	private bool _printDebug = false;
+
+	[Export]
+	private Json regionsJson;
+
+	private static GameManager _instance = null;
+	private GameState _game;
+	private string currentScreen = "start_menu";
+	private string currentOption = "";
+	private string currentClick = "";
+	private RegionAI[] regionAIs = null;
 	// FIXME: where, when, and how to set and reset these variables in loop
 
-	public override void _Ready() {
-		Instance = this;
-		game = new GameState();
+	public override void _Ready()
+	{
+		_instance = this;
+		_game = new GameState();
+		var regionNames = (Array)((Dictionary) regionsJson.Data)["names"];
+		regionAIs = new RegionAI[regionNames.Count-1];
+		for (int i = 0; i < regionNames.Count-1; i++)
+		{
+			regionAIs[i] = new RegionAI(i+1);
+		}
+	}
+
+	public void ApplyDamage(int regionID, double damage, DamageType type)
+	{
+		if (regionID == 0)
+		{
+			// GD.Print("Cannot apply damage to region 0 (Ocean)");
+			return;
+		} else if (regionID < 0 || regionID > regionAIs.Length)
+		{
+			GD.PrintErr($"Invalid region ID: {regionID}");
+			return;
+		}
+		
+		regionAIs[regionID - 1].ApplyDamage(damage, type);
+		if (PrintDebug) GD.Print($"Applying {damage} damage of type {type} to humanity AI in region {regionID}");
+	}
+
+	public override void _Process(double deltaTime)
+	{
+		// Update the humanity AIs
+		for (int i = 0; i < regionAIs.Length; i++)
+		{
+			regionAIs[i].Process(deltaTime, _game);
+		}
 	}
 
 	/*public override void _Process() {

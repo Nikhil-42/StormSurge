@@ -1,6 +1,13 @@
 using Godot;
 using System.Collections.Generic;
 
+public enum DamageType
+{
+	Flood,
+	Wind,
+	Secondary
+}
+
 public partial class Storm : Node3D
 {
 	[Export]
@@ -171,7 +178,7 @@ public partial class Storm : Node3D
 			}
 
 			// --- Damage Application ---
-			GD.Print($"Storm at ({originLat}, {originLon}) with strength {strength}, is affecting {_globe.GetRegionID(new(originLat, originLon))}");
+			GameManager.Instance.ApplyDamage(_globe.GetRegionID(new(originLat, originLon)), strength * delta, DamageType.Secondary);
 		}
 
 		foreach (var s in stormsToRemove)
