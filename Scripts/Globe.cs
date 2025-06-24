@@ -139,6 +139,7 @@ public partial class Globe : Node3D
 			{
 				var hitPoint = result[0];
 				var id = GetRegionID(GetLatLon(hitPoint));
+                ((ShaderMaterial)_globe.MaterialOverride).SetShaderParameter("selected_region", (uint)id);
 				GD.Print("Region: ", ((Array)((Dictionary)_regions.Data)["names"])[id]);
 			}
 		}

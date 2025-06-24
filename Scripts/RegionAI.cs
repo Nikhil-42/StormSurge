@@ -45,40 +45,35 @@ public partial class RegionAI
         switch (_state)
         {
             case ReactionState.Research:
-                if (_health < 0.5f) // Hardcoded decision points, should be members later
+                if (_health < 0.5) // Hardcoded decision points, should be members later
                 {
                     nextState = ReactionState.Recovery; // Switch to recovery if health is low
                 }
-                else if (_health > 0.9f)
+                else if (_health > 0.9)
                 {
                     nextState = ReactionState.Savings; // Switch to savings if health is high
                 }
                 break;
             case ReactionState.Savings:
-                if (_health < 0.8f)
+                if (_health < 0.8)
                 {
                     nextState = ReactionState.Research; // Switch to research if we get damaged 
                 }
-                if (_monies > 100.0f)
+                if (_monies > 100.0)
                 {
                     nextState = ReactionState.Debauchery; // Switch to debauchery if money is high
                 }
                 break;
             case ReactionState.Recovery:
-                if (_health > 0.8f)
+                if (_health > 0.8 || _monies == 0.0)
                 {
                     nextState = ReactionState.Savings; // Switch to savings if health is high
                 }
                 break;
             case ReactionState.Debauchery:
-                if (_monies < 0.0f)
+                if (_monies < 50.0 || _health < 0.5)
                 {
-                    _state = ReactionState.Savings;
-                }
-
-                if (_health < 0.7)
-                {
-                    _state = ReactionState.Recovery; // Switch to recovery if health is low
+                    nextState = ReactionState.Savings; // Switch back to savings after debauchery 
                 }
                 break;
             default:
@@ -94,7 +89,7 @@ public partial class RegionAI
         {
             case ActionType.Save:
                 // Small additional income from savings
-                _monies += 1.0 * deltaTime * _health;
+                _monies += 5.0 * 1.2 * deltaTime * _health;
                 break;
             case ActionType.Research(TechNode node):
                 if (_monies >= node.cost && gameState.humanityTree.available.Contains(node))
@@ -102,14 +97,15 @@ public partial class RegionAI
                     _monies -= node.cost; // Deduct cost of research
                     gameState.humanityTree.buyNode(node); // Perform the research
                 }
+                _monies += 5.0 * deltaTime * _health; // Passive income based on health
                 break;
             case ActionType.Recover:
-                var spending = Mathf.Min(1.0 * deltaTime, _monies); // Spend up to 0.1 money per second)
+                var spending = Mathf.Min(5.0 * deltaTime, _monies); // Spend up to 0.1 money per second)
                 _health += 0.01 * spending;
                 _monies -= spending; // Deduct the money spent on recovery
                 break;
             case ActionType.Debauch:
-                var debauchSpending = Mathf.Min(0.1 * deltaTime, _monies); // Spend up to 0.1 money per second on luxuries
+                var debauchSpending = Mathf.Min(5.0 * deltaTime, _monies); // Spend up to 0.1 money per second on luxuries
                 _monies -= debauchSpending; // Deduct the money spent on luxuries
                 break;
             default:
@@ -118,7 +114,6 @@ public partial class RegionAI
         }
 
         // Apply passive income
-        _monies += 5.0 * deltaTime * _health; // Passive income based on health
 
         _state = GetNextState(); // Update state based on the current conditions
         if (_id == 1)
