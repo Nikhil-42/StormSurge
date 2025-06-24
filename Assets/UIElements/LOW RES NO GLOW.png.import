@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1vr5478ailro"
-path="res://.godot/imported/LOW RES SURGE.png-e456179eaa71a764e0ca4c1c82ac2d04.ctex"
+uid="uid://dkg48finex54b"
+path="res://.godot/imported/LOW RES NO GLOW.png-77f55a7bddf3ae4b30773805c7e174f7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/LOW RES SURGE.png"
-dest_files=["res://.godot/imported/LOW RES SURGE.png-e456179eaa71a764e0ca4c1c82ac2d04.ctex"]
+source_file="res://Assets/UIElements/LOW RES NO GLOW.png"
+dest_files=["res://.godot/imported/LOW RES NO GLOW.png-77f55a7bddf3ae4b30773805c7e174f7.ctex"]
 
 [params]
 

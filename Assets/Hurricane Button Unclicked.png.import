@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkg48finex54b"
-path="res://.godot/imported/LOW RES NO GLOW.png-b894c474f401a292dbc91e667986e8d7.ctex"
+uid="uid://3qlcy68aftnv"
+path="res://.godot/imported/Hurricane Button Unclicked.png-2b02d922f3820b8e9c55101d41e849d1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/LOW RES NO GLOW.png"
-dest_files=["res://.godot/imported/LOW RES NO GLOW.png-b894c474f401a292dbc91e667986e8d7.ctex"]
+source_file="res://Assets/Hurricane Button Unclicked.png"
+dest_files=["res://.godot/imported/Hurricane Button Unclicked.png-2b02d922f3820b8e9c55101d41e849d1.ctex"]
 
 [params]
 

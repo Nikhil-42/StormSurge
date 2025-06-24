@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqrucp23hdy1g"
-path="res://.godot/imported/LOW RES DARK GLOW.png-5e567b2b2880035f9d1d760035fa9928.ctex"
+uid="uid://beymf7jtjyq4e"
+path="res://.godot/imported/Start Button Hovered.png-207b936198370d6e8491ac7dde3100d0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/LOW RES DARK GLOW.png"
-dest_files=["res://.godot/imported/LOW RES DARK GLOW.png-5e567b2b2880035f9d1d760035fa9928.ctex"]
+source_file="res://Assets/Start Button Hovered.png"
+dest_files=["res://.godot/imported/Start Button Hovered.png-207b936198370d6e8491ac7dde3100d0.ctex"]
 
 [params]
 

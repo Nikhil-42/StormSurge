@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=13 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="Script" uid="uid://c4wlwenlkjdy3" path="res://Scripts/GameManager.cs" id="1_xe0gy"]
 [ext_resource type="JSON" path="res://Assets/region_info.json" id="2_w2mav"]
@@ -7,8 +7,9 @@
 [ext_resource type="Script" uid="uid://c0ufklqh0cant" path="res://Scripts/Storm.cs" id="6_7ccvn"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
 [ext_resource type="PackedScene" uid="uid://bdrnkcvvqo6bv" path="res://Scenes/Storm.tscn" id="7_3gigf"]
-[ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/solar_coin.png" id="8_w2mav"]
+[ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/UIElements/solar_coin.png" id="8_w2mav"]
 [ext_resource type="Script" uid="uid://cf2aqhlheb178" path="res://Scenes/CameraRig.cs" id="8_wjear"]
+[ext_resource type="PackedScene" uid="uid://c4i3qa35h5afx" path="res://Scenes/UI.tscn" id="10_llkvi"]
 
 [sub_resource type="SystemFont" id="SystemFont_wjear"]
 
@@ -45,6 +46,7 @@ _globe = NodePath("../World")
 _pinPrefab = ExtResource("4_xe0gy")
 
 [node name="Control" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,3 +89,5 @@ layout_mode = 2
 text = "1200"
 label_settings = SubResource("LabelSettings_w2mav")
 vertical_alignment = 1
+
+[node name="Control2" parent="." instance=ExtResource("10_llkvi")]
