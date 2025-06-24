@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://c4i3qa35h5afx"]
+[gd_scene load_steps=15 format=3 uid="uid://c4i3qa35h5afx"]
 
 [ext_resource type="Script" uid="uid://bs8pbjcvfgsk0" path="res://Scripts/UI.cs" id="1_wunin"]
 [ext_resource type="Texture2D" uid="uid://byeh2cdbxrbyu" path="res://Assets/UIElements/Currency display.png" id="2_vqx31"]
 [ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/UIElements/solar_coin.png" id="2_wunin"]
+[ext_resource type="Script" uid="uid://b20hdp4s8aosw" path="res://Scenes/SolarLabel.cs" id="4_b1goy"]
 [ext_resource type="Texture2D" uid="uid://be03ce4keo26p" path="res://Assets/UIElements/Human ai UI.png" id="4_vqx31"]
 [ext_resource type="Texture2D" uid="uid://c5fexqttn2hjq" path="res://Assets/UIElements/Human AI bar.png" id="5_b1goy"]
 [ext_resource type="Texture2D" uid="uid://dj7elp3f0kyxg" path="res://Assets/UIElements/INFO UNCLICKED.png" id="6_b1goy"]
@@ -71,6 +72,7 @@ scale = Vector2(0.6, 0.6)
 text = "1200"
 label_settings = SubResource("LabelSettings_w2mav")
 vertical_alignment = 1
+script = ExtResource("4_b1goy")
 
 [node name="HumanProgress" type="TextureProgressBar" parent="."]
 layout_mode = 1

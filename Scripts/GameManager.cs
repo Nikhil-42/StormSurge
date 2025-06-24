@@ -1,13 +1,36 @@
 using Godot;
+using System;
 using Godot.Collections;
 
-public class GameState {
+public partial class GameState : Node {
 	public TechTree stormTree;
 	public TechTree humanityTree;
 	public Variables globalStats;
 	
-	public int solar = 0;
-	public float passiveIncome = 1.0f;
+	private int _solar = 1000;
+	public float currentDecimal = 0.0f;
+	private float _passiveIncome = 1.0f;
+	
+	public float PassiveIncome {
+		get => _passiveIncome;
+		set {
+			if (_passiveIncome != value) {
+				_passiveIncome = value;
+			}
+		}
+	}
+	
+	[Signal]
+	public delegate void SolarChangedEventHandler(int newSolar);
+	
+	public int Solar { get => _solar;
+		set {
+			if (_solar != value) {
+				_solar = value;
+				EmitSignal(SignalName.SolarChanged, _solar);
+			}
+		}
+	}
 	
 	public GameState() {
 		if (GameManager.Instance.PrintDebug) GD.Print("Creating game state object...");
@@ -17,9 +40,7 @@ public class GameState {
 
 		globalStats = new Variables();
 		globalStats.setGlobalDefault();
-		
-		solar = 0;
-	}
+		}
 
 	public void updateGlobalStats() {
 		// FIXME: need to call this every time storm/AI node updated
@@ -56,11 +77,17 @@ public partial class GameManager : Node
 	private RegionAI[] regionAIs = null;
 	// FIXME: where, when, and how to set and reset these variables in loop
 
-	public override void _Ready()
-	{
+	public override void _EnterTree() {
+		// FIXME: get this to work
 		_instance = this;
 		_game = new GameState();
-		var regionNames = (Array)((Dictionary) regionsJson.Data)["names"];
+	}
+	
+	public override void _Ready()
+	{
+		//_instance = this;
+		//_game = new GameState();
+		var regionNames = (Godot.Collections.Array)((Dictionary) regionsJson.Data)["names"];
 		regionAIs = new RegionAI[regionNames.Count-1];
 		for (int i = 0; i < regionNames.Count-1; i++)
 		{
@@ -90,6 +117,13 @@ public partial class GameManager : Node
 		for (int i = 0; i < regionAIs.Length; i++)
 		{
 			regionAIs[i].Process(deltaTime, _game);
+		}
+		
+		// Update currency passive generation, FIXME: set reasonable rate
+		Game.currentDecimal += Game.PassiveIncome * 0.1f;
+		if (Game.currentDecimal > 1.000f) {
+			Game.Solar += 1;
+			Game.currentDecimal = 0.0f;
 		}
 	}
 
