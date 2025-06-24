@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://ck2ueragucrl1"]
 
-[ext_resource type="Script" uid="uid://ya5j78b4a85b" path="res://Scenes/MainMenu.cs" id="1_koqhg"]
+[ext_resource type="Script" uid="uid://ya5j78b4a85b" path="res://Scripts/MainMenu.cs" id="1_koqhg"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="1_tt5f1"]
 [ext_resource type="Script" uid="uid://cuj3l7camk0rg" path="res://Scripts/MenuGlobe.cs" id="2_853f1"]
-[ext_resource type="Texture2D" uid="uid://dtt0bde5l5ryv" path="res://Assets/LOW RES STORM.png" id="4_koqhg"]
-[ext_resource type="Texture2D" uid="uid://b1vr5478ailro" path="res://Assets/LOW RES SURGE.png" id="5_cmrfp"]
-[ext_resource type="Texture2D" uid="uid://dkg48finex54b" path="res://Assets/LOW RES NO GLOW.png" id="6_loo7a"]
-[ext_resource type="Texture2D" uid="uid://cqrucp23hdy1g" path="res://Assets/LOW RES DARK GLOW.png" id="7_if7li"]
-[ext_resource type="Texture2D" uid="uid://dvfwev85v71kp" path="res://Assets/LOW RES LIGHT GLOW.png" id="8_rrcx7"]
+[ext_resource type="Texture2D" uid="uid://dtt0bde5l5ryv" path="res://Assets/UIElements/LOW RES STORM.png" id="4_koqhg"]
+[ext_resource type="Texture2D" uid="uid://b1vr5478ailro" path="res://Assets/UIElements/LOW RES SURGE.png" id="5_cmrfp"]
+[ext_resource type="Texture2D" uid="uid://dkg48finex54b" path="res://Assets/UIElements/LOW RES NO GLOW.png" id="6_loo7a"]
+[ext_resource type="Texture2D" uid="uid://cqrucp23hdy1g" path="res://Assets/UIElements/LOW RES DARK GLOW.png" id="7_if7li"]
+[ext_resource type="Texture2D" uid="uid://dvfwev85v71kp" path="res://Assets/UIElements/LOW RES LIGHT GLOW.png" id="8_rrcx7"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -20,8 +20,8 @@ script = ExtResource("1_koqhg")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
@@ -35,30 +35,51 @@ script = ExtResource("2_853f1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.91526, 2.41584, 14.4546)
 
 [node name="Storm" type="TextureRect" parent="."]
-layout_mode = 2
-offset_left = 350.0
-offset_top = 171.0
-offset_right = 1252.0
-offset_bottom = 470.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -231.0
+offset_top = -149.0
+offset_right = 671.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.501612, 0.525859)
 texture = ExtResource("4_koqhg")
 stretch_mode = 5
 
 [node name="Surge" type="TextureRect" parent="."]
-layout_mode = 2
-offset_left = 350.0
-offset_top = 255.0
-offset_right = 1252.0
-offset_bottom = 554.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -242.0
+offset_top = -67.0
+offset_right = 660.0
+offset_bottom = 232.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.501612, 0.525859)
 texture = ExtResource("5_cmrfp")
 
 [node name="Start" type="TextureButton" parent="."]
-layout_mode = 2
-offset_left = 447.0
-offset_top = 382.0
-offset_right = 947.0
-offset_bottom = 542.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -152.0
+offset_top = 54.0
+offset_right = 348.0
+offset_bottom = 214.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.501612, 0.525859)
 texture_normal = ExtResource("6_loo7a")
 texture_pressed = ExtResource("7_if7li")

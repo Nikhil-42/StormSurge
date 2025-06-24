@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://t2ixlsopo043"]
 
-[ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/solar_coin.png" id="1_b3bc3"]
+[ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/UIElements/solar_coin.png" id="1_b3bc3"]
 
 [sub_resource type="SystemFont" id="SystemFont_wjear"]
 
