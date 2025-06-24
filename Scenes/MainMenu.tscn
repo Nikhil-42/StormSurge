@@ -20,12 +20,15 @@ script = ExtResource("1_koqhg")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_right = 3197.0
+offset_bottom = 2028.0
+stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(1920, 1080)
+size = Vector2i(3197, 2028)
+size_2d_override = Vector2i(3840, 2160)
+size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="World" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_tt5f1")]
