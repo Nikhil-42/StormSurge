@@ -17,7 +17,7 @@ subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_w2mav"]
 font = SubResource("SystemFont_wjear")
-font_size = 80
+font_size = 100
 
 [node name="Control" type="Control" node_paths=PackedStringArray("NotificationButton", "NotificationHistoryPanel", "HistoryList")]
 layout_mode = 3
@@ -34,23 +34,27 @@ HistoryList = NodePath("NotificationHistoryPanel/ScrollContainer/HistoryList")
 [node name="Currency" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 0
+offset_left = 20.0
+offset_right = 20.0
 scale = Vector2(0.6, 0.6)
 
 [node name="Background" type="TextureRect" parent="Currency"]
 layout_mode = 0
-offset_top = 31.6667
+offset_top = 32.0
 offset_right = 580.0
-offset_bottom = 232.667
+offset_bottom = 287.0
+rotation = -0.00523599
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_vqx31")
 
 [node name="SunIcon" type="TextureRect" parent="Currency"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-offset_left = 26.6667
-offset_top = 41.6667
-offset_right = 126.667
-offset_bottom = 141.667
+offset_left = 41.6667
+offset_top = 65.0
+offset_right = 141.667
+offset_bottom = 165.0
+scale = Vector2(0.85, 0.85)
 size_flags_horizontal = 0
 size_flags_vertical = 4
 texture = ExtResource("2_wunin")
@@ -59,10 +63,10 @@ stretch_mode = 4
 
 [node name="Label" type="Label" parent="Currency"]
 layout_mode = 2
-offset_left = 140.0
-offset_top = 53.3333
-offset_right = 323.0
-offset_bottom = 163.333
+offset_left = 141.667
+offset_top = 55.0
+offset_right = 415.667
+offset_bottom = 220.0
 scale = Vector2(0.6, 0.6)
 text = "1200"
 label_settings = SubResource("LabelSettings_w2mav")
@@ -73,10 +77,10 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = -134.0
-offset_right = 718.0
-offset_bottom = 193.0
+offset_left = 10.0
+offset_top = -140.0
+offset_right = 724.0
+offset_bottom = 187.0
 grow_vertical = 0
 scale = Vector2(0.4, 0.4)
 value = 60.0
@@ -88,9 +92,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -86.0
-offset_right = 194.0
-offset_bottom = 542.0
+offset_left = -92.0
+offset_top = 10.0
+offset_right = 188.0
+offset_bottom = 552.0
 grow_horizontal = 0
 scale = Vector2(0.4, 0.4)
 
