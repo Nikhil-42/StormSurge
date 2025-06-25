@@ -8,10 +8,22 @@ public partial class GameState : Node {
 	public Variables globalStats;
 	
 	private int _solar = 1000;
-	public float currentDecimal = 0.0f;
-	private float _passiveIncome = 1.0f;
-	
-	public float PassiveIncome {
+	public double currentSolarDecimal = 0.0;
+
+	private double _passiveIncome = 1.0;  // Rate multiplier
+	private double _migrationRate = 1.0;  // Percent
+	private double _detectionTime = 4.0;  // Days
+	private int _pathPrediction = 0;
+	// 0: 50% chance regions correctly predict path, 1 = 75% chance, 2 = 100% chance
+	private double _globalWarming = 1.0;  // Decimal multiplier against tech tree climate change
+	private double _cultSpreadSpeed = 1.0;
+	private double _warCosts = 1.0;
+	private double _warSpreadSpeed = 1.0;
+	private double _climateResearchCosts = 1.0;
+
+	private int _globalFunding = 0;  // Funding for global research upgrades
+
+	public double PassiveIncome {
 		get => _passiveIncome;
 		set {
 			if (_passiveIncome != value) {
@@ -119,11 +131,11 @@ public partial class GameManager : Node
 			regionAIs[i].Process(deltaTime, _game);
 		}
 		
-		// Update currency passive generation, FIXME: set reasonable rate
-		Game.currentDecimal += Game.PassiveIncome * 0.1f;
-		if (Game.currentDecimal > 1.000f) {
+		// Passive income generation, rate changes by sea level
+		Game.currentSolarDecimal += Game.PassiveIncome * (1 + (0.01 * Game.globalStats.sea_level)) * deltaTime;
+		if (Game.currentSolarDecimal > 1.000) {
 			Game.Solar += 1;
-			Game.currentDecimal = 0.0f;
+			Game.currentSolarDecimal = 0.0;
 		}
 	}
 
