@@ -1,5 +1,4 @@
 using Godot;
-using Godot.Collections;
 
 public partial class WaterPlane : Area3D
 {
@@ -168,7 +167,7 @@ public partial class WaterPlane : Area3D
         var pushConstant = new float[]
         {
             wavePoint.X, wavePoint.Y, wavePoint.Z, wavePoint.W,
-            texSize.X, texSize.Y, damp, 0.0f
+            damp, 0.0f
         };
 
         uint xGroups = (uint)((texSize.X - 1) / 8 + 1);
@@ -178,8 +177,10 @@ public partial class WaterPlane : Area3D
         Rid currentSet = textureSets[(index + 2) % 3];
         Rid previousSet = textureSets[(index + 1) % 3];
 
-        var pushConstantBuffer = new byte[pushConstant.Length * sizeof(float)];
-        System.Buffer.BlockCopy(pushConstant, 0, pushConstantBuffer, 0, pushConstantBuffer.Length);
+        var pushConstantBuffer = new byte[pushConstant.Length * sizeof(float) + 2 * sizeof(int)];
+        System.Buffer.BlockCopy(pushConstant, 0, pushConstantBuffer, 0, pushConstant.Length * sizeof(float));
+        System.Buffer.BlockCopy(System.BitConverter.GetBytes(texSize.X), 0, pushConstantBuffer, pushConstant.Length * sizeof(float), sizeof(int));
+        System.Buffer.BlockCopy(System.BitConverter.GetBytes(texSize.Y), 0, pushConstantBuffer, pushConstant.Length * sizeof(float) + sizeof(int), sizeof(int));
 
         var computeList = rd.ComputeListBegin();
         rd.ComputeListBindComputePipeline(computeList, pipeline);
