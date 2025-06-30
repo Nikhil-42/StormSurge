@@ -12,16 +12,42 @@ layout(r32f, set = 2, binding = 0) uniform restrict writeonly image2D output_ima
 // Our push PushConstant.
 layout(push_constant, std430) uniform Params {
 	vec4 add_wave_point;
-	vec2 texture_size;
 	float damp;
 	float res2;
+	ivec2 texture_size;
 } params;
+
+float apply_3x3(ivec2 uv, float kernel[9]) {
+	// This function is not used in this shader, but it can be useful for other shaders.
+	// It applies a 3x3 kernel to the pixel at uv.
+	float result = 0.0;
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			ivec2 offset = ivec2(i, j);
+			result += imageLoad(current_image, uv + offset).r * kernel[(i + 1) * 3 + (j + 1)];
+		}
+	}
+	return result;
+}
+
+float apply_5x5(ivec2 uv, float kernel[25]) {
+	// This function is not used in this shader, but it can be useful for other shaders.
+	// It applies a 5x5 kernel to the pixel at uv.
+	float result = 0.0;
+	for (int i = -2; i <= 2; i++) {
+		for (int j = -2; j <= 2; j++) {
+			ivec2 offset = ivec2(i, j);
+			result += imageLoad(current_image, uv + offset).r * kernel[(i + 2) * 5 + (j + 2)];
+		}
+	}
+	return result;
+}
+
+#define imageLoad_periodic(current_image, uv, size) imageLoad(current_image, ((uv) + (size)) % (size))
 
 // The code we want to execute in each invocation.
 void main() {
-	ivec2 tl = ivec2(0, 0);
-	ivec2 size = ivec2(params.texture_size.x - 1, params.texture_size.y - 1);
-
+	ivec2 size = ivec2(params.texture_size.x, params.texture_size.y);
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 
 	// Just in case the texture size is not divisable by 8.
@@ -30,10 +56,10 @@ void main() {
 	}
 
 	float current_v = imageLoad(current_image, uv).r;
-	float up_v = imageLoad(current_image, clamp(uv - ivec2(0, 1), tl, size)).r;
-	float down_v = imageLoad(current_image, clamp(uv + ivec2(0, 1), tl, size)).r;
-	float left_v = imageLoad(current_image, clamp(uv - ivec2(1, 0), tl, size)).r;
-	float right_v = imageLoad(current_image, clamp(uv + ivec2(1, 0), tl, size)).r;
+	float up_v = imageLoad_periodic(current_image, uv - ivec2(0, 1), size).r;
+	float down_v = imageLoad_periodic(current_image, uv + ivec2(0, 1), size).r;
+	float left_v = imageLoad_periodic(current_image, uv - ivec2(1, 0), size).r;
+	float right_v = imageLoad_periodic(current_image, uv + ivec2(1, 0), size).r;
 	float previous_v = imageLoad(previous_image, uv).r;
 
 	float new_v = 2.0 * current_v - previous_v + 0.25 * (up_v + down_v + left_v + right_v - 4.0 * current_v);

@@ -18,7 +18,7 @@ sky = SubResource("Sky_a36q0")
 [node name="WaterPlane" parent="." instance=ExtResource("1_m4d82")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.31207, 0.950059, 0, -0.950059, 0.31207, 0, 1.33061, 2.00663)
+transform = Transform3D(1, 0, 0, 0, 0.454053, 0.890975, 0, -0.890975, 0.454053, 0, 2.30107, 2.1122)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_n7tch")
