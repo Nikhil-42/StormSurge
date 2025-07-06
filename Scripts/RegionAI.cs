@@ -28,6 +28,7 @@ public partial class RegionAI
 
 	private double _monies;
 	private double _GDP;  // GDP
+	private int _population;
 
 	// Region statistics (1 = least, 3/5 = most)
 	private int _RES;  // Resources per capita (1-5)
@@ -42,17 +43,10 @@ public partial class RegionAI
 	private int _CLI;  // Climate research (1-5)
 	private int _SUS;  // Storm susceptibility (1-5)
 
-	// Variables affected by tech trees
-	private double _govtFunction;
-	private double _resources;
-	private double _compliance;
-	private double _preparation;
+	// FIXME: regions have own AI tech tree
+	public TechTree regionTree;
 
-	private double _cultFollowers = 0;
-	private int _religionLevel = 1;
-	// 1: 1% followers = 0.2%/0.5%, 2: 1% = 0.5%/1%, 3: 1% = 2%/2%
-	private double _recoverySpeed;
-	private double _allianceDiscount = 0;
+	private double _cultFollowers = 0;  // as % of population
 
 	public RegionAI(int id)
 	{
@@ -65,10 +59,8 @@ public partial class RegionAI
 
 		_monies = 0.0f; // Starting money
 
-		_govtFunction = 1.00f;
-		_resources = 1.00f;
-		_compliance = 1.00f;
-		_preparation = 1.00f;
+		regionTree = new TechTree(false);
+		regionTree.setDefaults();
 	}
 
 	private ReactionState GetNextState()
@@ -124,10 +116,10 @@ public partial class RegionAI
 				_monies += 5.0 * 1.2 * deltaTime * _health;
 				break;
 			case ActionType.Research(TechNode node):
-				if (_monies >= node.cost && gameState.humanityTree.available.Contains(node))
+				if (_monies >= node.cost && gameState.humanTree.available.Contains(node))
 				{
 					_monies -= node.cost; // Deduct cost of research
-					gameState.humanityTree.buyNode(node); // Perform the research
+					gameState.humanTree.buyNode(node); // Perform the research
 				}
 				_monies += 5.0 * deltaTime * _health; // Passive income based on health
 				break;
@@ -160,7 +152,7 @@ public partial class RegionAI
 		{
 			case ReactionState.Research:
 				// Chooses a random available node to research
-				var targetPurchase = gameState.humanityTree.available[(int)(GD.Randi() % (uint)gameState.humanityTree.available.Count)];
+				var targetPurchase = gameState.humanTree.available[(int)(GD.Randi() % (uint)gameState.humanTree.available.Count)];
 				if (targetPurchase.cost < _monies)
 				{
 					return new ActionType.Research(targetPurchase);

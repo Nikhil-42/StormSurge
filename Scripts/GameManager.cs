@@ -1,27 +1,22 @@
 using Godot;
 using System;
-using Godot.Collections;
+using System.Collections.Generic;
 
 public partial class GameState : Node {
+	// Global gamestate variable states
 	public TechTree stormTree;
-	public TechTree humanityTree;
-	public Variables globalStats;
+	public TechTree humanTree;
+	public geoVars sharedVars;
 	
 	private int _solar = 1000;
 	public double currentSolarDecimal = 0.0;
-
 	private double _passiveIncome = 1.0;  // Rate multiplier
-	private double _migrationRate = 1.0;  // Percent
-	private double _detectionTime = 4.0;  // Days
-	private int _pathPrediction = 0;
-	// 0: 50% chance regions correctly predict path, 1 = 75% chance, 2 = 100% chance
-	private double _globalWarming = 1.0;  // Decimal multiplier against tech tree climate change
-	private double _cultSpreadSpeed = 1.0;
-	private double _warCosts = 1.0;
-	private double _warSpreadSpeed = 1.0;
-	private double _climateResearchCosts = 1.0;
 
 	private int _globalFunding = 0;  // Funding for global research upgrades
+	public List<string> unlockedResearch = new List<string>();  // For easier access of which research nodes have been bought
+	public List<string> lockedResearch = new List<string>();
+
+	private int _religionLevel = 1;  // 1: 1% cult followers = 0.2%/0.5%, 2: 1% = 0.5%/1%, 3: 1% = 2%/2%
 
 	public double PassiveIncome {
 		get => _passiveIncome;
@@ -46,23 +41,20 @@ public partial class GameState : Node {
 	
 	public GameState() {
 		if (GameManager.Instance.PrintDebug) GD.Print("Creating game state object...");
-		stormTree = new TechTree();
-		humanityTree = new TechTree();
+		stormTree = new TechTree(true);
+		humanTree = new TechTree(false);
 		stormTree.viewNodes();
+		// humanTree.viewNodes();  
 
-		globalStats = new Variables();
-		globalStats.setGlobalDefault();
+		sharedVars = new geoVars();
 		}
 
-	public void updateGlobalStats() {
-		// FIXME: need to call this every time storm/AI node updated
-		int[] default_values = {15, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
-		int temp;
-		for (int i=0; i<default_values.Length; i++) {
-			temp = default_values[i] + stormTree.stormStats.vars[i];
-			// FIXME: add effects of human AI tree
-			if (globalStats.vars[i] != temp) {
-				globalStats.vars[i] = temp;
+	public void updateSharedVars() {
+		int total;
+		for (int i=0; i<sharedVars.vars.Length; i++) {
+			total = stormTree.treeGeo.vars[i] + humanTree.treeGeo.vars[i];
+			if (total != 200 && total != sharedVars.vars[i]) {
+				sharedVars.vars[i] = 100 + (total - 200);
 			}
 		}
 
@@ -90,16 +82,13 @@ public partial class GameManager : Node
 	// FIXME: where, when, and how to set and reset these variables in loop
 
 	public override void _EnterTree() {
-		// FIXME: get this to work
 		_instance = this;
 		_game = new GameState();
 	}
 	
 	public override void _Ready()
 	{
-		//_instance = this;
-		//_game = new GameState();
-		var regionNames = (Godot.Collections.Array)((Dictionary) regionsJson.Data)["names"];
+		var regionNames = (Godot.Collections.Array)((Godot.Collections.Dictionary) regionsJson.Data)["names"];
 		regionAIs = new RegionAI[regionNames.Count-1];
 		for (int i = 0; i < regionNames.Count-1; i++)
 		{
@@ -132,80 +121,10 @@ public partial class GameManager : Node
 		}
 		
 		// Passive income generation, rate changes by sea level
-		Game.currentSolarDecimal += Game.PassiveIncome * (1 + (0.01 * Game.globalStats.sea_level)) * deltaTime;
+		Game.currentSolarDecimal += Game.PassiveIncome * (1 + (0.01 * Game.stormTree.treeWeather.sea_level)) * deltaTime;
 		if (Game.currentSolarDecimal > 1.000) {
 			Game.Solar += 1;
 			Game.currentSolarDecimal = 0.0;
 		}
 	}
-
-	/*public override void _Process() {
-		
-		// FIXME: determine current screen
-		switch (currentScreen) {
-			case "main_menu":
-				switch(currentOption) {
-					case "start_game":
-						// FIXME: start la game
-						currentScreen = "game";
-						break;
-					case "quit_game":
-						// FIXME: quit la game
-						break;
-					default:
-						break;
-				}
-				break;
-			case "tech_tree":
-				// FIXME: get input for options
-				switch (currentOption) {
-					case "view_available":
-						game.stormTree.viewNodes();
-						break;
-					case "buy_node":
-						// FIXME: get input for node to buy
-						string search = "";
-						TechNode to_buy = game.stormTree.getNode(search);
-
-						if (to_buy != null) {
-							if (game.solar >= to_buy.cost) {
-								game.stormTree.buyNode(to_buy);
-								solar -= to_buy.cost;
-							}
-							// FIXME: else - cannot buy node message
-						}
-						break;
-					case "return_to_game":
-						currentScreen = "game";
-						break;
-					default:
-						break;
-				}
-				// FIXME: options to return to main menu/in-game screen
-				break;
-			case "game":
-				// FIXME: get input for options
-				switch (currentOption) {
-					case "spawn_storm":
-						// FIXME: mechanism and UI to spawn storms
-						break;
-					case "view_stats":
-						// FIXME: UI screen to see variable stats of world
-						break;
-					case "open_tech_tree":
-						currentScreen = "tech_tree";
-						break;
-					case "pause":
-						// FIXME: pauses game and opens mini menu with options
-						// to return to main menu or quit game
-						switch (currentClick) {
-							case "return_menu":
-								// FIXME: ends current game
-								currentScreen = "main_menu";
-								
-						}
-				}
-
-		}
-	}*/
 }
