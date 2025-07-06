@@ -13,30 +13,30 @@ public class weatherVars {
 		set => vars[0] = 0;
 	}
 	public int sea_level {  // 2. meters above normal
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[1];
+		set => vars[1] = 0;
 	}
 	public int range {  // 3. percent (base 40, up to 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[2];
+		set => vars[2] = 0;
 	}
 
 	// STORM VARS
 	public int wind_damage {  // 4. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[3];
+		set => vars[3] = 0;
 	}
 	public int speed {  // 5. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[4];
+		set => vars[4] = 0;
 	}
 	public int radius {  // 6. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[5];
+		set => vars[5] = 0;
 	}
 	public int flood_damage {  // 7. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[6];
+		set => vars[6] = 0;
 	}
 	
 	public void setGlobalDefault() {
@@ -62,30 +62,30 @@ public class geoVars {
 		set => vars[0] = 0;
 	}
 	public int intern_coop {  // 2. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[1];
+		set => vars[1] = 0;
 	}
 	public int transport {  // 3. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[2];
+		set => vars[2] = 0;
 	}
 
 	// INTRAREGIONAL VARS
 	public int govt_function {  // 4. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[3];
+		set => vars[3] = 0;
 	}
 	public int resources {  // 5. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[4];
+		set => vars[4] = 0;
 	}
 	public int compliance {  // 6. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[5];
+		set => vars[5] = 0;
 	}
 	public int prep {  // 7. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[6];
+		set => vars[6] = 0;
 	}
 	
 	public void setGlobalDefault() {
@@ -103,7 +103,7 @@ public class geoVars {
 
 public class humanVars {
 	// Zeros default for node contributions
-	public int[] vars = new int[8];
+	public int[] vars = new int[10];
 
 	// HUMAN BEHAVIOR VARS
 	public int global_migration {  // 1. percent (base 100, must be enabled)
@@ -111,40 +111,40 @@ public class humanVars {
 		set => vars[0] = 0;
 	}
 	public int region_migration {  // 2. percent (base 100, must be enabled)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[1];
+		set => vars[1] = 0;
 	}
 	public int global_warming {  // 3. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[2];
+		set => vars[2] = 0;
 	}
 	public int climate_costs {  // 4. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[3];
+		set => vars[3] = 0;
 	}
 	public int cult_spread {  // 5. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[4];
+		set => vars[4] = 0;
 	}
 	public int recovery {  // 6. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[5];
+		set => vars[5] = 0;
 	}
 	public int infrastructure_costs {  // 7. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[6];
+		set => vars[6] = 0;
 	}
 	public int war_spread {  // 8. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[7];
+		set => vars[7] = 0;
 	}
 	public int detection {  // 9. time in hours (base 96)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[8];
+		set => vars[8] = 0;
 	}
 	public int implement_costs {  // 10. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
+		get => vars[9];
+		set => vars[9] = 0;
 	}
 	
 	public void setGlobalDefault() {
