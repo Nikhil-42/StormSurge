@@ -5,9 +5,14 @@
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
 // Our textures.
-layout(r32f, set = 0, binding = 0) uniform restrict readonly image2D current_image;
-layout(r32f, set = 1, binding = 0) uniform restrict readonly image2D previous_image;
-layout(r32f, set = 2, binding = 0) uniform restrict writeonly image2D output_image;
+// velocity texture is rg32f, which is a 2D texture with 2 channels (r and g) and 32 bits per channel.
+// scalar fields are packed into a rgba32f texture, which is a 2D texture with 4 channels (r, g, b, and a) and 32 bits per channel.
+layout(rg32f, set = 0, binding = 0) uniform restrict readonly image2D current_wind;
+layout(rgba32f, set = 0, binding = 1) uniform restrict readonly image2D current_scalar_field;
+layout(rg32f, set = 1, binding = 0) uniform restrict readonly image2D previous_wind;
+layout(rgba32f, set = 1, binding = 1) uniform restrict readonly image2D previous_scalar_field;
+layout(rg32f, set = 2, binding = 0) uniform restrict writeonly image2D next_wind;
+layout(rgba32f, set = 2, binding = 1) uniform restrict writeonly image2D next_scalar_field;
 
 // Our push PushConstant.
 layout(push_constant, std430) uniform Params {
@@ -17,33 +22,22 @@ layout(push_constant, std430) uniform Params {
 	ivec2 texture_size;
 } params;
 
-float apply_3x3(ivec2 uv, float kernel[9]) {
-	// This function is not used in this shader, but it can be useful for other shaders.
-	// It applies a 3x3 kernel to the pixel at uv.
-	float result = 0.0;
-	for (int i = -1; i <= 1; i++) {
-		for (int j = -1; j <= 1; j++) {
-			ivec2 offset = ivec2(i, j);
-			result += imageLoad(current_image, uv + offset).r * kernel[(i + 1) * 3 + (j + 1)];
-		}
-	}
-	return result;
+
+ivec2 normalize_uv(ivec2 uv, ivec2 size) {
+	// The UV coordinates corespond to latitude and longitude, so we need to normalize them to the texture size.
+	ivec2 wrap = ivec2(size.x, size.y * 2);  // size.x represents 180deg latitude, size.y represents 360deg longitude
+	uv = (uv + wrap) % wrap;  // Wrap the UV coordinates to the texture size
+	uv.x = uv.y >= size.y ? size.x-1 - uv.x : uv.x;
+	uv.y = uv.y >= size.y ? size.y*2-1 - uv.y : uv.y;
+	return uv;
 }
 
-float apply_5x5(ivec2 uv, float kernel[25]) {
-	// This function is not used in this shader, but it can be useful for other shaders.
-	// It applies a 5x5 kernel to the pixel at uv.
-	float result = 0.0;
-	for (int i = -2; i <= 2; i++) {
-		for (int j = -2; j <= 2; j++) {
-			ivec2 offset = ivec2(i, j);
-			result += imageLoad(current_image, uv + offset).r * kernel[(i + 2) * 5 + (j + 2)];
-		}
-	}
-	return result;
+vec2 uv_to_rad(ivec2 uv, ivec2 size) {
+	// Convert UV coordinates to radians.
+	float lat = ((float(uv.y)+0.5) / float(size.y)) * 3.14159265358979323846;  // 180 degrees in radians
+	float lon = ((float(uv.x)+0.5) / float(size.x)) * 6.28318530717958647692;  // 360 degrees in radians
+	return vec2(lat, lon);
 }
-
-#define imageLoad_periodic(current_image, uv, size) imageLoad(current_image, ((uv) + (size)) % (size))
 
 // The code we want to execute in each invocation.
 void main() {
@@ -54,25 +48,50 @@ void main() {
 	if ((uv.x > size.x) || (uv.y > size.y)) {
 		return;
 	}
+	
+	float v = 1.0;
 
-	float current_v = imageLoad(current_image, uv).r;
-	float up_v = imageLoad_periodic(current_image, uv - ivec2(0, 1), size).r;
-	float down_v = imageLoad_periodic(current_image, uv + ivec2(0, 1), size).r;
-	float left_v = imageLoad_periodic(current_image, uv - ivec2(1, 0), size).r;
-	float right_v = imageLoad_periodic(current_image, uv + ivec2(1, 0), size).r;
-	float previous_v = imageLoad(previous_image, uv).r;
+	vec2 center = imageLoad(current_wind, uv).rg;
+	vec2 up = imageLoad(current_wind, normalize_uv(uv - ivec2(0, 1), size)).rg;
+	vec2 down = imageLoad(current_wind, normalize_uv(uv + ivec2(0, 1), size)).rg;
+	vec2 left = imageLoad(current_wind, normalize_uv(uv - ivec2(1, 0), size)).rg;
+	vec2 right = imageLoad(current_wind, normalize_uv(uv + ivec2(1, 0), size)).rg;
 
-	float new_v = 2.0 * current_v - previous_v + 0.25 * (up_v + down_v + left_v + right_v - 4.0 * current_v);
-	new_v = new_v - (params.damp * new_v * 0.001);
+	float du_dx = (right.x - left.x) / 2.0;
+	float du_dy = (down.x - up.x) / 2.0;
+	float dv_dx = (right.y - left.y) / 2.0;
+	float dv_dy = (down.y - up.y) / 2.0;
+
+	float d2u_dx2 = (right.x - center.x) - (center.x - left.x);
+	float d2u_dy2 = (down.x - center.x) - (center.x - up.x);
+	float d2v_dx2 = (right.y - center.y) - (center.y - left.y);
+	float d2v_dy2 = (down.y - center.y) - (center.y - up.y);
+
+	float du_dt = v * (d2u_dx2 + d2u_dy2) + (center.x * du_dx + center.y * du_dy);
+	float dv_dt = v * (d2v_dx2 + d2v_dy2) + (center.x * dv_dx + center.y * dv_dy);
+
+	float new_u = center.x + du_dt * 1.0/60.0;
+	float new_v = center.y + dv_dt * 1.0/60.0;
+
+	// Rain 
+	float current_s = imageLoad(current_scalar_field, uv).r;
+	float up_s = imageLoad(current_scalar_field, normalize_uv(uv - ivec2(0, 1), size)).r;
+	float down_s = imageLoad(current_scalar_field, normalize_uv(uv + ivec2(0, 1), size)).r;
+	float left_s = imageLoad(current_scalar_field, normalize_uv(uv - ivec2(1, 0), size)).r;
+	float right_s = imageLoad(current_scalar_field, normalize_uv(uv + ivec2(1, 0), size)).r;
+	float previous_s = imageLoad(previous_scalar_field, uv).r;
+
+	float new_s = 2.0 * current_s - previous_s + 0.25 * (up_s + down_s + left_s + right_s - 4.0 * current_s);
+	new_s = new_s - (params.damp * new_s * 0.001);
 
 	if (params.add_wave_point.z > 0.0 && uv.x == floor(params.add_wave_point.x) && uv.y == floor(params.add_wave_point.y)) {
-		new_v = params.add_wave_point.z;
+		new_s = params.add_wave_point.z;
 	}
 
-	if (new_v < 0.0) {
-		new_v = 0.0;
+	if (new_s < 0.0) {
+		new_s = 0.0;
 	}
-	vec4 result = vec4(new_v, new_v, new_v, 1.0);
 
-	imageStore(output_image, uv, result);
+	imageStore(next_scalar_field, uv, vec4(new_s, new_s, float(uv.x) / float(size.x), float(uv.y) / float(size.y)));
+	imageStore(next_wind, uv, vec4(new_u, new_v, 1.0, 1.0));
 }

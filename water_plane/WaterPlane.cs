@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class WaterPlane : Area3D
@@ -7,10 +8,25 @@ public partial class WaterPlane : Area3D
     [Export] public Vector2I TextureSize = new Vector2I(512, 512);
     [Export(PropertyHint.Range, "1.0,10.0,0.1")] public float Damp = 1.0f;
 
+    struct SimulationState
+    {
+        public Rid wind;
+        public Rid scalarField;
+
+        public SimulationState(Rid wind, Rid scalarField)
+        {
+            this.wind = wind;
+            this.scalarField = scalarField;
+        }
+
+        public SimulationState() : this(new Rid(), new Rid()) {}
+    }
+
     private float t = 0.0f;
     private float maxT = 0.1f;
 
-    private Texture2Drd texture;
+    private Texture2Drd scalar_texture;
+    private Texture2Drd wind_texture;
     private int nextTexture = 0;
 
     private Vector4 addWavePoint;
@@ -20,7 +36,7 @@ public partial class WaterPlane : Area3D
     private RenderingDevice rd;
     private Rid shader;
     private Rid pipeline;
-    private Rid[] textureRds = new Rid[3];
+    private SimulationState[] textureRds = new SimulationState[3];
     private Rid[] textureSets = new Rid[3];
 
     public override void _Ready()
@@ -30,16 +46,25 @@ public partial class WaterPlane : Area3D
         ShaderMaterial material = GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride as ShaderMaterial;
         if (material != null)
         {
-            material.SetShaderParameter("effect_texture_size", TextureSize);
-            texture = (Texture2Drd)material.GetShaderParameter("effect_texture");
+            material.SetShaderParameter("texture_size", TextureSize);
+            scalar_texture = (Texture2Drd)material.GetShaderParameter("scalar_texture");
+            if (scalar_texture == null)
+                GD.PrintErr("Failed to get reference to scalar field texture");
+            wind_texture = (Texture2Drd)material.GetShaderParameter("wind_texture");
+            if (wind_texture == null)
+                GD.PrintErr("Failed to get reference to wind field texture");
         }
     }
 
     public override void _ExitTree()
     {
-        if (texture != null)
+        if (scalar_texture != null)
         {
-            texture.TextureRdRid = new Rid();
+            scalar_texture.TextureRdRid = new Rid();
+        }
+        if (wind_texture != null)
+        {
+            wind_texture.TextureRdRid = new Rid();
         }
 
         RenderingServer.CallOnRenderThread(Callable.From(FreeComputeResources));
@@ -114,21 +139,30 @@ public partial class WaterPlane : Area3D
 
         nextTexture = (nextTexture + 1) % 3;
 
-        if (texture != null)
-            texture.TextureRdRid = textureRds[nextTexture];
+        if (scalar_texture != null)
+            scalar_texture.TextureRdRid = textureRds[nextTexture].scalarField;
+        if (wind_texture != null)
+            wind_texture.TextureRdRid = textureRds[nextTexture].wind;
 
         RenderingServer.CallOnRenderThread(Callable.From(() => RenderProcess(nextTexture, addWavePoint, TextureSize, Damp)));
     }
 
-    private Rid CreateUniformSet(Rid textureRd)
+    private Rid CreateUniformSet(SimulationState simulationTextures)
     {
-        var uniform = new RDUniform
+        var windUniform = new RDUniform
         {
             UniformType = RenderingDevice.UniformType.Image,
             Binding = 0
         };
-        uniform.AddId(textureRd);
-        return rd.UniformSetCreate([uniform], shader, 0);
+        windUniform.AddId(simulationTextures.wind);
+
+        var scalarFieldUniform = new RDUniform
+        {
+            UniformType = RenderingDevice.UniformType.Image,
+            Binding = 1
+        };
+        scalarFieldUniform.AddId(simulationTextures.scalarField);
+        return rd.UniformSetCreate([windUniform, scalarFieldUniform], shader, 0);
     }
 
     private void InitializeComputeCode(Vector2I initSize)
@@ -138,9 +172,25 @@ public partial class WaterPlane : Area3D
         shader = rd.ShaderCreateFromSpirV(shaderFile.GetSpirV());
         pipeline = rd.ComputePipelineCreate(shader);
 
-        var tf = new RDTextureFormat
+        var windTf = new RDTextureFormat
         {
-            Format = RenderingDevice.DataFormat.R32Sfloat,
+            Format = RenderingDevice.DataFormat.R32G32Sfloat,
+            TextureType = RenderingDevice.TextureType.Type2D,
+            Width = (uint)initSize.X,
+            Height = (uint)initSize.Y,
+            Depth = 1,
+            ArrayLayers = 1,
+            Mipmaps = 1,
+            UsageBits = RenderingDevice.TextureUsageBits.SamplingBit |
+                         RenderingDevice.TextureUsageBits.ColorAttachmentBit |
+                         RenderingDevice.TextureUsageBits.StorageBit |
+                         RenderingDevice.TextureUsageBits.CanUpdateBit |
+                         RenderingDevice.TextureUsageBits.CanCopyToBit
+        };
+
+        var scalarTf = new RDTextureFormat
+        {
+            Format = RenderingDevice.DataFormat.R32G32B32A32Sfloat,
             TextureType = RenderingDevice.TextureType.Type2D,
             Width = (uint)initSize.X,
             Height = (uint)initSize.Y,
@@ -156,8 +206,10 @@ public partial class WaterPlane : Area3D
 
         for (int i = 0; i < 3; i++)
         {
-            textureRds[i] = rd.TextureCreate(tf, new RDTextureView(), []);
-            rd.TextureClear(textureRds[i], new Color(0, 0, 0, 0), 0, 1, 0, 1);
+            textureRds[i].wind = rd.TextureCreate(windTf, new RDTextureView(), []);
+            textureRds[i].scalarField = rd.TextureCreate(scalarTf, new RDTextureView(), []);
+            rd.TextureClear(textureRds[i].wind, new Color(0, 0, 0, 0), 0, 1, 0, 1);
+            rd.TextureClear(textureRds[i].scalarField, new Color(0, 0, 0, 0), 0, 1, 0, 1);
             textureSets[i] = CreateUniformSet(textureRds[i]);
         }
     }
@@ -196,8 +248,10 @@ public partial class WaterPlane : Area3D
     {
         for (int i = 0; i < 3; i++)
         {
-            if (textureRds[i].IsValid)
-                rd.FreeRid(textureRds[i]);
+            if (textureRds[i].wind.IsValid)
+                rd.FreeRid(textureRds[i].wind);
+            if (textureRds[i].scalarField.IsValid)
+                rd.FreeRid(textureRds[i].scalarField);
         }
 
         if (shader.IsValid)
