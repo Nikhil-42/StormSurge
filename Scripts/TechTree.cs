@@ -176,9 +176,9 @@ public class TechNode {
 	
 	public List<TechNode> children = new List<TechNode>();
 	
-	public weatherVars weather;
-	public geoVars geo;
-	public humanVars human;
+	public weatherVars weather;  // zero node default
+	public geoVars geo;  // zero node default
+	public humanVars human;  // zero node default
 	
 	public TechNode(int c, string n, string cat, bool a, bool b, List<int> positions, List<int> effects) {  // FIX THIS FUNCTION RAHHHHHHHH
 		cost = c;
@@ -202,7 +202,6 @@ public class TechNode {
 		for (int i=0; i<positions.Count; i++) {
 			human.vars[positions[i]-1] += effects[i];
 		}
-
 	}
 
 	public void addChildNode(TechNode child) {
@@ -223,10 +222,10 @@ public class TechTree {
 	public string stormDataPath = "res://Library/stormtreedata.txt";
 	public string humanDataPath = "";  // FIXME: make this (or make someone else make it)
 	
-	public weatherVars treeWeather;
-	public geoVars treeGeo;
-	public humanVars treeHuman;
-	private bool _storm;
+	public weatherVars treeWeather;  // global default
+	public geoVars treeGeo;  // global default
+	public humanVars treeHuman;  // global default
+	private bool _storm;  // true = storm tech tree
 
 	public List<TechNode> bought = new List<TechNode>();
 	public List<TechNode> available = new List<TechNode>();
@@ -421,6 +420,24 @@ public class TechTree {
 			}
 		}
 		return null;
+	}
+
+	public List<TechNode> getAllNodes() {
+		// IMPORTANT!!! DO NOT MODIFY THESE NODES
+		
+		List<TechNode> allNodes = new List<TechNode>();
+
+		foreach (TechNode node in bought) {
+			allNodes.Add(node);
+		}
+		foreach (TechNode node in available) {
+			allNodes.Add(node);
+		}
+		foreach (TechNode node in locked) {
+			allNodes.Add(node);
+		}
+
+		return allNodes;
 	}
 
 	public void buyNode(TechNode node) {

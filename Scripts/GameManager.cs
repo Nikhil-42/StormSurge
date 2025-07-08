@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public partial class GameState : Node {
 	// Global gamestate variable states
-	public TechTree stormTree;
-	public TechTree humanTree;
-	public geoVars sharedVars;
+	public TechTree stormTree;  // global default
+	public TechTree humanTree;  // global default
+	public geoVars sharedVars;  // global default
 	
 	private int _solar = 1000;
 	public double currentSolarDecimal = 0.0;
@@ -16,6 +16,8 @@ public partial class GameState : Node {
 	public List<string> unlockedResearch = new List<string>();  // For easier access of which research nodes have been bought
 	public List<string> lockedResearch = new List<string>();
 
+	private double _timeElapsed = 0.0;  // real-time since game started, except pauses (minutes.fraction of minute)
+	private double _gameTime = 0.0;  // in-game time since game started, except pauses (weeks.fraction of week > displayed in days, hours)
 	private int _religionLevel = 1;  // 1: 1% cult followers = 0.2%/0.5%, 2: 1% = 0.5%/1%, 3: 1% = 2%/2%
 
 	public double PassiveIncome {

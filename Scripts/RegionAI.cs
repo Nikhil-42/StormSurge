@@ -16,7 +16,6 @@ public partial class RegionAI
 		public record Research(TechNode node) : ActionType;
 		public record Recover() : ActionType;
 		public record Debauch() : ActionType;
-
 	}
 
 	private int _id;
