@@ -1,12 +1,13 @@
-using System;
 using Godot;
 
 public partial class WaterPlane : Area3D
 {
     [Export] public float RainSize = 3.0f;
     [Export] public float MouseSize = 5.0f;
-    [Export] public Vector2I TextureSize = new Vector2I(512, 512);
-    [Export(PropertyHint.Range, "1.0,10.0,0.1")] public float Damp = 1.0f;
+    [Export(PropertyHint.Range, "0.0,10.0,0.1")] public float Viscosity = 1.0f;
+    [Export(PropertyHint.Range, "0.0,10.0,0.1")] public float Diffusion = 1.0f;
+    [Export] public Vector2I TextureSize = new Vector2I(1024, 512);
+    [Export(PropertyHint.Range, "0.0,1.0,0.01")] public float PixelSize = 1.0f;
 
     struct SimulationState
     {
@@ -31,7 +32,8 @@ public partial class WaterPlane : Area3D
 
     private Vector4 addWavePoint;
     private Vector2 mousePos;
-    private bool mousePressed = false;
+    private bool mouseLeftPressed = false;
+    private bool mouseRightPressed = false;
 
     private RenderingDevice rd;
     private Rid shader;
@@ -77,8 +79,13 @@ public partial class WaterPlane : Area3D
         if (@event is InputEventMouseMotion || @event is InputEventMouseButton)
             mousePos = ((InputEventMouse)@event).GlobalPosition;
 
-        if (@event is InputEventMouseButton mouseButton && mouseButton.ButtonIndex == MouseButton.Left)
-            mousePressed = mouseButton.Pressed;
+        if (@event is InputEventMouseButton mouseButton)
+        {
+            if (mouseButton.ButtonIndex == MouseButton.Left)
+                mouseLeftPressed = mouseButton.Pressed;
+            if (mouseButton.ButtonIndex == MouseButton.Right)
+                mouseRightPressed = mouseButton.Pressed;
+        }
     }
 
     private void CheckMousePos()
@@ -96,7 +103,7 @@ public partial class WaterPlane : Area3D
         if (result.Count > 0)
         {
             Vector3 pos = GlobalTransform.AffineInverse() * ((Vector3)result["position"]);
-            addWavePoint.X = Mathf.Clamp(pos.X / 5.0f, -0.5f, 0.5f) * TextureSize.X + 0.5f * TextureSize.X;
+            addWavePoint.X = Mathf.Clamp(pos.X / 10.0f, -0.5f, 0.5f) * TextureSize.X + 0.5f * TextureSize.X;
             addWavePoint.Y = Mathf.Clamp(pos.Z / 5.0f, -0.5f, 0.5f) * TextureSize.Y + 0.5f * TextureSize.Y;
             addWavePoint.W = 1.0f;
         }
@@ -134,7 +141,8 @@ public partial class WaterPlane : Area3D
         }
         else
         {
-            addWavePoint.Z = mousePressed ? MouseSize : 0.0f;
+            addWavePoint.Z = mouseLeftPressed ? MouseSize : 0.0f;
+            addWavePoint.W = mouseRightPressed ? MouseSize : 0.0f;
         }
 
         nextTexture = (nextTexture + 1) % 3;
@@ -144,7 +152,7 @@ public partial class WaterPlane : Area3D
         if (wind_texture != null)
             wind_texture.TextureRdRid = textureRds[nextTexture].wind;
 
-        RenderingServer.CallOnRenderThread(Callable.From(() => RenderProcess(nextTexture, addWavePoint, TextureSize, Damp)));
+        RenderingServer.CallOnRenderThread(Callable.From(() => RenderProcess(nextTexture, addWavePoint, TextureSize, (float)delta)));
     }
 
     private Rid CreateUniformSet(SimulationState simulationTextures)
@@ -214,12 +222,12 @@ public partial class WaterPlane : Area3D
         }
     }
 
-    private void RenderProcess(int index, Vector4 wavePoint, Vector2I texSize, float damp)
+    private void RenderProcess(int index, Vector4 wavePoint, Vector2I texSize, float delta)
     {
         var pushConstant = new float[]
         {
             wavePoint.X, wavePoint.Y, wavePoint.Z, wavePoint.W,
-            damp, 0.0f
+            PixelSize, delta, Viscosity, Diffusion, 0.0f, 0.0f // Pad to 16 bytes
         };
 
         uint xGroups = (uint)((texSize.X - 1) / 8 + 1);

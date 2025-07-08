@@ -19,14 +19,13 @@ shader_parameter/wind_texture = SubResource("Texture2DRD_30tkb")
 shader_parameter/texture_size = Vector2(0, 0)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wl5mm"]
-size = Vector2(5, 5)
+size = Vector2(10, 5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gvcbg"]
-size = Vector3(5, 0.01, 5)
+size = Vector3(10, 0.01, 5)
 
 [node name="WaterPlane" type="Area3D"]
 script = ExtResource("1_hd7la")
-Damp = 2.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("ShaderMaterial_qy6ln")
