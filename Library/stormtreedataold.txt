@@ -1,0 +1,89 @@
+= CC
+
+> Invest in Oil 1 . 100 . 111-0000-000-0000 . 1 10 10 .
+~ Invest in Oil 2 <
+Invest in Oil 2 . 200 . 111-0000-000-0000 . 1 10 10 .
+~ Oil Industry Government Complex <
+> Spread Misinformation 1 . 100 . 000-0011-000-0000 . -10 -10 .
+~ Spread Misinformation 2 <
+Spread Misinformation 2 . 300 . 000-0011-000-0000 . -10 -10 .
+~ Oil Industry Government Complex <
+Oil Industry Government Complex . 500 . 111-1011-000-0000 . 1 20 10 -10 -10 -10 .
+~ Fake Science <
+~ Ozone Depletion 1 <
+Ozone Depletion 1 . 800 . 111-0000-000-0000 . 3 50 10 .
+~ Ozone Depletion 2 <
+Ozone Depletion 2 . 1000 . 111-0000-000-0000 . 3 50 10 .
+Fake Science . 600 . 000-0011-000-0000 . -20 -20 .
+~ Reverse Environmental Policies <
+Reverse Environmental Policies . 700 . 111-0000-000-0000 . 2 30 10 .
+~ Abolish Environmental Agencies <
+Abolish Environmental Agencies . 1000 . 000-1001-010-0000 . -10 -10 -10 .
+
+= SS
+
+> Wind Speed 1 . 200 . 000-0000-000-1100 . 20 10 .
+~ Wind Speed 2 <
+Wind Speed 2 . 400 . 000-0000-000-1100 . 30 10 .
+~ Tornadoes 1 <
+Tornadoes 1 . 700 . 000-0000-000-1100 . 50 10 .
+~ Tornadoes 2 <
+Tornadoes 2 . 1000 . 000-0000-000-1100 . 50 10 .
+~ Whirlwind <
+Whirlwind . 1200 . 000-0000-000-1100 . 20 50 .
+
+> Base Radius 1 . 100 . 000-0000-000-0010 . 20 .
+~ Base Radius 2 <
+Base Radius 2 . 300 . 000-0000-000-0010 . 30 .
+~ Base Radius 3 <
+Base Radius 3 . 800 . 000-0000-000-0010 . 50 .
+
+= GP
+
+> Storm Cult . 400 . 000-1111-000-0000 . -5 -5 -10 -10 .
+~ Cult Following <
+Cult Following . 300 . 000-1111-000-0000 . -5 -5 -5 -5 .
+~ Organized Religion <
+Organized Religion . 500 . 000-1111-000-0000 . -10 -10 -10 -10 .
+~ Regional Spread <
+Regional Spread . 300 . 000-1111-010-0000 . -5 -5 -5 -5 -10 .
+~ Global Spread <
+Global Spread . 800 . 000-1111-010-0000 . -10 -10 -10 -10 -20 .
+~ Doomsday Prophecy <
+Religious Extremism . 500 . 000-1111-010-0000 . -10 -10 -10 -10 -10 .
+~ Doomsday Prophecy <
+Doomsday Prophecy . 1000 . 000-1111-010-0000 . -20 -20 -20 -20 -10 .
+
+= IF
+
+> Destroy Supply Chains 1 . 100 . 010-0000-000-0000 . -5 .
+~ Destroy Supply Chains 2 <
+Destroy Supply Chains 2 . 300 . 010-0000-000-0000 . -10 .
+~ Ground Flights <
+~ Destroy Ports <
+~ Destroy Minor Roads <
+Ground Flights . 400 . 000-0000-011-0000 . -5 -10 .
+~ Destroy Aircraft <
+Destroy Aircraft . 600 . 000-0100-011-0000 . -5 -10 -10 .
+Destroy Ports . 400 . 000-0100-001-0000 . -5 -10 .
+~ Destroy Ships <
+Destroy Ships . 600 . 000-0100-011-0000 . -10 -5 -10 .
+Destroy Minor Roads . 800 . 000-0110-001-0000 . -10 -10 -20 .
+~ Destroy Major Roads <
+Destroy Major Roads . 1000 . 000-0110-001-0000 . -20 -20 -20 .
+
+> Sabotage Weather Balloons . 100 . 000-0001-000-0000 . -5 .
+~ Hack Satellite Receivers <
+Hack Satellite Receivers . 300 . 000-0001-100-0000 . -10 -10 .
+~ Destroy Satellites <
+Destroy Satellites . 600 . 000-0001-110-0000 . -10 -20 -10 .
+~ Destroy GPS Satellites <
+Destroy GPS Satellites . 1000 . 000-0001-100-0000 . -20 -30 .
+
+> Destroy Food Stores . 100 . 000-0100-000-0000 . -5 .
+~ Spread Crop Virus 1 <
+Spread Crop Virus 1 . 200 . 000-0100-000-0000 . -10 .
+~ Spread Crop Virus 2 <
+Spread Crop Virus 2 . 600 . 000-0110-010-0000 . -10 -10 -5 .
+~ Virus Mutates to Blight <
+Virus Mutates to Blight . 1200 . 110-1110-010-0000 . 2 50 -20 -30 -20 -10 .

@@ -1,0 +1,85 @@
+= RS
+
+> Disaster Response Training . L . 200 . 00-000-0000-00000-00000 . .
+~ Government Training <
+Government Training . L . 300 . 00-000-1001-00000-00000 . 10 10 .
+~ State of Emergency <
+State of Emergency . L . 500 . 00-000-1011-00000-00000 . 20 10 10 .
+~ Mobilize Military <
+Mobilize Military . L . 900 . 00-000-1011-00000-00000 . 10 20 10 .
+
+= RE
+
+> Public Education 1 . L . 200 . 00-000-0011-00000-00000 . 10 10 .
+~ Public Education 2 <
+Public Education 2 . L . 400 . 00-000-0011-00001-00000 . 10 10 -10 .
+~ Anti-Cult Education <
+Anti-Cult Education . L . 600 . 00-000-0000-00001-00000 . -30 .
+
+> Climate Research 1 . G . 500 . 00-000-0000-00000-00000 . .
+~ Neutralize Carbon Emissions <
+~ Utilize Renewable Energy <
+Neutralize Carbon Emissions . L . 300 . 00-000-0000-00100-00000 . -10 .
+~ Climate Research 2 <
+Utilize Renewable Energy . L . 300 . 00-000-0000-00100-00000 . -10 .
+~ Climate Research 2 <
+Climate Research 2 . G . 700 . 00-000-0000-00000-00000 . .
+~ Limit Energy Usage <
+~ Filter Air Pollutants <
+Limit Energy Usage . L . 200 . 00-000-0100-00100-00000 . -10 -10 .
+~ Climate Research 3 <
+Filter Air Pollutants . L . 400 . 00-000-0000-00100-00000 . -10 .
+~ Climate Research 3 <
+Climate Research 3 . G . 1000 . 00-000-0000-00000-00000 . .
+~ Sustainable Agriculture <
+~ Recapture Atmospheric Carbon <
+Sustainable Agriculture . L . 700 . 00-000-0100-00100-00000 . 10 -10 .
+Recapture Atmospheric Carbon . L . 1100 . 00-000-0000-00100-00000 . -20 .
+
+= GP
+
+> Peace Movements . G . 100 . 00-000-0000-00000-00100 . -10 .
+~ Global Peace Demonstrations <
+Global Peace Demonstrations . G . 300 . 00-000-0000-00000-00100 . -20 .
+~ United Nations Peace Summit 1 <
+United Nations Peace Summit 1 . G . 700 . 00-010-0000-00000-00100 . +10 -20 .
+~ United Nations Peace Summit 2 <
+United Nations Peace Summit 2 . G . 1000 . 00-010-0000-00000-00100 . +20 -30 .
+
+> Criminalize Cults . L . 300 . 00-000-0000-00001-00000 . -20 .
+~ Raid Cult Hideouts <
+Raid Cult Hideouts . L . 600 . 00-000-0000-00001-00000 . -20 .
+~ Imprison Cult Followers <
+Imprison Cult Followers . L . 900 . 00-000-0000-00001-00000 . -30 .
+
+= IF
+
+> Building Advancements . G . 400 . 00-000-0000-00000-00000 . .
+~ Shutters and Sand Bags <
+Shutters and Sand Bags . L . 200 . 11-000-0000-00000-00000 . -10 -10 .
+~ Building Reinforcements <
+Building Reinforcements . L . 400 . 11-000-0000-00000-00000 . -20 -10 .
+~ Materials Research <
+Storm Infrastructure . G . 400 . 00-000-0000-00000-00000 . .
+~ Storm Walls 1 <
+Storm Walls 1 . L . 300 . 01-000-0000-00000-00000 . -20 .
+~ Drainage Systems <
+Drainage Systems . L . 300 . 01-000-0000-00000-10000 . -10 10 .
+~ Materials Research <
+Materials Research . G . 800 . 00-000-0000-00000-00000 . .
+~ Upgrade Materials <
+~ Storm Walls 2 <
+Upgrade Materials . L . 1000 . 11-000-0000-00000-10000 . -30 -10 20 .
+Storm Walls 2 . L . 1000 . 01-000-0000-00000-00000 . -50 .
+
+> Bury Communication Lines . L . 100 . 00-000-1000-00000-00000 . 10 .
+~ Cell Service Range <
+Cell Service Range . L . 400 . 00-000-1010-00000-00000 . 10 10 .
+~ Communications Research <
+Communications Research . G . 600 . 00-110-0000-00000-00000 . 20 10 .
+~ Early Warning Systems <
+Early Warning Systems . L . 500 . 00-000-0011-00000-00000 . 10 20 .
+~ Live Storm Broadcasts <
+~ Disaster Relief Broadcasts <
+Live Storm Broadcasts . L . 200 . 00-000-0001-00000-00000 . 10 .
+Disaster Relief Broadcasts . L . 300 . 00-000-0000-00000-10000 . 30 .

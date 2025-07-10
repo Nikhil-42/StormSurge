@@ -58,6 +58,7 @@ public partial class RegionAI
 
 		_monies = 0.0f; // Starting money
 
+		if (GameManager.Instance.PrintDebug) GD.Print("Creating region AI tech tree...");
 		regionTree = new TechTree(false);
 		regionTree.setDefaults();
 	}

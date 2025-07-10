@@ -6,6 +6,8 @@ using System.IO;
 public class weatherVars {
 	// Zeros default for node contributions
 	public int[] vars = new int[7];
+	public string[] var_names = new string[7] {"Temperature", "Sea Level", "Storm Range", "Wind Damage", "Wind Speed", 
+	"Storm Radius", "Flood Damage"};
 	
 	// CLIMATE VARS
 	public int temp {  // 1. degrees Celsius above normal
@@ -55,6 +57,8 @@ public class weatherVars {
 public class geoVars {
 	// Zeros default for node contributions
 	public int[] vars = new int[7];
+	public string[] var_names = new string[7] {"Communication", "International Cooperation", "Transportation", 
+	"Government Function", "Resources", "Compliance", "Preparation"};
 
 	// GLOBAL VARS
 	public int comms {  // 1. percent (base 100)
@@ -104,6 +108,9 @@ public class geoVars {
 public class humanVars {
 	// Zeros default for node contributions
 	public int[] vars = new int[10];
+	public string[] var_names = new string[10] {"Global Migration", "Regional Migration", "Global Warming", 
+	"Climate Research Costs", "Cult Spread Speed", "Recovery Rate", "Infrastructure Research Costs", 
+	"War Spread Speed", "Detection Time", "Implementation Costs"};
 
 	// HUMAN BEHAVIOR VARS
 	public int global_migration {  // 1. percent (base 100, must be enabled)
@@ -166,6 +173,7 @@ public class humanVars {
 public class TechNode {
 	public int cost;
 	public bool storm;  // false = human AI tech node
+	public bool _global;  // human only, false = local (regional) upgrade
 	public string name;
 	public string category;
 	public bool available;
@@ -180,27 +188,42 @@ public class TechNode {
 	public geoVars geo;  // zero node default
 	public humanVars human;  // zero node default
 	
-	public TechNode(int c, string n, string cat, bool a, bool b, List<int> positions, List<int> effects) {  // FIX THIS FUNCTION RAHHHHHHHH
+	public TechNode(int c, bool s, bool g, string n, string cat, bool a, bool b, List<int> positions, List<int> effects) {  // FIX THIS FUNCTION RAHHHHHHHH
 		cost = c;
+		storm = s;
+		_global = g;
 		name = n;
 		category = cat;
 		available = a;
 		bought = b;
 		
-		// FIXME: input for all 3 categories of variables (separate lists?? or altogether separate by index?)
-		weather = new weatherVars();
-		for (int i=0; i<positions.Count; i++) {
-			weather.vars[positions[i]-1] += effects[i];
-		}
+		if (storm) {  // Storm tech tree node
+			weather = new weatherVars();
+			geo = new geoVars();
 
-		geo = new geoVars();
-		for (int i=0; i<positions.Count; i++) {
-			geo.vars[positions[i]-1] += effects[i];
-		}
+			for (int i=0; i<positions.Count; i++) {
+				if (positions[i] <= 7) {
+					weather.vars[positions[i]-1] += effects[i];
+				} else {
+					geo.vars[positions[i]-8] += effects[i];
+				}
+			}
+		} else {  // Human AI tech tree node
+			weather = new weatherVars();
+			geo = new geoVars();
+			human = new humanVars();
 
-		human = new humanVars();
-		for (int i=0; i<positions.Count; i++) {
-			human.vars[positions[i]-1] += effects[i];
+			for (int i=0; i<positions.Count; i++) {
+				if (positions[i] == 1) {
+					weather.vars[3] += effects[i];  // wind damage
+				} else if (positions[i] == 2) {
+					weather.vars[6] += effects[i];  // flood damage
+				} else if (positions[i] <= 9) {
+					geo.vars[positions[i]-3] += effects[i];
+				} else {
+					human.vars[positions[i]-10] += effects[i];
+				}
+			}
 		}
 	}
 
@@ -216,12 +239,40 @@ public class TechNode {
 		available = false;
 		bought = true;
 	}
+
+	public void printNode() {
+		string status = "";
+		if (bought) status = "bought";
+		else if (!bought && available) status = "available";
+		else if (!bought && !available) status = "locked";
+		
+		GD.Print("Node: " + name);
+		GD.Print("\t> Cost: " + cost.ToString() + ", Cat: " + category + ", Status: " + status);
+			
+		for (int i=0; i<weather.vars.Length; i++) {
+			if (weather.vars[i] != 0) {
+				GD.Print("\t\t> " + weather.var_names[i] + ": " + weather.vars[i]);
+			}
+		}
+		for (int i=0; i<geo.vars.Length; i++) {
+			if (geo.vars[i] != 0) {
+				GD.Print("\t\t> " + geo.var_names[i] + ": " + geo.vars[i]);
+			}
+		}
+		if (!storm) {
+			for (int i=0; i<human.vars.Length; i++) {
+				if (human.vars[i] != 0) {
+					GD.Print("\t\t> " + human.var_names[i] + ": " + human.vars[i]);
+				}
+			}
+		}
+	}
 }
 
 public class TechTree {
 	public string stormDataPath = "res://Library/stormtreedata.txt";
-	public string humanDataPath = "";  // FIXME: make this (or make someone else make it)
-	
+	public string humanDataPath = "res://Library/humantreedata.txt";
+
 	public weatherVars treeWeather;  // global default
 	public geoVars treeGeo;  // global default
 	public humanVars treeHuman;  // global default
@@ -231,26 +282,21 @@ public class TechTree {
 	public List<TechNode> available = new List<TechNode>();
 	public List<TechNode> locked = new List<TechNode>();
 
-	public TechTree(bool storm) {
-		_storm = storm;
+	public TechTree(bool isStorm) {
+		_storm = isStorm;
 		if (_storm) {
 			treeWeather = new weatherVars();
 			treeWeather.setGlobalDefault();
 
 			treeGeo = new geoVars();
 			treeGeo.setGlobalDefault();
-
-			// FIXME: Json file format for input data file
-			// FIXME: Change to new variable structures
-			/*
-			stormStats = new Variables{};
-			
-			if (!Godot.FileAccess.FileExists(dataPath)) {
-				if (GameManager.Instance.PrintDebug) GD.PrintErr($"File not found: {dataPath}");
+						
+			if (!Godot.FileAccess.FileExists(stormDataPath)) {
+				if (GameManager.Instance.PrintDebug) GD.PrintErr($"File not found: {stormDataPath}");
 				return;
 			}
 			
-			using Godot.FileAccess stormFile = Godot.FileAccess.Open(dataPath, Godot.FileAccess.ModeFlags.Read);
+			using Godot.FileAccess stormFile = Godot.FileAccess.Open(stormDataPath, Godot.FileAccess.ModeFlags.Read);
 
 			int cost = 0;
 			string name = "";
@@ -313,22 +359,14 @@ public class TechTree {
 									break;
 								case "effects":
 									if (currentType == "start_node") {
-										currentNode = new TechNode(cost, name, currentCat, true, false, positions, effects);
+										currentNode = new TechNode(cost, _storm, true, name, currentCat, true, false, positions, effects);
 										available.Add(currentNode);
 									} else {
-										currentNode = new TechNode(cost, name, currentCat, false, false, positions, effects);
+										currentNode = new TechNode(cost, _storm, true, name, currentCat, false, false, positions, effects);
 										locked.Add(currentNode);
 									}
 									if (GameManager.Instance.PrintDebug) {
-										GD.Print("Creating node " + currentNode.name);
-										GD.Print("\t>Cost: " + currentNode.cost.ToString() + ", Cat: " + currentNode.category + ", Type: " + currentType);
-										if (positions.Count != effects.Count) {
-											GD.PrintErr("Parsing error (storm data): positions != effects");
-										} else {
-											for (int k=0; k<positions.Count; k++) {
-												GD.Print("\t\t>>Variable " + positions[k].ToString() + ": " + effects[k].ToString());
-											}
-										}
+										currentNode.printNode();
 									}
 									cost = 0;
 									name = "";
@@ -354,7 +392,7 @@ public class TechTree {
 								case "positions":
 									string temp = parts[i].Replace("-", "");
 									for (int j = 0; j < temp.Length; j++) {
-										if (temp[j] != '0') {
+										if (temp[j] == '1') {
 											positions.Add(j+1);
 										}
 									}
@@ -392,28 +430,200 @@ public class TechTree {
 			
 			if (GameManager.Instance.PrintDebug) GD.Print("Finished parsing storm data.");
 			stormFile.Close();
-			*/
 		}
-		else {
-			// FIXME: Make human AI tech tree
+		else {  // Human AI tech tree
+			treeWeather = new weatherVars();
+			treeWeather.setGlobalDefault();
 
 			treeGeo = new geoVars();
 			treeGeo.setGlobalDefault();
 
 			treeHuman = new humanVars();
 			treeHuman.setGlobalDefault();
+
+			if (!Godot.FileAccess.FileExists(humanDataPath)) {
+				if (GameManager.Instance.PrintDebug) GD.PrintErr($"File not found: {humanDataPath}");
+				return;
+			}
+			
+			using Godot.FileAccess humanFile = Godot.FileAccess.Open(humanDataPath, Godot.FileAccess.ModeFlags.Read);
+
+			string name = "";
+			bool _global = false;
+			int cost = 0;
+			string child_name = "";
+			List<int> positions = new List<int>();
+			List<int> effects = new List<int>();
+
+			List<TechNode> parents = new List<TechNode>();
+			List<string> children = new List<string>();
+			TechNode currentNode = null;
+			
+			string currentCat = "";
+
+			while (!humanFile.EofReached()) {
+				var line = humanFile.GetLine().Trim();
+
+				if (string.IsNullOrWhiteSpace(line)) 
+					continue;
+				string[] parts = line.Split(' ');
+
+				string currentType = "";
+				string currentToken = "";
+
+				for (int i = 0; i < parts.Length; i++) {
+					if (i == 0) {
+						switch(parts[i]) {
+							case "=":
+								currentType = "category";
+								break;
+							case ">":
+								currentType = "start_node";
+								currentToken = "name";
+								break;
+							case "~":
+								currentType = "child_name";
+								break;
+							default:
+								currentType = "node";
+								currentToken = "name";
+								name += parts[i];
+								break;
+						}
+						continue;  // Go to next part
+					} else {
+						if (currentType == "category") {
+							currentCat = parts[i];
+							if (GameManager.Instance.PrintDebug) GD.Print("Set Category: " + currentCat);
+							continue;
+						}
+						if (parts[i] == ".") {
+							switch (currentToken) {
+								case "name":
+									currentToken = "scale";
+									break;
+								case "scale":
+									currentToken = "cost";
+									break;
+								case "cost":
+									currentToken = "positions";
+									break;
+								case "positions":
+									currentToken = "effects";
+									break;
+								case "effects":
+									if (currentType == "start_node") {
+										currentNode = new TechNode(cost, _storm, _global, name, currentCat, true, false, positions, effects);
+										available.Add(currentNode);
+									} else {
+										currentNode = new TechNode(cost, _storm, _global, name, currentCat, false, false, positions, effects);
+										locked.Add(currentNode);
+									}
+									if (GameManager.Instance.PrintDebug) {
+										currentNode.printNode();
+									}
+									cost = 0;
+									_global = false;
+									name = "";
+									positions.Clear();
+									effects.Clear();
+									currentType = "";
+									currentToken = "";
+									break;
+							}
+							continue;  // Go to next part
+						}
+						else if (currentType == "start_node" || currentType == "node") {
+							switch (currentToken) {
+								case "name":
+									if (!string.IsNullOrWhiteSpace(name)) {
+										name += " ";
+									}
+									name += parts[i];
+									break;
+								case "scale":
+									if (parts[i] == "G") {
+										_global = true;
+									}
+									break;
+								case "cost":
+									cost = int.Parse(parts[i]);
+									break;
+								case "positions":
+									string temp = parts[i].Replace("-", "");
+									for (int j = 0; j < temp.Length; j++) {
+										if (temp[j] == '1') {
+											positions.Add(j+1);
+										}
+									}
+									break;
+								case "effects":
+									effects.Add(int.Parse(parts[i]));
+									break;
+							}
+						} else if (currentType == "child_name") {
+							if (parts[i] == "<") {
+								parents.Add(currentNode);
+								children.Add(child_name);
+
+								child_name = "";
+								currentType = "";
+								currentToken = "";
+								continue;  // Move to next line
+							}
+							if (!string.IsNullOrWhiteSpace(child_name)) {
+								child_name += " ";
+							}
+							child_name += parts[i];
+						}
+					}
+				}
+			}
+			for (int i=0; i<parents.Count; i++) {
+				foreach (TechNode node in locked) {
+					if (node.name == children[i]) {
+						parents[i].addChildNode(node);
+						if (GameManager.Instance.PrintDebug) GD.Print(">" + node.name + " added as child of " + parents[i].name);
+					}
+				}
+			}
+			
+			if (GameManager.Instance.PrintDebug) GD.Print("Finished parsing human data.");
+			humanFile.Close();
 		}
 	}
 
 	public void viewNodes() {
 		// Return available nodes
-		if (GameManager.Instance.PrintDebug) GD.Print("\nAvailable nodes:");
+		if (GameManager.Instance.PrintDebug) {
+			if (_storm) GD.Print("\nAvailable nodes (Storm):");
+			else GD.Print("\nAvailable nodes (Human):");
+		}
 		foreach (TechNode node in available) {
 			if (GameManager.Instance.PrintDebug) GD.Print("\t> " + node.name + ": " + node.cost.ToString());
 		}
 	}
 
-	public TechNode getNode(string search) {
+	public TechNode searchNode(string search) {  // Returns node, whether available or locked
+		foreach (TechNode node in bought) {
+			if (node.name == search) {
+				return node;
+			}
+		}
+		foreach (TechNode node in available) {
+			if (node.name == search) {
+				return node;
+			}
+		}
+		foreach (TechNode node in locked) {
+			if (node.name == search) {
+				return node;
+			}
+		}
+		return null;
+	}
+
+	public TechNode getNode(string search) {  // Returns available node
 		foreach (TechNode node in available) {
 			if (node.name == search) {
 				return node;
@@ -424,7 +634,7 @@ public class TechTree {
 
 	public List<TechNode> getAllNodes() {
 		// IMPORTANT!!! DO NOT MODIFY THESE NODES
-		
+
 		List<TechNode> allNodes = new List<TechNode>();
 
 		foreach (TechNode node in bought) {
@@ -458,6 +668,7 @@ public class TechTree {
 			treeWeather.setGlobalDefault();
 			treeGeo.setGlobalDefault();
 		} else {
+			treeWeather.setGlobalDefault();
 			treeGeo.setGlobalDefault();
 			treeHuman.setGlobalDefault();
 		}
@@ -476,6 +687,11 @@ public class TechTree {
 				}
 			}
 		} else {
+			for (int i=0; i<node.weather.vars.Length; i++) {
+				if (node.weather.vars[i] != 0) {
+					treeWeather.vars[i] += node.weather.vars[i];
+				}
+			}
 			for (int i=0; i<node.geo.vars.Length; i++) {
 				if (node.geo.vars[i] != 0) {
 					treeGeo.vars[i] += node.geo.vars[i];

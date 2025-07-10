@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public partial class GameState : Node {
 	// Global gamestate variable states
-	public TechTree stormTree;  // global default
-	public TechTree humanTree;  // global default
-	public geoVars sharedVars;  // global default
+	public TechTree stormTree = null;  // global default
+	public TechTree humanTree = null;  // global default
+	public geoVars sharedVars = null;  // global default
 	
 	private int _solar = 1000;
 	public double currentSolarDecimal = 0.0;
@@ -43,13 +43,15 @@ public partial class GameState : Node {
 	
 	public GameState() {
 		if (GameManager.Instance.PrintDebug) GD.Print("Creating game state object...");
+		if (GameManager.Instance.PrintDebug) GD.Print("Creating game storm tech tree...");
 		stormTree = new TechTree(true);
+		if (GameManager.Instance.PrintDebug) GD.Print("Creating game human AI tech tree...");
 		humanTree = new TechTree(false);
 		stormTree.viewNodes();
-		// humanTree.viewNodes();  
+		humanTree.viewNodes();  
 
 		sharedVars = new geoVars();
-		}
+	}
 
 	public void updateSharedVars() {
 		int total;
@@ -76,7 +78,7 @@ public partial class GameManager : Node
 	private Json regionsJson;
 
 	private static GameManager _instance = null;
-	private GameState _game;
+	private GameState _game = null;
 	private string currentScreen = "start_menu";
 	private string currentOption = "";
 	private string currentClick = "";
@@ -84,7 +86,11 @@ public partial class GameManager : Node
 	// FIXME: where, when, and how to set and reset these variables in loop
 
 	public override void _EnterTree() {
+		if (_instance != null) {
+			GD.PrintErr("WARNING: GameManager instance already exists!");  // debugging
+		}
 		_instance = this;
+		GD.Print("GameManager entering tree");  // debugging
 		_game = new GameState();
 	}
 	
@@ -95,6 +101,22 @@ public partial class GameManager : Node
 		for (int i = 0; i < regionNames.Count-1; i++)
 		{
 			regionAIs[i] = new RegionAI(i+1);
+		}
+	}
+	
+	public override void _Process(double deltaTime)
+	{
+		// Update the humanity AIs
+		for (int i = 0; i < regionAIs.Length; i++)
+		{
+			regionAIs[i].Process(deltaTime, _game);
+		}
+		
+		// Passive income generation, rate changes by sea level
+		Game.currentSolarDecimal += Game.PassiveIncome * (1 + (0.01 * Game.stormTree.treeWeather.sea_level)) * deltaTime;
+		if (Game.currentSolarDecimal > 1.000) {
+			Game.Solar += 1;
+			Game.currentSolarDecimal = 0.0;
 		}
 	}
 
@@ -112,21 +134,5 @@ public partial class GameManager : Node
 		
 		regionAIs[regionID - 1].ApplyDamage(damage, type);
 		if (PrintDebug) GD.Print($"Applying {damage} damage of type {type} to humanity AI in region {regionID}");
-	}
-
-	public override void _Process(double deltaTime)
-	{
-		// Update the humanity AIs
-		for (int i = 0; i < regionAIs.Length; i++)
-		{
-			regionAIs[i].Process(deltaTime, _game);
-		}
-		
-		// Passive income generation, rate changes by sea level
-		Game.currentSolarDecimal += Game.PassiveIncome * (1 + (0.01 * Game.stormTree.treeWeather.sea_level)) * deltaTime;
-		if (Game.currentSolarDecimal > 1.000) {
-			Game.Solar += 1;
-			Game.currentSolarDecimal = 0.0;
-		}
 	}
 }
