@@ -7,7 +7,7 @@
 		"Greater Indonesia",
 		"Micronesia",
 		"Greater Australia",
-		"Malay Penninsula",
+		"Malay Peninsula",
 		"Indochina",
 		"Greater India",
 		"Durand Region",
@@ -17,36 +17,36 @@
 		"Arabia",
 		"Southern Arabia",
 		"Anatolia",
-		"Balkans Greece",
-		"Iberica",
-		"West Medditerrianian",
-		"Interior Europe",
-		"UK",
-		"Iceland Greenland",
-		"Scandanavia",
+		"Balkans",
+		"Iberia",
+		"Italy",
+		"Western Europe",
+		"United Kingdom",
+		"Nordic Islands",
+		"Scandinavia",
 		"Eastern Europe",
-		"Northern Afrcia",
-		"West Africa",
+		"Northern Africa",
+		"Western Africa",
 		"Central Sahara",
-		"African Interior",
-		"Altantic Sub-Sahara",
+		"Central Africa",
+		"Western Africa",
 		"Madagascar",
-		"Ethiopedia Keyna",
-		"East African Horn",
-		"Southern African Region",
-		"Sub-Saharan Strip",
-		"French America",
+		"Ethiopia",
+		"East African Coast",
+		"Southern Africa",
+		"South African Strip",
+		"Guyana",
 		"Brazil",
-		"Interior South American",
-		"Southern South America",
-		"Equatorial South America",
+		"Chaco Region",
+		"Patagonia",
+		"Peru",
 		"Northern South America",
 		"Central America",
-		"Mexican Region",
+		"Mexico",
 		"Carribean",
 		"Hawaii",
-		"Mainland United States of America",
-		"Canadia"
+		"United States",
+		"Canada"
 	],
 	"info": {
 		"Greater Russia": {
@@ -124055,7 +124055,7 @@
 				]
 			]
 		},
-		"Malay Penninsula": {
+		"Malay Peninsula": {
 			"contours": [
 				[
 					[
@@ -181853,7 +181853,7 @@
 				]
 			]
 		},
-		"Balkans Greece": {
+		"Balkans": {
 			"contours": [
 				[
 					[
@@ -188155,7 +188155,7 @@
 				]
 			]
 		},
-		"Iberica": {
+		"Iberia": {
 			"contours": [
 				[
 					[
@@ -190811,7 +190811,7 @@
 				]
 			]
 		},
-		"West Medditerrianian": {
+		"Italy": {
 			"contours": [
 				[
 					[
@@ -195887,7 +195887,7 @@
 				]
 			]
 		},
-		"Interior Europe": {
+		"Western Europe": {
 			"contours": [
 				[
 					[
@@ -202553,7 +202553,7 @@
 				]
 			]
 		},
-		"UK": {
+		"United Kingdom": {
 			"contours": [
 				[
 					[
@@ -207087,7 +207087,7 @@
 				]
 			]
 		},
-		"Iceland Greenland": {
+		"Nordic Islands": {
 			"contours": [
 				[
 					[
@@ -219921,7 +219921,7 @@
 				]
 			]
 		},
-		"Scandanavia": {
+		"Scandinavia": {
 			"contours": [
 				[
 					[
@@ -237941,7 +237941,7 @@
 				]
 			]
 		},
-		"Northern Afrcia": {
+		"Northern Africa": {
 			"contours": [
 				[
 					[
@@ -247983,7 +247983,7 @@
 				]
 			]
 		},
-		"West Africa": {
+		"Western Africa": {
 			"contours": [
 				[
 					[
@@ -258275,7 +258275,7 @@
 				]
 			]
 		},
-		"African Interior": {
+		"Central Africa": {
 			"contours": [
 				[
 					[
@@ -267687,7 +267687,7 @@
 				]
 			]
 		},
-		"Altantic Sub-Sahara": {
+		"Western Africa": {
 			"contours": [
 				[
 					[
@@ -276827,7 +276827,7 @@
 				]
 			]
 		},
-		"Ethiopedia Keyna": {
+		"Ethiopia": {
 			"contours": [
 				[
 					[
@@ -281847,7 +281847,7 @@
 				]
 			]
 		},
-		"East African Horn": {
+		"East African Coast": {
 			"contours": [
 				[
 					[
@@ -288567,7 +288567,7 @@
 				]
 			]
 		},
-		"Southern African Region": {
+		"Southern Africa": {
 			"contours": [
 				[
 					[
@@ -293005,7 +293005,7 @@
 				]
 			]
 		},
-		"Sub-Saharan Strip": {
+		"South African Strip": {
 			"contours": [
 				[
 					[
@@ -299825,7 +299825,7 @@
 				]
 			]
 		},
-		"French America": {
+		"Guyana": {
 			"contours": [
 				[
 					[
@@ -312607,7 +312607,7 @@
 				]
 			]
 		},
-		"Interior South American": {
+		"Chaco Region": {
 			"contours": [
 				[
 					[
@@ -317045,7 +317045,7 @@
 				]
 			]
 		},
-		"Southern South America": {
+		"Patagonia": {
 			"contours": [
 				[
 					[
@@ -326955,7 +326955,7 @@
 				]
 			]
 		},
-		"Equatorial South America": {
+		"Peru": {
 			"contours": [
 				[
 					[
@@ -340871,7 +340871,7 @@
 				]
 			]
 		},
-		"Mexican Region": {
+		"Mexico": {
 			"contours": [
 				[
 					[
@@ -349575,7 +349575,7 @@
 				]
 			]
 		},
-		"Carribean": {
+		"Caribbean": {
 			"contours": [
 				[
 					[
@@ -358573,7 +358573,7 @@
 				]
 			]
 		},
-		"Mainland United States of America": {
+		"United States": {
 			"contours": [
 				[
 					[
@@ -369521,7 +369521,7 @@
 				]
 			]
 		},
-		"Canadia": {
+		"Canada": {
 			"contours": [
 				[
 					[
