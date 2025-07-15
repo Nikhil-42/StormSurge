@@ -48,7 +48,6 @@ public partial class WaterPlane : Area3D
         ShaderMaterial material = GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride as ShaderMaterial;
         if (material != null)
         {
-            material.SetShaderParameter("texture_size", TextureSize);
             scalar_texture = (Texture2Drd)material.GetShaderParameter("scalar_texture");
             if (scalar_texture == null)
                 GD.PrintErr("Failed to get reference to scalar field texture");
@@ -182,7 +181,7 @@ public partial class WaterPlane : Area3D
 
         var windTf = new RDTextureFormat
         {
-            Format = RenderingDevice.DataFormat.R32G32Sfloat,
+            Format = RenderingDevice.DataFormat.R32G32B32A32Sfloat,
             TextureType = RenderingDevice.TextureType.Type2D,
             Width = (uint)initSize.X,
             Height = (uint)initSize.Y,
@@ -230,8 +229,8 @@ public partial class WaterPlane : Area3D
             PixelSize, delta, Viscosity, Diffusion, 0.0f, 0.0f // Pad to 16 bytes
         };
 
-        uint xGroups = (uint)((texSize.X - 1) / 8 + 1);
-        uint yGroups = (uint)((texSize.Y - 1) / 8 + 1);
+        uint xGroups = (uint)((texSize.X - 1) / 16 + 1);
+        uint yGroups = (uint)((texSize.Y - 1) / 16 + 1);
 
         Rid nextSet = textureSets[index];
         Rid currentSet = textureSets[(index + 2) % 3];

@@ -6,13 +6,13 @@ uniform float metalic : hint_range(0.0, 1.0, 0.1) = 0.8;
 uniform float roughness : hint_range(0.0, 1.0, 0.1) = 0.2;
 uniform sampler2D scalar_texture;
 uniform sampler2D wind_texture;
-uniform vec2 texture_size;
 
 varying vec2 uv_tangent;
 varying vec2 uv_binormal;
 
 void vertex() {
-	vec2 pixel_size = vec2(1.0, 1.0) / texture_size;
+	ivec2 texture_size = textureSize(wind_texture, 0);
+	vec2 pixel_size = vec2(1.0, 1.0) / vec2(texture_size);
 
 	uv_tangent = UV + vec2(pixel_size.x, 0.0);
 	uv_binormal = UV + vec2(0.0, pixel_size.y);

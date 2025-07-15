@@ -16,7 +16,6 @@ shader_parameter/metalic = 1.0
 shader_parameter/roughness = 0.0
 shader_parameter/scalar_texture = SubResource("Texture2DRD_hd7la")
 shader_parameter/wind_texture = SubResource("Texture2DRD_30tkb")
-shader_parameter/texture_size = Vector2(0, 0)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wl5mm"]
 size = Vector2(10, 5)

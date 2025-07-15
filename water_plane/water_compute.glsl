@@ -2,16 +2,16 @@
 #version 450
 
 // Invocations in the (x, y, z) dimension.
-layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 // Our textures.
 // velocity texture is rg32f, which is a 2D texture with 2 channels (r and g) and 32 bits per channel.
 // scalar fields are packed into a rgba32f texture, which is a 2D texture with 4 channels (r, g, b, and a) and 32 bits per channel.
-layout(rg32f, set = 0, binding = 0) uniform restrict readonly image2D current_wind;
+layout(rgba32f, set = 0, binding = 0) uniform restrict readonly image2D current_wind;
 layout(rgba32f, set = 0, binding = 1) uniform restrict readonly image2D current_scalar_field;
-layout(rg32f, set = 1, binding = 0) uniform restrict readonly image2D previous_wind;
+layout(rgba32f, set = 1, binding = 0) uniform restrict readonly image2D previous_wind;
 layout(rgba32f, set = 1, binding = 1) uniform restrict readonly image2D previous_scalar_field;
-layout(rg32f, set = 2, binding = 0) uniform restrict writeonly image2D next_wind;
+layout(rgba32f, set = 2, binding = 0) uniform restrict writeonly image2D next_wind;
 layout(rgba32f, set = 2, binding = 1) uniform restrict writeonly image2D next_scalar_field;
 
 // Our push PushConstant.
