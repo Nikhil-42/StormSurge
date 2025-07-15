@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b2a5bjsxw63wr"]
+[gd_scene load_steps=9 format=3 uid="uid://b2a5bjsxw63wr"]
 
 [ext_resource type="Script" uid="uid://cxkxjhqwcrta1" path="res://water_plane/WaterPlane.cs" id="1_hd7la"]
 [ext_resource type="Shader" uid="uid://db8ftbgw7qre3" path="res://water_plane/water_shader.gdshader" id="1_rujqj"]
+[ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_30tkb"]
 
 [sub_resource type="Texture2DRD" id="Texture2DRD_hd7la"]
 
@@ -25,6 +26,7 @@ size = Vector3(10, 0.01, 5)
 
 [node name="WaterPlane" type="Area3D"]
 script = ExtResource("1_hd7la")
+Heightmap = ExtResource("3_30tkb")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("ShaderMaterial_qy6ln")

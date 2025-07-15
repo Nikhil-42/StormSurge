@@ -7,7 +7,7 @@ public partial class WaterPlane : Area3D
     [Export(PropertyHint.Range, "0.0,10.0,0.1")] public float Viscosity = 1.0f;
     [Export(PropertyHint.Range, "0.0,10.0,0.1")] public float Diffusion = 1.0f;
     [Export] public Vector2I TextureSize = new Vector2I(1024, 512);
-    [Export(PropertyHint.Range, "0.0,1.0,0.01")] public float PixelSize = 1.0f;
+    [Export] public Texture2D Heightmap;
 
     struct SimulationState
     {
@@ -38,8 +38,12 @@ public partial class WaterPlane : Area3D
     private RenderingDevice rd;
     private Rid shader;
     private Rid pipeline;
-    private SimulationState[] textureRds = new SimulationState[3];
-    private Rid[] textureSets = new Rid[3];
+
+    private const int CIRCULAR_QUEUE_DEPTH = 2;
+    private readonly SimulationState[] textureRds = new SimulationState[CIRCULAR_QUEUE_DEPTH];
+    private readonly Rid[] textureSets = new Rid[CIRCULAR_QUEUE_DEPTH];
+    private Rid heightmapSampler;
+    private Rid heightmapSet;
 
     public override void _Ready()
     {
@@ -144,7 +148,7 @@ public partial class WaterPlane : Area3D
             addWavePoint.W = mouseRightPressed ? MouseSize : 0.0f;
         }
 
-        nextTexture = (nextTexture + 1) % 3;
+        nextTexture = (nextTexture + 1) % CIRCULAR_QUEUE_DEPTH;
 
         if (scalar_texture != null)
             scalar_texture.TextureRdRid = textureRds[nextTexture].scalarField;
@@ -169,15 +173,31 @@ public partial class WaterPlane : Area3D
             Binding = 1
         };
         scalarFieldUniform.AddId(simulationTextures.scalarField);
-        return rd.UniformSetCreate([windUniform, scalarFieldUniform], shader, 0);
+        return rd.UniformSetCreate([windUniform, scalarFieldUniform], shader, 1);
     }
 
     private void InitializeComputeCode(Vector2I initSize)
     {
         rd = RenderingServer.GetRenderingDevice();
-        var shaderFile = GD.Load<RDShaderFile>("res://water_plane/water_compute.glsl");
+        var shaderFile = GD.Load<RDShaderFile>("res://water_plane/shallow_water.glsl");
         shader = rd.ShaderCreateFromSpirV(shaderFile.GetSpirV());
         pipeline = rd.ComputePipelineCreate(shader);
+
+        var heightmapSamplerState = new RDSamplerState
+        {
+            MinFilter = RenderingDevice.SamplerFilter.Linear,
+            MagFilter = RenderingDevice.SamplerFilter.Linear
+        };
+        heightmapSampler = rd.SamplerCreate(heightmapSamplerState);
+
+        var heightmapUniform = new RDUniform
+        {
+            UniformType = RenderingDevice.UniformType.SamplerWithTexture,
+            Binding = 0
+        };
+        heightmapUniform.AddId(heightmapSampler);
+        heightmapUniform.AddId(RenderingServer.TextureGetRdTexture(Heightmap.GetRid()));
+        heightmapSet = rd.UniformSetCreate([heightmapUniform], shader, 0);
 
         var windTf = new RDTextureFormat
         {
@@ -186,7 +206,6 @@ public partial class WaterPlane : Area3D
             Width = (uint)initSize.X,
             Height = (uint)initSize.Y,
             Depth = 1,
-            ArrayLayers = 1,
             Mipmaps = 1,
             UsageBits = RenderingDevice.TextureUsageBits.SamplingBit |
                          RenderingDevice.TextureUsageBits.ColorAttachmentBit |
@@ -210,8 +229,7 @@ public partial class WaterPlane : Area3D
                          RenderingDevice.TextureUsageBits.CanUpdateBit |
                          RenderingDevice.TextureUsageBits.CanCopyToBit
         };
-
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < CIRCULAR_QUEUE_DEPTH; i++)
         {
             textureRds[i].wind = rd.TextureCreate(windTf, new RDTextureView(), []);
             textureRds[i].scalarField = rd.TextureCreate(scalarTf, new RDTextureView(), []);
@@ -226,26 +244,22 @@ public partial class WaterPlane : Area3D
         var pushConstant = new float[]
         {
             wavePoint.X, wavePoint.Y, wavePoint.Z, wavePoint.W,
-            PixelSize, delta, Viscosity, Diffusion, 0.0f, 0.0f // Pad to 16 bytes
+            delta, Viscosity, Diffusion, 0.0f // Pad to 16 bytes
         };
 
         uint xGroups = (uint)((texSize.X - 1) / 16 + 1);
         uint yGroups = (uint)((texSize.Y - 1) / 16 + 1);
 
-        Rid nextSet = textureSets[index];
-        Rid currentSet = textureSets[(index + 2) % 3];
-        Rid previousSet = textureSets[(index + 1) % 3];
-
-        var pushConstantBuffer = new byte[pushConstant.Length * sizeof(float) + 2 * sizeof(int)];
+        var pushConstantBuffer = new byte[pushConstant.Length * sizeof(float)];
         System.Buffer.BlockCopy(pushConstant, 0, pushConstantBuffer, 0, pushConstant.Length * sizeof(float));
-        System.Buffer.BlockCopy(System.BitConverter.GetBytes(texSize.X), 0, pushConstantBuffer, pushConstant.Length * sizeof(float), sizeof(int));
-        System.Buffer.BlockCopy(System.BitConverter.GetBytes(texSize.Y), 0, pushConstantBuffer, pushConstant.Length * sizeof(float) + sizeof(int), sizeof(int));
 
         var computeList = rd.ComputeListBegin();
         rd.ComputeListBindComputePipeline(computeList, pipeline);
-        rd.ComputeListBindUniformSet(computeList, currentSet, 0);
-        rd.ComputeListBindUniformSet(computeList, previousSet, 1);
-        rd.ComputeListBindUniformSet(computeList, nextSet, 2);
+        rd.ComputeListBindUniformSet(computeList, heightmapSet, 0);
+        for (uint i = 0; i < CIRCULAR_QUEUE_DEPTH; i++)
+        {
+            rd.ComputeListBindUniformSet(computeList, textureSets[(index + CIRCULAR_QUEUE_DEPTH - i) % CIRCULAR_QUEUE_DEPTH], i+1);
+        }
         rd.ComputeListSetPushConstant(computeList, pushConstantBuffer, (uint)pushConstantBuffer.Length);
         rd.ComputeListDispatch(computeList, xGroups, yGroups, 1);
         rd.ComputeListEnd();
@@ -253,7 +267,10 @@ public partial class WaterPlane : Area3D
 
     private void FreeComputeResources()
     {
-        for (int i = 0; i < 3; i++)
+        if (heightmapSampler.IsValid)
+            rd.FreeRid(heightmapSampler);
+
+        for (int i = 0; i < CIRCULAR_QUEUE_DEPTH; i++)
         {
             if (textureRds[i].wind.IsValid)
                 rd.FreeRid(textureRds[i].wind);

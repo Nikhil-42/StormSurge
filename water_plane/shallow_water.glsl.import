@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bpm5gm8qow2nr"
+path="res://.godot/imported/shallow_water.glsl-4bf1271ea7011caa91085fb5b51780b3.res"
+
+[deps]
+
+source_file="res://water_plane/shallow_water.glsl"
+dest_files=["res://.godot/imported/shallow_water.glsl-4bf1271ea7011caa91085fb5b51780b3.res"]
+
+[params]
+

@@ -19,7 +19,6 @@ sky = SubResource("Sky_a36q0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0200176, 0)
 Viscosity = 2.5
 Diffusion = 5.5
-PixelSize = 0.6
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.0223037, 0.999751, 0, -0.999751, 0.0223037, 0, 0.94436, 0.098)
