@@ -1,0 +1,884 @@
+[gd_scene load_steps=21 format=3 uid="uid://b4d1qg70hud40"]
+
+[ext_resource type="Texture2D" uid="uid://b2pigmmk0o7l8" path="res://Assets/Notification box .png" id="1_6ipeo"]
+[ext_resource type="Script" uid="uid://b24ngdl824nt" path="res://Scripts/TechTreeUi.cs" id="1_xr3ga"]
+[ext_resource type="PackedScene" uid="uid://djgjd2t0jhakl" path="res://Scenes/TechNodeButton.tscn" id="2_6ipeo"]
+[ext_resource type="Script" uid="uid://iu1fsuwl8wcl" path="res://Scripts/ScrollArea.cs" id="2_xr3ga"]
+[ext_resource type="Texture2D" uid="uid://c780n8mre4gfb" path="res://Assets/UIElements/HexGrid2.jpg" id="3_2562u"]
+[ext_resource type="Texture2D" uid="uid://c3yixyjc05bh4" path="res://Assets/UIElements/Climate- locked unclicked.PNG" id="5_73if2"]
+[ext_resource type="Texture2D" uid="uid://byqop4asxodv6" path="res://Assets/UIElements/2HB HOVER.PNG" id="5_p8ylv"]
+[ext_resource type="Texture2D" uid="uid://d22t725og2q4i" path="res://Assets/UIElements/Globe- unlocked.PNG" id="6_0h2ny"]
+[ext_resource type="Texture2D" uid="uid://dotxwr5rya21s" path="res://Assets/UIElements/Climate-unlocked.PNG" id="6_e46p3"]
+[ext_resource type="Texture2D" uid="uid://b5jeklvq7esd1" path="res://Assets/UIElements/Global-locked hover.PNG" id="7_a26c4"]
+[ext_resource type="Texture2D" uid="uid://dt0pak6favnsa" path="res://Assets/UIElements/Climate- locked hover.PNG" id="7_mgiwy"]
+[ext_resource type="Texture2D" uid="uid://cr5ysvjg8v3vb" path="res://Assets/UIElements/Storm- locked unclicked.PNG" id="8_8mtvy"]
+[ext_resource type="Texture2D" uid="uid://bu5fkg2sdurie" path="res://Assets/UIElements/Globe- locked unclicked.PNG" id="8_whttd"]
+[ext_resource type="Texture2D" uid="uid://bn0tm7rjyrmv0" path="res://Assets/UIElements/Storm- unlocked.PNG" id="9_fvxac"]
+[ext_resource type="Texture2D" uid="uid://c52nn6n04xj0l" path="res://Assets/UIElements/Storm- locked hover.PNG" id="10_d14hm"]
+[ext_resource type="Texture2D" uid="uid://fycijxxmc1iy" path="res://Assets/UIElements/Region- locked unclicked.PNG" id="14_kvncq"]
+[ext_resource type="Texture2D" uid="uid://bg08f87aqvlch" path="res://Assets/UIElements/Region-unlocked.PNG" id="15_qnjci"]
+[ext_resource type="Texture2D" uid="uid://bsuckrm4wlp83" path="res://Assets/UIElements/Region-locked unclicked.PNG" id="16_6mmsx"]
+[ext_resource type="Texture2D" uid="uid://c66dtgm8tvu1j" path="res://Assets/UIElements/2HB UNCLICKED.png" id="18_6mmsx"]
+[ext_resource type="Texture2D" uid="uid://cupj6mr1xtlx6" path="res://Assets/UIElements/2HB CLICK.png" id="19_2562u"]
+
+[node name="TechTreeUI" type="Control" node_paths=PackedStringArray("CloseButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xr3ga")
+CloseButton = NodePath("ScrollArea/CloseButton")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -294.0
+offset_top = -144.0
+offset_right = -294.0
+offset_bottom = -113.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_6ipeo")
+
+[node name="HexGrid" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_2562u")
+
+[node name="ScrollArea" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_xr3ga")
+
+[node name="TreeArea" type="Control" parent="ScrollArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Oil 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 88.0
+offset_top = 12.0
+offset_right = 293.0
+offset_bottom = 218.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Invest in Oil 1"
+
+[node name="Oil 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 177.0
+offset_top = 14.0
+offset_right = 382.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Invest in Oil 2"
+
+[node name="Misinformation 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 89.0
+offset_top = -59.0
+offset_right = 294.0
+offset_bottom = 147.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Spread Misinformation 1"
+
+[node name="Misinformation 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 155.0
+offset_top = -95.0
+offset_right = 360.0
+offset_bottom = 111.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Spread Misinformation 2"
+
+[node name="Oil Industry" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 222.0
+offset_top = -59.0
+offset_right = 427.0
+offset_bottom = 147.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Oil Industry Government Complex"
+
+[node name="Fake Science" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 265.0
+offset_top = -129.0
+offset_right = 470.0
+offset_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Fake Science"
+
+[node name="Reverse Policies" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 308.0
+offset_top = -201.0
+offset_right = 513.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Reverse Environmental Policies"
+
+[node name="Abolish Agencies" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 400.0
+offset_top = -203.0
+offset_right = 605.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Abolish Environmental Agencies"
+
+[node name="Ozone Depletion 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 287.0
+offset_top = -22.0
+offset_right = 492.0
+offset_bottom = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Ozone Depletion 1"
+
+[node name="Ozone Depletion 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 375.0
+offset_top = -22.0
+offset_right = 580.0
+offset_bottom = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_73if2")
+texture_pressed = ExtResource("6_e46p3")
+texture_hover = ExtResource("7_mgiwy")
+NodeName = "Ozone Depletion 2"
+
+[node name="Base Radius 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -97.0
+offset_right = 149.0
+offset_bottom = 109.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Base Radius 1"
+
+[node name="Base Radius 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -168.0
+offset_right = 147.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Base Radius 2"
+
+[node name="Base Radius 3" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -241.0
+offset_right = 149.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Base Radius 3"
+
+[node name="Wind Speed 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 22.0
+offset_top = -95.0
+offset_right = 239.0
+offset_bottom = 111.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Wind Speed 1"
+
+[node name="Wind Speed 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 22.0
+offset_top = -168.0
+offset_right = 239.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Wind Speed 2"
+
+[node name="Tornadoes 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -203.0
+offset_right = 307.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Tornadoes 1"
+
+[node name="Tornadoes 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 131.0
+offset_top = -273.0
+offset_right = 348.0
+offset_bottom = -67.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Tornadoes 2"
+
+[node name="Whirlwind" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 220.0
+offset_top = -275.0
+offset_right = 437.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_8mtvy")
+texture_pressed = ExtResource("9_fvxac")
+texture_hover = ExtResource("10_d14hm")
+NodeName = "Whirlwind"
+
+[node name="Storm Cult" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 23.0
+offset_top = 49.0
+offset_right = 240.0
+offset_bottom = 255.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_whttd")
+texture_pressed = ExtResource("6_0h2ny")
+texture_hover = ExtResource("7_a26c4")
+NodeName = "Storm Cult"
+
+[node name="Cult Following" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 88.0
+offset_top = 86.0
+offset_right = 305.0
+offset_bottom = 292.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_whttd")
+texture_pressed = ExtResource("6_0h2ny")
+texture_hover = ExtResource("7_a26c4")
+NodeName = "Cult Following"
+
+[node name="Organized Religion" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 154.0
+offset_top = 122.0
+offset_right = 371.0
+offset_bottom = 328.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_whttd")
+texture_pressed = ExtResource("6_0h2ny")
+texture_hover = ExtResource("7_a26c4")
+NodeName = "Organized Religion"
+
+[node name="Religious Extremism" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 88.0
+offset_top = 159.0
+offset_right = 305.0
+offset_bottom = 365.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_whttd")
+texture_pressed = ExtResource("6_0h2ny")
+texture_hover = ExtResource("7_a26c4")
+NodeName = "Religious Extremism"
+
+[node name="Regional Spread" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 223.0
+offset_top = 158.0
+offset_right = 440.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_whttd")
+texture_pressed = ExtResource("6_0h2ny")
+texture_hover = ExtResource("7_a26c4")
+NodeName = "Regional Spread"
+
+[node name="Global Spread" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 303.0
+offset_top = 161.0
+offset_right = 520.0
+offset_bottom = 367.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_whttd")
+texture_pressed = ExtResource("6_0h2ny")
+texture_hover = ExtResource("7_a26c4")
+NodeName = "Global Spread"
+
+[node name="Doomsday Prophecy" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 88.0
+offset_top = 230.0
+offset_right = 305.0
+offset_bottom = 436.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_whttd")
+texture_pressed = ExtResource("6_0h2ny")
+texture_hover = ExtResource("7_a26c4")
+NodeName = "Doomsday Prophecy"
+
+[node name="Weather Balloons" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.0
+offset_top = 14.0
+offset_right = 84.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Sabotage Weather Balloons"
+
+[node name="Satillite 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -176.0
+offset_top = 86.0
+offset_right = 41.0
+offset_bottom = 292.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Hack Satellite Receivers"
+
+[node name="Satillite 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -244.0
+offset_top = 123.0
+offset_right = -27.0
+offset_bottom = 329.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Satellites"
+
+[node name="Satillite 3" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = 124.0
+offset_right = -113.0
+offset_bottom = 330.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy GPS Satellites"
+
+[node name="Food Stores" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = 50.0
+offset_right = 151.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Food Stores"
+
+[node name="Crop Virus 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = 120.0
+offset_right = 196.0
+offset_bottom = 326.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Spread Crop Virus 1"
+
+[node name="Crop Virus 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = 192.0
+offset_right = 152.0
+offset_bottom = 398.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Spread Crop Virus 2"
+
+[node name="Blight" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.0
+offset_top = 232.0
+offset_right = 84.0
+offset_bottom = 438.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Virus Mutates to Blight"
+
+[node name="Supply Chains 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.0
+offset_top = -58.0
+offset_right = 84.0
+offset_bottom = 148.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Supply Chains 1"
+
+[node name="Supply Chains 4" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -59.0
+offset_right = -3.0
+offset_bottom = 147.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Supply Chains 2"
+
+[node name="Ground Flights" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -130.0
+offset_right = -3.0
+offset_bottom = 76.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Ground Flights"
+
+[node name="Aircrafts" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -285.0
+offset_top = -164.0
+offset_right = -68.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Aircraft"
+
+[node name="Destroy Ports" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -309.0
+offset_top = -59.0
+offset_right = -92.0
+offset_bottom = 147.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Ports"
+
+[node name="Destroy Ships" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -398.0
+offset_top = -58.0
+offset_right = -181.0
+offset_bottom = 183.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Ships"
+
+[node name="Minor Roads" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -264.0
+offset_top = 14.0
+offset_right = -47.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Minor Roads"
+
+[node name="Major Roads" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -355.0
+offset_top = -20.0
+offset_right = -138.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("14_kvncq")
+texture_pressed = ExtResource("15_qnjci")
+texture_hover = ExtResource("16_6mmsx")
+NodeName = "Destroy Major Roads"
+
+[node name="LinesLayer" type="Control" parent="ScrollArea/TreeArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -82.0
+offset_top = -87.0
+offset_right = -82.0
+offset_bottom = -87.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CloseButton" type="TextureButton" parent="ScrollArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -26.0
+offset_right = 180.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("18_6mmsx")
+texture_pressed = ExtResource("19_2562u")
+texture_hover = ExtResource("5_p8ylv")

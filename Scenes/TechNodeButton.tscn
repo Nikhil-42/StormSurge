@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://djgjd2t0jhakl"]
+
+[ext_resource type="Script" uid="uid://c138tr2x8a6cu" path="res://Scripts/TechNodeButton.cs" id="1_4j4nd"]
+[ext_resource type="Texture2D" uid="uid://c66dtgm8tvu1j" path="res://Assets/UIElements/2HB UNCLICKED.png" id="1_58u36"]
+
+[node name="TechNodeButton" type="TextureButton"]
+z_index = 2
+custom_minimum_size = Vector2(70, 70)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("1_58u36")
+script = ExtResource("1_4j4nd")
+
+[node name="Label" type="Label" parent="."]
+z_index = 2
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.5
+offset_top = -25.0
+offset_right = 28.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -629,6 +629,19 @@ public class TechTree {
 				return node;
 			}
 		}
+		
+		// Added these for locked/bought
+		foreach (TechNode node in locked){
+			if (node.name == search) {
+				return node;
+			}	
+		}
+			
+		foreach (TechNode node in bought) {
+			if (node.name == search) {
+				return node;
+			}
+		}	
 		return null;
 	}
 

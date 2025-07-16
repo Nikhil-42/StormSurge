@@ -8,6 +8,9 @@ public partial class UI : Control
 	[Export] public TextureButton NotificationButton;
 	[Export] public PanelContainer NotificationHistoryPanel;
 	[Export] public VBoxContainer HistoryList;
+	[Export] public BaseButton TechTreeButton;
+	[Export] public PackedScene TechTreeUIScene;
+
 
 	private PackedScene _notificationCardScene;
 
@@ -35,16 +38,20 @@ public partial class UI : Control
 
 		// Setup button signal
 		NotificationButton.Pressed += ToggleHistory;
+		
+		
+		// Tech Tree button
+		TechTreeButton.Pressed += OpenTechTree;
 
 		// Start test loop
-		_ = RunNotificationTestLoop();
+		//_ = RunNotificationTestLoop();
 	}
 
 	private void ToggleHistory()
 	{
 		NotificationHistoryPanel.Visible = !NotificationHistoryPanel.Visible;
 	}
-
+	
 	public void AddNotificationToHistory(string message)
 	{
 		if (_notificationCardScene == null)
@@ -53,19 +60,20 @@ public partial class UI : Control
 			return;
 		}
 
-		// Instantiation
 		var instance = _notificationCardScene.Instantiate();
 		if (instance is NotificationCard card)
 		{
 			card.SetText(message);
 			HistoryList.AddChild(card);
+			HistoryList.MoveChild(card, 0); // Newest on top
 		}
 		else
 		{
 			GD.PrintErr("ERROR: Failed to instantiate NotificationCard.");
 		}
 	}
-
+	
+	// Testing function (no longer used)
 	private async Task RunNotificationTestLoop()
 	{
 		var rng = new Random();
@@ -77,4 +85,25 @@ public partial class UI : Control
 			AddNotificationToHistory(msg);
 		}
 	}
+	
+	private void OpenTechTree()
+	{
+		if (GameManager.Instance == null)
+		{
+			GD.PushError("Tried to open tech tree but GameManager is not ready!");
+			return;
+		}
+
+		if (TechTreeUIScene == null)
+		{
+			GD.PushError("TechTreeUI.tscn not loaded.");
+			return;
+		}
+
+		var treeUI = TechTreeUIScene.Instantiate();
+
+		// Add to UI or main scene
+		AddChild(treeUI);  // OR: GetTree().Root.AddChild(treeUI);
+	}
+
 }
