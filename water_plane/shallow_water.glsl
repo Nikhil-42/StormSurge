@@ -27,6 +27,7 @@ const float H = 100.0;
 const float PI = 3.14159265358979323846;
 const float EARTH_RADIUS = 6371000.0; // m
 const float OMEGA = 7.2921159e-5; // rad/s
+const float TIME_SCALE = 60.0 * 60.0; // 1 second = 1 hour
 
 ivec2 normalize_uv(ivec2 uv, ivec2 size) {
 	// The UV coordinates corespond to latitude and longitude, so we need to normalize them to the texture size.
@@ -109,7 +110,7 @@ void main() {
 	float dx = calc_distance(left_latlon, right_latlon, EARTH_RADIUS);
 	float dy = calc_distance(up_latlon, down_latlon, EARTH_RADIUS);
 
-	// Finite-Grid Derivative Approximation
+	// Finite-Difference Derivative Approximation
 	vec4 dsdx = (right_scalars - left_scalars) / dx;
 	vec4 dsdy = (down_scalars - up_scalars) / dy;
 
@@ -128,11 +129,13 @@ void main() {
 	vec2 dpressure = vec2(dpressuredx, dpressuredy);
 
 	// Wind update
+	float dt = params.delta_time * TIME_SCALE;
+
 	vec2 new_wind = center_wind -
-			g * dpressure * params.delta_time +
-			vec2(1, -1) * coriolis_coefficient * center_wind.yx * params.delta_time;
+			g * dpressure * dt +
+			vec2(1, -1) * coriolis_coefficient * center_wind.yx * dt;
 	
-	float new_pressure = center_scalars.r - (dmassdx + dmassdy) * params.delta_time;
+	float new_pressure = center_scalars.r - (dmassdx + dmassdy) * dt;
 
 	// if (uv.x == floor(params.add_wave_point.x) && uv.y == floor(params.add_wave_point.y)) {
 	// 	if (params.add_wave_point.z > 0.0) {

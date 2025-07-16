@@ -21,7 +21,7 @@ void vertex() {
 void fragment() {
 	vec4 f = texture(scalar_texture, UV).rgba;
 	vec2 wind = texture(wind_texture, UV).rg;
-	float f1 = f.r;
+	float f1 = f.r / 100.0;
 	float f2 = texture(scalar_texture, uv_tangent).r;
 	float f3 = texture(scalar_texture, uv_binormal).r;
 
@@ -30,7 +30,7 @@ void fragment() {
 	NORMAL_MAP = normalize(cross(binormal, tangent)) * 0.5 + 0.5;
 
 	//ALBEDO = albedo.rgb;
-	ALBEDO = vec3(wind.r, wind.g, f.r);
+	ALBEDO = vec3(wind.x, wind.y, f1);
 	METALLIC = 0.0; //metalic;
 	ROUGHNESS = 1.0; //roughness;
 	SPECULAR = 0.5;
