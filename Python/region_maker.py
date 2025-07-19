@@ -1,4 +1,3 @@
-from tkinter import W
 import cv2
 from itertools import product
 import numpy as np
@@ -28,10 +27,14 @@ cv2.setMouseCallback("Borders", on_click)
 
 regions = {}
 try:
-    with open('regions.json', 'r') as file:
+    with open('data/regions.json', 'r') as file:
         regions = json.load(file)
 except:
     pass
+
+for region in regions.values():
+    contours = [(np.array(contour) * [[borders.shape[1], borders.shape[0]]]).astype(np.int32) for contour in region['contours']]
+    cv2.drawContours(borders, contours, -1, (0, 0, 0), cv2.FILLED)
 
 while True:
     cv2.imshow("Borders", borders)
@@ -61,7 +64,7 @@ while True:
                 "contours": [(contour / [[borders.shape[1], borders.shape[0]]]).tolist() for contour in contours],
                 "hierarchy": hierarchy.tolist()
             }
-            with open('regions.json', 'w') as file:
+            with open('data/regions.json', 'w') as file:
                 json.dump(regions, file)
         else:
             borders[selection] = borders_original[selection]
