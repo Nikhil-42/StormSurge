@@ -19,10 +19,6 @@ public struct City {
 		latitude = lat;
 		longitude = lon;
 	}
-	
-	public void printInfo() {
-		GD.Print($"Name: {name}, Population: {population}, Latitude: {latitude}, Longitude: {longitude}, Elevation: {elevation}");
-	}
 }
 
 public class CityMarkers {
