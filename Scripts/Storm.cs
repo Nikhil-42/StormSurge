@@ -109,7 +109,6 @@ public partial class Storm : Node3D
 		};
 
 		storms.Add(storm);
-		GD.Print($"Spawned storm with {spawned} particles in {attempts} attempts");
 	}
 
 	public override void _Process(double delta)
@@ -162,7 +161,6 @@ public partial class Storm : Node3D
 					foreach (var p in particles)
 						if (IsInstanceValid(p)) p.QueueFree();
 					stormsToRemove.Add(storm);
-					GD.Print($"Removed storm");
 					continue;
 				}
 			}
