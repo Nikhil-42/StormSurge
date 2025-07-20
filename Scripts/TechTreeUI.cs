@@ -8,11 +8,19 @@ public partial class TechTreeUI : Control
 	[Export] public TextureButton CloseButton;
 	[Export] public Control techTreeContent;
 	private Dictionary<string, TechNodeButton> nameToButton = new(); // Maps node names to their buttons
+	
+	private HoverPopup hoverPopup;
+	private PackedScene popupScene = GD.Load<PackedScene>("res://Scenes/HoverPopup.tscn");
 
 	public override void _Ready()
 	{
 		// Close button
 		CloseButton.Pressed += OnClosePressed;
+
+		// Node details hover popup
+		hoverPopup = (HoverPopup)popupScene.Instantiate();
+		AddChild(hoverPopup);
+		hoverPopup.Hide();
 
 		// Set listeners for buttons
 		foreach (Node child in techTreeContent.GetChildren())
@@ -20,6 +28,8 @@ public partial class TechTreeUI : Control
 			if (child is TechNodeButton btn)
 			{
 				btn.NodePurchased += OnNodePurchased;
+				btn.Connect("Hovered", new Callable(this, nameof(OnNodeHovered)));
+				btn.Connect("Unhovered", new Callable(this, nameof(OnNodeUnhovered)));
 			}
 		}
 
@@ -129,4 +139,48 @@ public partial class TechTreeUI : Control
 			}
 		}
 	}
+	
+	// On hover method
+	private void OnNodeHovered(string nodeName, Vector2 position)
+	{
+		var tree = GameManager.Instance?.Game?.stormTree;
+		if (tree == null) return;
+
+		var node = tree.getNode(nodeName);
+		if (node == null) return;
+
+		string desc = $"Cost: {node.cost}";
+		var effects = new List<(string, string, int)>();
+
+		for (int i = 0; i < node.weather.vars.Length; i++)
+		{
+			if (node.weather.vars[i] != 0)
+				effects.Add(("Weather", node.weather.var_names[i], node.weather.vars[i]));
+		}
+
+		for (int i = 0; i < node.geo.vars.Length; i++)
+		{
+			if (node.geo.vars[i] != 0)
+				effects.Add(("Geo", node.geo.var_names[i], node.geo.vars[i]));
+		}
+
+		if (!node.storm && node.human != null)
+		{
+			for (int i = 0; i < node.human.vars.Length; i++)
+			{
+				if (node.human.vars[i] != 0)
+					effects.Add(("Human", node.human.var_names[i], node.human.vars[i]));
+			}
+		}
+
+		hoverPopup.SetInfo(node.name, desc, effects);
+		hoverPopup.ShowAt(position + new Vector2(24, 12));
+	}
+	
+	// Exit hover
+	private void OnNodeUnhovered()
+	{
+		hoverPopup.Hide();
+	}
+
 }

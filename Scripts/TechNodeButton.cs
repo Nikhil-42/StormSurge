@@ -6,6 +6,9 @@ public partial class TechNodeButton : TextureButton
 {
 	[Export] public string NodeName;
 	[Signal] public delegate void NodePurchasedEventHandler(string nodeName);
+	[Signal] public delegate void HoveredEventHandler(string nodeName, Vector2 mousePosition);
+	[Signal] public delegate void UnhoveredEventHandler();
+
 	public List<string> parentNames = new();
 
 	private Label NameLabel;
@@ -29,6 +32,10 @@ public partial class TechNodeButton : TextureButton
 		NameLabel.Text = BoundNode.name;
 
 		UpdateVisual();
+		
+		// Hover signals
+		MouseEntered += () => EmitSignal(SignalName.Hovered, NodeName, GetGlobalMousePosition());
+		MouseExited += () => EmitSignal(SignalName.Unhovered);
 	}
 
 	public void UpdateVisual()
@@ -63,7 +70,8 @@ public partial class TechNodeButton : TextureButton
 			MouseFilter = MouseFilterEnum.Ignore;
 		}
 	}
-
+	
+	// Buy node 
 	private void OnPressed()
 	{
 		if (isLocked || BoundNode == null || !BoundNode.available || BoundNode.bought)
@@ -73,4 +81,5 @@ public partial class TechNodeButton : TextureButton
 		UpdateVisual();
 		EmitSignal(SignalName.NodePurchased, BoundNode.name);
 	}
+
 }

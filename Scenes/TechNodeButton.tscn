@@ -14,6 +14,7 @@ texture_normal = ExtResource("1_58u36")
 script = ExtResource("1_4j4nd")
 
 [node name="Label" type="Label" parent="."]
+visible = false
 z_index = 2
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
