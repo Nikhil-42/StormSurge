@@ -35,9 +35,7 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="NinePatchRect/MarginContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-text = "ksjdbg.zkdjxbgdz.kd
-ddddd lkdng
- kdjbgkd 
-sdkfjgnskdfn"
+text = "dhgfjsmbcvm
+sndbvbxmcn v"
 label_settings = SubResource("LabelSettings_pmfn8")
 autowrap_mode = 2
