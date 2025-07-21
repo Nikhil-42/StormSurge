@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://xl5ylijnb15m"
+
+[deps]
+
+files=["res://Assets/region_geographic_data.Name.translation", "res://Assets/region_geographic_data.Code.translation", "res://Assets/region_geographic_data.Continent.translation", "res://Assets/region_geographic_data.Countries.translation", "res://Assets/region_geographic_data.Population.translation", "res://Assets/region_geographic_data.Coastal Population.translation", "res://Assets/region_geographic_data.Development Index.translation", "res://Assets/region_geographic_data.GDP.translation", "res://Assets/region_geographic_data.Minimum Elevation.translation", "res://Assets/region_geographic_data.Maximum Elevation.translation"]
+
+source_file="res://Assets/region_geographic_data.csv"
+dest_files=["res://Assets/region_geographic_data.Name.translation", "res://Assets/region_geographic_data.Code.translation", "res://Assets/region_geographic_data.Continent.translation", "res://Assets/region_geographic_data.Countries.translation", "res://Assets/region_geographic_data.Population.translation", "res://Assets/region_geographic_data.Coastal Population.translation", "res://Assets/region_geographic_data.Development Index.translation", "res://Assets/region_geographic_data.GDP.translation", "res://Assets/region_geographic_data.Minimum Elevation.translation", "res://Assets/region_geographic_data.Maximum Elevation.translation"]
+
+[params]
+
+compress=true
+delimiter=0
