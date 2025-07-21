@@ -21,19 +21,21 @@ subpixel_positioning = 0
 font = SubResource("SystemFont_wjear")
 font_size = 100
 
-[node name="Control" type="Control" node_paths=PackedStringArray("NotificationButton", "NotificationHistoryPanel", "HistoryList", "TechTreeButton")]
+[node name="Control" type="Control" node_paths=PackedStringArray("NotificationButton", "NotificationHistoryPanel", "HistoryList", "TechTreeButton", "NotificationPopup")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_force_pass_scroll_events = false
 script = ExtResource("1_wunin")
 NotificationButton = NodePath("RightButtonsPanel/NotificationButton")
 NotificationHistoryPanel = NodePath("NotificationHistoryPanel")
 HistoryList = NodePath("NotificationHistoryPanel/ScrollContainer/HistoryList")
 TechTreeButton = NodePath("RightButtonsPanel/TechTreeButton")
 TechTreeUIScene = ExtResource("2_n04ve")
+NotificationPopup = NodePath("NotificationPopup")
 
 [node name="Currency" type="Control" parent="."]
 z_index = 3
@@ -104,6 +106,8 @@ offset_right = 188.0
 offset_bottom = 552.0
 grow_horizontal = 0
 scale = Vector2(0.4, 0.4)
+mouse_filter = 0
+mouse_force_pass_scroll_events = false
 
 [node name="NotificationButton" type="TextureButton" parent="RightButtonsPanel"]
 layout_mode = 2
@@ -128,6 +132,7 @@ offset_top = 8.0
 offset_right = -91.0
 offset_bottom = 408.0
 grow_horizontal = 0
+mouse_force_pass_scroll_events = false
 
 [node name="ScrollContainer" type="ScrollContainer" parent="NotificationHistoryPanel"]
 custom_minimum_size = Vector2(200, 400)
@@ -138,3 +143,14 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
+
+[node name="NotificationPopup" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -290.0
+offset_top = 13.0
+offset_right = -250.0
+offset_bottom = 53.0
+grow_horizontal = 0

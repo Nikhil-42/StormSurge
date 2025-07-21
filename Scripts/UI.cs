@@ -10,7 +10,7 @@ public partial class UI : Control
 	[Export] public VBoxContainer HistoryList;
 	[Export] public BaseButton TechTreeButton;
 	[Export] public PackedScene TechTreeUIScene;
-
+	[Export] public Control NotificationPopup; 
 
 	private PackedScene _notificationCardScene;
 
@@ -50,13 +50,16 @@ public partial class UI : Control
 	private void ToggleHistory()
 	{
 		NotificationHistoryPanel.Visible = !NotificationHistoryPanel.Visible;
+		
+		// Hide Popups when history is open
+		NotificationPopup.Visible = !NotificationHistoryPanel.Visible;
 	}
 	
 	public void AddNotificationToHistory(string message)
 	{
 		if (_notificationCardScene == null)
 		{
-			GD.PrintErr("ERROR: NotificationCard.tscn not loaded!");
+			GD.PrintErr("ERROR: NotificationCard scene not loaded");
 			return;
 		}
 
@@ -80,9 +83,9 @@ public partial class UI : Control
 
 		while (true)
 		{
-			await Task.Delay(rng.Next(1500, 4000)); // Wait 1.5–4 seconds before next
+			await Task.Delay(rng.Next(4000, 8000)); // Wait 4-8 seconds before next
 			string msg = _testMessages[rng.Next(_testMessages.Count)];
-			AddNotificationToHistory(msg);
+			Notify(msg);
 		}
 	}
 	
@@ -90,7 +93,7 @@ public partial class UI : Control
 	{
 		if (GameManager.Instance == null)
 		{
-			GD.PushError("Tried to open tech tree but GameManager is not ready!");
+			GD.PushError("Tried to open tech tree but GameManager is not ready.");
 			return;
 		}
 
@@ -103,7 +106,49 @@ public partial class UI : Control
 		var treeUI = TechTreeUIScene.Instantiate();
 
 		// Add to UI or main scene
-		AddChild(treeUI);  // OR: GetTree().Root.AddChild(treeUI);
+		AddChild(treeUI);
+	}
+	
+	public async void ShowPopupNotification(string message, float duration = 2.5f)
+	{
+		if (_notificationCardScene == null)
+		{
+			GD.PrintErr("ERROR: NotificationCard scene null.");
+			return;
+		}
+
+		var instance = _notificationCardScene.Instantiate();
+		if (instance is not NotificationCard card)
+		{
+			GD.PrintErr("ERROR: NotificationCard could not instantiate.");
+			return;
+		}
+		
+		card.SetText(message);
+
+		card.Modulate = new Color(1, 1, 1, 0); // Fully transparent
+		NotificationPopup.AddChild(card);
+
+		// Fade-in
+		var tween = CreateTween();
+		tween.TweenProperty(card, "modulate:a", 1f, 0.4f).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+
+		// Display for set duration
+		await ToSignal(GetTree().CreateTimer(duration), "timeout");
+
+		// Fade out
+		var fadeOutTween = CreateTween();
+		fadeOutTween.TweenProperty(card, "modulate:a", 0f, 0.6f).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.In);
+
+		await ToSignal(fadeOutTween, "finished");
+		card.QueueFree();
+	}
+
+	// Notify function
+	public void Notify(string message, float popupDuration = 2.5f)
+	{
+		ShowPopupNotification(message, popupDuration);
+		AddNotificationToHistory(message);
 	}
 
 }
