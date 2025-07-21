@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de7suw2q7xuhu"
-path.s3tc="res://.godot/imported/regionmap.png-22a3b8a490aa27ee6fc691b14f78b6e6.s3tc.ctex"
+uid="uid://cp72tdlkjsnho"
+path="res://.godot/imported/regionmap.png-22a3b8a490aa27ee6fc691b14f78b6e6.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Assets/regionmap.png"
-dest_files=["res://.godot/imported/regionmap.png-22a3b8a490aa27ee6fc691b14f78b6e6.s3tc.ctex"]
+dest_files=["res://.godot/imported/regionmap.png-22a3b8a490aa27ee6fc691b14f78b6e6.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
@@ -26,7 +25,7 @@ mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=true
+process/fix_alpha_border=22
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
