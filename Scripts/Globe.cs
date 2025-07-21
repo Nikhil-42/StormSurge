@@ -1,11 +1,7 @@
 using Godot;
-using Godot.Collections;
 
 public partial class Globe : Node3D
 {
-	[Export]
-	private Json _regions;
-
 	[Export]
 	private Texture2D _regionmap;
 

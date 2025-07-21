@@ -1,72 +1,7 @@
 using Godot;
-using System.Collections.Generic;
-using System.Linq;
-
-public class RegionStats
-{
-	public int id; // Unique ID for the region, used for identification on the texture
-	public string name;
-	public string code;
-	public string continent;
-	public string countries;
-	public double population;
-	public double coastalPopulation;
-	public double developmentIndex;
-	public double gdp;
-	public int minimumElevation;
-	public int maximumElevation;
-
-	public List<string> GetCountries()
-	{
-		return countries
-			.Split(',')
-			.Select(c => c.Trim())
-			.ToList();
-	}
-
-	public void printRegion() {
-		List<string> countryList = GetCountries();
-		string countryString = "";
-		for (int i = 0; i < countryList.Count; i++)
-		{
-			if (i == 0)
-			{
-				countryString += countryList[i];
-			}
-			else
-			{
-				countryString += ", " + countryList[i];
-			}
-		}
-		if (GameManager.Instance.PrintDebug)
-		{
-			GD.Print("\t> " + name + " (" + code + ") " + continent + ", (" + countryString + "): " + population + ", " + coastalPopulation + ", " + developmentIndex + ", " + gdp + ", " + minimumElevation + ", " + maximumElevation);
-		}
-	}
-
-	public static RegionStats FromCsvLine(string[] fields)
-	{
-		return new RegionStats
-		{
-			id = int.Parse(fields[0]), // Assuming the first field is the ID
-			name = fields[1],
-			code = fields[2],
-			continent = fields[3],
-			countries = fields[4],
-			population = double.Parse(fields[5]),
-			coastalPopulation = double.Parse(fields[6]),
-			developmentIndex = double.Parse(fields[7]),
-			gdp = double.Parse(fields[8]),
-			minimumElevation = int.Parse(fields[9]),
-			maximumElevation = int.Parse(fields[10])
-		};
-	}
-}
 
 public partial class RegionAI
 {
-	private int _id;
-
 	enum ReactionState
 	{
 		Research,
@@ -75,7 +10,6 @@ public partial class RegionAI
 		Debauchery,
 		Death,
 	}
-	private ReactionState _state;
 
 	public record ActionType
 	{
@@ -194,19 +128,22 @@ public partial class RegionAI
 			stormPreparedness = 0.5 + (stats.developmentIndex * stats.coastalPopulation);
 		}
 	}
-	public Characteristics _chars;
+
+	public Characteristics chars;
 
 	public TechTree regionTree;
 
-	public RegionStats _regionStats;
+	public RegionStats regionStats;
+
+	private ReactionState _state;
 	private Progress _progress;
 
 	public RegionAI(RegionStats regionStats)
 	{
 		_state = ReactionState.Savings; // Initial state
 		_progress = new Progress();
-		_regionStats = regionStats;
-		_chars = new Characteristics(regionStats);
+		this.regionStats = regionStats;
+		chars = new Characteristics(regionStats);
 
 		if (GameManager.Instance.PrintDebug) GD.Print("Creating region AI tech tree...");
 		regionTree = new TechTree(false);
@@ -222,33 +159,33 @@ public partial class RegionAI
 			switch (_state)
 			{
 				case ReactionState.Research:
-					if (_progress.health < _chars.poorHealth) // Hardcoded decision points, should be members later
+					if (_progress.health < chars.poorHealth) // Hardcoded decision points, should be members later
 					{
 						nextState = ReactionState.Recovery; // Switch to recovery if health is low
 					}
-					else if (_progress.health > _chars.goodHealth)
+					else if (_progress.health > chars.goodHealth)
 					{
 						nextState = ReactionState.Savings; // Switch to savings if health is high
 					}
 					break;
 				case ReactionState.Savings:
-					if (_progress.health < _chars.midHealth)
+					if (_progress.health < chars.midHealth)
 					{
 						nextState = ReactionState.Research; // Switch to research if we get damaged 
 					}
-					if (_progress.monies > _chars.goodMoney)
+					if (_progress.monies > chars.goodMoney)
 					{
 						nextState = ReactionState.Debauchery; // Switch to debauchery if money is high
 					}
 					break;
 				case ReactionState.Recovery:
-					if (_progress.health > _chars.goodHealth || _progress.monies == 0.0)
+					if (_progress.health > chars.goodHealth || _progress.monies == 0.0)
 					{
 						nextState = ReactionState.Savings; // Switch to savings if health is high
 					}
 					break;
 				case ReactionState.Debauchery:
-					if (_progress.monies < _chars.midMoney || _progress.health < _chars.midHealth)
+					if (_progress.monies < chars.midMoney || _progress.health < chars.midHealth)
 					{
 						nextState = ReactionState.Savings; // Switch back to savings after debauchery 
 					}
@@ -262,7 +199,7 @@ public partial class RegionAI
 
 	public void Process(double deltaTime, GameState gameState)
 	{
-		double currentIncome = (_chars.income/52) * deltaTime * _progress.health;
+		double currentIncome = (chars.income/52) * deltaTime * _progress.health;
 		ActionType decision = Decide(gameState);
 		switch (decision)
 		{
@@ -340,16 +277,16 @@ public partial class RegionAI
 		switch (type)
 		{
 			case DamageType.Wind:
-				_progress.windDamage += damage * _chars.windDamageMultiplier;
-				_progress.health -= 0.1 * (damage * _chars.windDamageMultiplier); // Wind damage reduces health
+				_progress.windDamage += damage * chars.windDamageMultiplier;
+				_progress.health -= 0.1 * (damage * chars.windDamageMultiplier); // Wind damage reduces health
 				break;
 			case DamageType.Flood:
-				_progress.floodDamage += damage * _chars.floodDamageMultiplier;
-				_progress.health -= 0.2 * (damage * _chars.floodDamageMultiplier); // Flood damage reduces health more
+				_progress.floodDamage += damage * chars.floodDamageMultiplier;
+				_progress.health -= 0.2 * (damage * chars.floodDamageMultiplier); // Flood damage reduces health more
 				break;
 			case DamageType.Secondary:
-				_progress.secondaryDamage += damage * _chars.secondaryDamageMultiplier;
-				_progress.health -= 0.05 * (damage * _chars.secondaryDamageMultiplier); // Secondary damage reduces health slightly
+				_progress.secondaryDamage += damage * chars.secondaryDamageMultiplier;
+				_progress.health -= 0.05 * (damage * chars.secondaryDamageMultiplier); // Secondary damage reduces health slightly
 				break;
 			default:
 				GD.PrintErr($"Unknown damage type: {type}");
