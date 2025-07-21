@@ -1,15 +1,4 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Globalization;
-using CsvHelper;
-using System.Linq;
-
-using Godot;
-using System.IO;
-using System.Globalization;
-using CsvHelper;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,8 +12,6 @@ public partial class GameState {  // Move node attributes, make not a node, make
 
 	private int _religionLevel = 1;  // 1: 1% cult followers = 0.2%/0.5%, 2: 1% = 0.5%/1%, 3: 1% = 2%/2%
 	
-	public List<RegionStats> regionStats { get; private set; } = new();
-	private string regionStatsPath = "res://Assets/region_geographic_data.csv";
 
 	private RegionAI[] _regionAIs = null;
 
@@ -49,7 +36,7 @@ public partial class GameState {  // Move node attributes, make not a node, make
 	public RegionAI[] RegionAIs { get => _regionAIs; set => _regionAIs = value; }
 	
 	// ================= INITIALIZER ================================
-	public GameState(Json regionsJson) {
+	public GameState(string[] regionNames, Dictionary<string, RegionStats> regionStats) {
 		if (GameManager.Instance.PrintDebug) {
 			GD.Print("Creating game state object...");
 			GD.Print("Creating game storm and human tech tree...");
@@ -61,21 +48,12 @@ public partial class GameState {  // Move node attributes, make not a node, make
 
 		sharedWeatherVars = new weatherVars();
 		sharedGeoVars = new geoVars();
-
-		if (GameManager.Instance.PrintDebug) GD.Print("\nLoading region geographic data...");
-		using var reader = new StreamReader(ProjectSettings.GlobalizePath(regionStatsPath));
-		using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-		regionStats = csv.GetRecords<RegionStats>().ToList();
-
+		
 		if (GameManager.Instance.PrintDebug) GD.Print("\nCreating Region AI objects...");
 
-		// FIXME: from game manager pass in region data from json to this
-		var regionNames = (Godot.Collections.Array)((Godot.Collections.Dictionary) regionsJson.Data)["names"];
-
-		_regionAIs = new RegionAI[regionNames.Count-1];
-		for (int i = 0; i < regionNames.Count-1; i++) {
-			_regionAIs[i] = new RegionAI(i+1);
-			_regionAIs[i].setRegionStatsChars(regionStats[i], GameManager.Instance.PrintDebug);
+		_regionAIs = new RegionAI[regionStats.Count];
+		for (int i = 0; i < regionStats.Count; i++) {
+			_regionAIs[i] = new RegionAI(regionStats[regionNames[i+1]]);
 		}
 	}
 
@@ -103,16 +81,20 @@ public partial class GameState {  // Move node attributes, make not a node, make
 public partial class GameManager : Node
 {
 	public static GameManager Instance => _instance;
+	private static GameManager _instance = null;
+
 	public bool PrintDebug => _printDebug;
 	public GameState Game => _game;
 
 	[Export]
-	private Json _regionsJson;
+	private string regionStatsPath = "res://Library/regionstats.txt";
 
 	[Export]
 	private bool _printDebug = true;
 
-	private static GameManager _instance = null;
+	private string[] _regionNames = null;
+	private Dictionary<string, RegionStats> _regionStats = null;
+
 	private GameState _game = null;
 	private string currentScreen = "start_menu";
 	private string currentOption = "";
@@ -136,8 +118,28 @@ public partial class GameManager : Node
 			GD.PrintErr("WARNING: GameManager instance already exists!");  // debugging
 		}
 		_instance = this;
+
+		if (GameManager.Instance.PrintDebug) GD.Print("\nLoading region geographic data...");
+		var file = Godot.FileAccess.Open(ProjectSettings.GlobalizePath(regionStatsPath), Godot.FileAccess.ModeFlags.Read);
+		if (file == null) {
+			GD.PrintErr("Failed to open region geographic data file: " + regionStatsPath);
+			return;
+		}
+
+		var regionsStats = new Dictionary<string, RegionStats>();
+		var header = file.GetCsvLine();
+		while (!file.EofReached()) {
+			var line = file.GetCsvLine();
+			if (line == null || line.Length == 0) continue;  // Skip empty lines
+			var stats = RegionStats.FromCsvLine(line);
+			regionsStats.Add(stats.name, stats);
+		}
+
+		_regionStats = regionsStats;
+		_regionNames = ["Ocean", .. regionsStats.Values.OrderBy(r => r.id).Select(r => r.name)];
+
 		GD.Print("GameManager entering tree");  // debugging
-		_game = new GameState(_regionsJson);
+		_game = new GameState(_regionNames, _regionStats);
 	}
 	
 	public override void _Ready()

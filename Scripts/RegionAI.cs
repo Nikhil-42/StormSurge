@@ -1,57 +1,24 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Globalization;
-using CsvHelper;
-using System.Linq;
-
-using Godot;
-using System.IO;
-using System.Globalization;
-using CsvHelper;
 using System.Collections.Generic;
 using System.Linq;
-using CsvHelper.Configuration.Attributes;
 
 public class RegionStats
 {
-	[Name("ID")]
-	public int ID { get; set; }
-
-	[Name("Name")]
-	public string Name { get; set; }
-
-	[Name("Code")]
-	public string Code { get; set; }
-
-	[Name("Continent")]
-	public string Continent { get; set; }
-
-	[Name("Countries")]
-	public string Countries { get; set; }
-
-	[Name("Population")]
-	public double Population { get; set; }
-
-	[Name("Coastal Population")]
-	public double CoastalPopulation { get; set; }
-
-	[Name("Development Index")]
-	public double DevelopmentIndex { get; set; }  // note the new header name here
-
-	[Name("GDP")]
-	public double GDP { get; set; }
-
-	[Name("Minimum Elevation")]
-	public int MinimumElevation { get; set; }
-
-	[Name("Maximum Elevation")]
-	public int MaximumElevation { get; set; }
+	public int id; // Unique ID for the region, used for identification on the texture
+	public string name;
+	public string code;
+	public string continent;
+	public string countries;
+	public double population;
+	public double coastalPopulation;
+	public double developmentIndex;
+	public double gdp;
+	public int minimumElevation;
+	public int maximumElevation;
 
 	public List<string> GetCountries()
 	{
-		return Countries
+		return countries
 			.Split(',')
 			.Select(c => c.Trim())
 			.ToList();
@@ -60,16 +27,39 @@ public class RegionStats
 	public void printRegion() {
 		List<string> countryList = GetCountries();
 		string countryString = "";
-		for (int i=0; i<countryList.Count; i++) {
-			if (i==0) {
+		for (int i = 0; i < countryList.Count; i++)
+		{
+			if (i == 0)
+			{
 				countryString += countryList[i];
-			} else {
+			}
+			else
+			{
 				countryString += ", " + countryList[i];
 			}
 		}
-		if (GameManager.Instance.PrintDebug) {
-			GD.Print("\t> " + Name + " (" + ID + ", " + Code + ") " + Continent + ", (" + countryString + "): " + Population + ", " + CoastalPopulation + ", " + DevelopmentIndex + ", " + GDP + ", " + MinimumElevation + ", " + MaximumElevation);
+		if (GameManager.Instance.PrintDebug)
+		{
+			GD.Print("\t> " + name + " (" + code + ") " + continent + ", (" + countryString + "): " + population + ", " + coastalPopulation + ", " + developmentIndex + ", " + gdp + ", " + minimumElevation + ", " + maximumElevation);
 		}
+	}
+
+	public static RegionStats FromCsvLine(string[] fields)
+	{
+		return new RegionStats
+		{
+			id = int.Parse(fields[0]), // Assuming the first field is the ID
+			name = fields[1],
+			code = fields[2],
+			continent = fields[3],
+			countries = fields[4],
+			population = double.Parse(fields[5]),
+			coastalPopulation = double.Parse(fields[6]),
+			developmentIndex = double.Parse(fields[7]),
+			gdp = double.Parse(fields[8]),
+			minimumElevation = int.Parse(fields[9]),
+			maximumElevation = int.Parse(fields[10])
+		};
 	}
 }
 
@@ -116,9 +106,6 @@ public partial class RegionAI
 			secondaryDamage = 0.0f;
 		}
 	}
-	private Progress _progress;
-
-	public RegionStats _regionStats;
 
 	public class Characteristics {  // Variables different for each country that are calculated based on stats
 		// FIXME: Characteristics should be based on more detailed statistics for countries (storm susceptibility, etc.), but
@@ -155,92 +142,74 @@ public partial class RegionAI
 
 		public Characteristics(RegionStats stats) {
 			// income, globalResearchFunding, Money's, emissions
-			double PerCapitaGDP = (stats.GDP * 1000) / stats.Population;
+			double PerCapitaGDP = (stats.gdp * 1000) / stats.population;
 			if (PerCapitaGDP > 50000) {
-				income = stats.GDP * 0.6;
+				income = stats.gdp * 0.6;
 				globalResearchFunding = 0.5;
 
 				goodMoney = 0.9;
 				midMoney = 0.75;
 				poorMoney = 0.5;
 			} else if (PerCapitaGDP > 20000) {
-				income = stats.GDP * 0.4;
+				income = stats.gdp * 0.4;
 				globalResearchFunding = 0.2;
 
 				goodMoney = 0.8;
 				midMoney = 0.6;
 				poorMoney = 0.3;
 			} else if (PerCapitaGDP > 10000) {
-				income = stats.GDP * 0.3;
+				income = stats.gdp * 0.3;
 				globalResearchFunding = 0.1;
 
 				goodMoney = 0.7;
 				midMoney = 0.5;
 				poorMoney = 0.2;
 			} else {
-				income = stats.GDP * 0.2;
+				income = stats.gdp * 0.2;
 				globalResearchFunding = 0.05;
 
 				goodMoney = 0.6;
 				midMoney = 0.4;
 				poorMoney = 0.2;
 			}
-			emissions = stats.GDP / 1000;
+			emissions = stats.gdp / 1000;
 
 			// Health's, alarm thresholds, damage multipliers, etc.
-			goodHealth = 0.8 + (0.2 * stats.DevelopmentIndex);
-			midHealth = 0.6 + (0.4 * stats.DevelopmentIndex);
-			poorHealth = 0.4 + (0.6 * stats.DevelopmentIndex);
+			goodHealth = 0.8 + (0.2 * stats.developmentIndex);
+			midHealth = 0.6 + (0.4 * stats.developmentIndex);
+			poorHealth = 0.4 + (0.6 * stats.developmentIndex);
 
-			lowAlarmThreshold = 0.9 + (0.1 * stats.DevelopmentIndex);
-			highAlarmThreshold = 0.75 + (0.25 * stats.DevelopmentIndex);
+			lowAlarmThreshold = 0.9 + (0.1 * stats.developmentIndex);
+			highAlarmThreshold = 0.75 + (0.25 * stats.developmentIndex);
 
-			windDamageMultiplier = 1 + ((1 - stats.DevelopmentIndex)/2);
-			floodDamageMultiplier = 1 + stats.CoastalPopulation;
-			secondaryDamageMultiplier = 1 + (1 - stats.DevelopmentIndex);
+			windDamageMultiplier = 1 + ((1 - stats.developmentIndex)/2);
+			floodDamageMultiplier = 1 + stats.coastalPopulation;
+			secondaryDamageMultiplier = 1 + (1 - stats.developmentIndex);
 
-			governmentEfficiency = 0.5 + stats.DevelopmentIndex;
-			internationalRelations = 0.5 + stats.DevelopmentIndex;
-			education = 0.5 + stats.DevelopmentIndex;
-			buildingInfrastructure = 0.5 + stats.DevelopmentIndex;
+			governmentEfficiency = 0.5 + stats.developmentIndex;
+			internationalRelations = 0.5 + stats.developmentIndex;
+			education = 0.5 + stats.developmentIndex;
+			buildingInfrastructure = 0.5 + stats.developmentIndex;
 
-			stormPreparedness = 0.5 + (stats.DevelopmentIndex * stats.CoastalPopulation);
+			stormPreparedness = 0.5 + (stats.developmentIndex * stats.coastalPopulation);
 		}
 	}
 	public Characteristics _chars;
 
 	public TechTree regionTree;
 
-	/*public class Stats {  // Fixed variables
-		// All values are (1-5) (least-most), except Transport stats (1-3)
-		public int[] values = new int[11];
-		public string[] codes = new string[11] {"RES", "CON", "GTP", "ATP", "STP", "INR", "PRE", 
-			"GOV", "EDU", "CLI", "SUS"};
-		public string[] statistics = new string[11] {"Resources Per Capita", "Connectivity", 
-			"Ground Transport", "Air Transport", "Ship Transport", "International Relations", 
-			"Disaster Preparation", "Government Function", "Education", "Climate Research", 
-			"Storm Susceptibility"};
-		}
-	}*/
-	// private Stats _stats;  // FIXME: if entertree region stats works, edit Stats object
+	public RegionStats _regionStats;
+	private Progress _progress;
 
-	public RegionAI(int id)
+	public RegionAI(RegionStats regionStats)
 	{
-		_id = id;
 		_state = ReactionState.Savings; // Initial state
 		_progress = new Progress();
-		// _stats = new Stats(id);
+		_regionStats = regionStats;
 
 		if (GameManager.Instance.PrintDebug) GD.Print("Creating region AI tech tree...");
 		regionTree = new TechTree(false);
 		regionTree.setDefaults();
-	}
-
-	public void setRegionStatsChars(RegionStats stats, bool debug) {
-		_regionStats = stats;
-		if (debug) _regionStats.printRegion();
-
-		_chars = new Characteristics(stats);
 	}
 
 	private ReactionState GetNextState()
@@ -333,10 +302,6 @@ public partial class RegionAI
 		// Apply passive income
 
 		_state = GetNextState(); // Update state based on the current conditions
-		if (_id == 1)
-		{
-			// GD.Print($"Russia - State: {_state}, Health: {_progress.health:F2}, Money: {_progress.monies:F2}");
-		}
 	}
 
 	public ActionType Decide(GameState gameState)
