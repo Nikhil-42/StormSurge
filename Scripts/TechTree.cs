@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 
 public class weatherVars {
-	// Zeros default for node contributions
+	// Zeros defaults for node contributions
 	public int[] vars = new int[7];
 	public string[] var_names = new string[7] {"Temperature", "Sea Level", "Storm Range", "Wind Damage", "Wind Speed", 
 	"Storm Radius", "Flood Damage"};
+	public int[] globalDefaults = new int[7] {15, 0, 40, 100, 100, 100, 100};
 	
 	// CLIMATE VARS
 	public int temp {  // 1. degrees Celsius above normal
@@ -41,24 +42,19 @@ public class weatherVars {
 		set => vars[6] = 0;
 	}
 	
-	public void setGlobalDefault() {
-		// Start of game, fresh map
-		temp = 15;
-		sea_level = 0;
-		range = 40;
-
-		wind_damage = 100;
-		speed = 100;
-		radius = 100;
-		flood_damage = 100;
+	public void setGlobalDefaults() {  // Start of game, fresh map
+		for (int i=0; i<vars.Length; i++) {
+			vars[i] = globalDefaults[i];
+		}
 	}
 }
 
 public class geoVars {
-	// Zeros default for node contributions
+	// Zeros defaults for node contributions
 	public int[] vars = new int[7];
 	public string[] var_names = new string[7] {"Communication", "International Cooperation", "Transportation", 
 	"Government Function", "Resources", "Compliance", "Preparation"};
+	public int[] globalDefaults = new int[7] {100, 100, 100, 100, 100, 100, 100};
 
 	// GLOBAL VARS
 	public int comms {  // 1. percent (base 100)
@@ -92,25 +88,20 @@ public class geoVars {
 		set => vars[6] = 0;
 	}
 	
-	public void setGlobalDefault() {
-		// Start of game, fresh map
-		comms = 100;
-		intern_coop = 100;
-		transport = 100;
-
-		govt_function = 100;
-		resources = 100;
-		compliance = 100;
-		prep = 100;
+	public void setGlobalDefaults() {  // Start of game, fresh map
+		for (int i=0; i<vars.Length; i++) {
+			vars[i] = globalDefaults[i];
+		}
 	}
 }
 
 public class humanVars {
-	// Zeros default for node contributions
+	// Zeros defaults for node contributions
 	public int[] vars = new int[10];
 	public string[] var_names = new string[10] {"Global Migration", "Regional Migration", "Global Warming", 
 	"Climate Research Costs", "Cult Spread Speed", "Recovery Rate", "Infrastructure Research Costs", 
 	"War Spread Speed", "Detection Time", "Implementation Costs"};
+	public int[] globalDefaults = new int[10] {100, 100, 100, 100, 100, 100, 100, 100, 96, 100};
 
 	// HUMAN BEHAVIOR VARS
 	public int global_migration {  // 1. percent (base 100, must be enabled)
@@ -154,33 +145,23 @@ public class humanVars {
 		set => vars[9] = 0;
 	}
 	
-	public void setGlobalDefault() {
-		// Start of game, fresh map
-		global_migration = 100;
-		region_migration = 100;
-		global_warming = 100;
-		climate_costs = 100;
-		cult_spread = 100;
-
-		recovery = 100;
-		infrastructure_costs = 100;
-		war_spread = 100;
-		detection = 96;
-		implement_costs = 100;
+	public void setGlobalDefaults() {  // Start of game, fresh map
+		for (int i=0; i<vars.Length; i++) {
+			vars[i] = globalDefaults[i];
+		}
 	}
 }
 
 public class TechNode {
 	public int cost;
 	public bool storm;  // false = human AI tech node
-	public bool _global;  // human only, false = local (regional) upgrade
 	public string name;
 	public string category;
 	public bool available;
 	public bool bought;
 
-	public bool research_node;  // true if research node only
-	public string research_locked = "";  // human tree only, ex: "climate_1", "weather_pattern", "materials", etc.
+	public bool _global;  // human only, false = local (regional) upgrade
+	public bool research_locked = false;  // true if research node only and global research not yet unlocked
 	
 	public List<TechNode> children = new List<TechNode>();
 	
@@ -213,15 +194,19 @@ public class TechNode {
 			geo = new geoVars();
 			human = new humanVars();
 
-			for (int i=0; i<positions.Count; i++) {
-				if (positions[i] == 1) {
-					weather.vars[3] += effects[i];  // wind damage
-				} else if (positions[i] == 2) {
-					weather.vars[6] += effects[i];  // flood damage
-				} else if (positions[i] <= 9) {
-					geo.vars[positions[i]-3] += effects[i];
-				} else {
-					human.vars[positions[i]-10] += effects[i];
+			if (positions.Count == 0) {
+				research_locked = true;
+			} else {
+				for (int i=0; i<positions.Count; i++) {
+					if (positions[i] == 1) {
+						weather.vars[3] += effects[i];  // wind damage
+					} else if (positions[i] == 2) {
+						weather.vars[6] += effects[i];  // flood damage
+					} else if (positions[i] <= 9) {
+						geo.vars[positions[i]-3] += effects[i];  // geo vars
+					} else {
+						human.vars[positions[i]-10] += effects[i];  // human vars
+					}
 				}
 			}
 		}
@@ -286,10 +271,10 @@ public class TechTree {
 		_storm = isStorm;
 		if (_storm) {
 			treeWeather = new weatherVars();
-			treeWeather.setGlobalDefault();
+			treeWeather.setGlobalDefaults();
 
 			treeGeo = new geoVars();
-			treeGeo.setGlobalDefault();
+			treeGeo.setGlobalDefaults();
 						
 			if (!Godot.FileAccess.FileExists(stormDataPath)) {
 				if (GameManager.Instance.PrintDebug) GD.PrintErr($"File not found: {stormDataPath}");
@@ -343,7 +328,7 @@ public class TechTree {
 					} else {
 						if (currentType == "category") {
 							currentCat = parts[i];
-							if (GameManager.Instance.PrintDebug) GD.Print("Set Category: " + currentCat);
+							// if (GameManager.Instance.PrintDebug) GD.Print("Set Category: " + currentCat);
 							continue;
 						}
 						if (parts[i] == ".") {
@@ -366,7 +351,7 @@ public class TechTree {
 										locked.Add(currentNode);
 									}
 									if (GameManager.Instance.PrintDebug) {
-										currentNode.printNode();
+										// currentNode.printNode();
 									}
 									cost = 0;
 									name = "";
@@ -423,7 +408,7 @@ public class TechTree {
 				foreach (TechNode node in locked) {
 					if (node.name == children[i]) {
 						parents[i].addChildNode(node);
-						if (GameManager.Instance.PrintDebug) GD.Print(">" + node.name + " added as child of " + parents[i].name);
+						// if (GameManager.Instance.PrintDebug) GD.Print(">" + node.name + " added as child of " + parents[i].name);
 					}
 				}
 			}
@@ -433,13 +418,13 @@ public class TechTree {
 		}
 		else {  // Human AI tech tree
 			treeWeather = new weatherVars();
-			treeWeather.setGlobalDefault();
+			treeWeather.setGlobalDefaults();
 
 			treeGeo = new geoVars();
-			treeGeo.setGlobalDefault();
+			treeGeo.setGlobalDefaults();
 
 			treeHuman = new humanVars();
-			treeHuman.setGlobalDefault();
+			treeHuman.setGlobalDefaults();
 
 			if (!Godot.FileAccess.FileExists(humanDataPath)) {
 				if (GameManager.Instance.PrintDebug) GD.PrintErr($"File not found: {humanDataPath}");
@@ -494,7 +479,7 @@ public class TechTree {
 					} else {
 						if (currentType == "category") {
 							currentCat = parts[i];
-							if (GameManager.Instance.PrintDebug) GD.Print("Set Category: " + currentCat);
+							// if (GameManager.Instance.PrintDebug) GD.Print("Set Category: " + currentCat);
 							continue;
 						}
 						if (parts[i] == ".") {
@@ -520,7 +505,7 @@ public class TechTree {
 										locked.Add(currentNode);
 									}
 									if (GameManager.Instance.PrintDebug) {
-										currentNode.printNode();
+										// currentNode.printNode();
 									}
 									cost = 0;
 									_global = false;
@@ -583,7 +568,7 @@ public class TechTree {
 				foreach (TechNode node in locked) {
 					if (node.name == children[i]) {
 						parents[i].addChildNode(node);
-						if (GameManager.Instance.PrintDebug) GD.Print(">" + node.name + " added as child of " + parents[i].name);
+						// if (GameManager.Instance.PrintDebug) GD.Print(">" + node.name + " added as child of " + parents[i].name);
 					}
 				}
 			}
@@ -604,7 +589,7 @@ public class TechTree {
 		}
 	}
 
-	public TechNode searchNode(string search) {  // Returns node, whether available or locked
+	public TechNode searchNode(string search) {  // Returns node by name search, whether available or locked
 		foreach (TechNode node in bought) {
 			if (node.name == search) {
 				return node;
@@ -623,7 +608,7 @@ public class TechTree {
 		return null;
 	}
 
-	public TechNode getNode(string search) {  // Returns available node
+	public TechNode getNode(string search) {  // Returns available node only by name search
 		foreach (TechNode node in available) {
 			if (node.name == search) {
 				return node;
@@ -646,8 +631,6 @@ public class TechTree {
 	}
 
 	public List<TechNode> getAllNodes() {
-		// IMPORTANT!!! DO NOT MODIFY THESE NODES
-
 		List<TechNode> allNodes = new List<TechNode>();
 
 		foreach (TechNode node in bought) {
@@ -664,55 +647,75 @@ public class TechTree {
 	}
 
 	public void buyNode(TechNode node) {
-		available.Remove(node);
-		node.buy();
-		bought.Add(node);
-		foreach (TechNode child in node.children) {
-			if (!available.Contains(child)) {
-				available.Add(child);
-				child.unlock();
+		// FIXME: possibly move checks outside of function, should not be able to buy unless passed
+		bool proceed = false;
+
+		if (available.Contains(node) && !node.research_locked) {
+			if (_storm) {
+				if (GameManager.Instance.Game.Solar >= node.cost) {
+					proceed = true;
+					GameManager.Instance.Game.spendSolar(node.cost);
+				}
+			} else {
+				if (GameManager.Instance.Game.GlobalFunding >= node.cost) {
+					proceed = true;
+					GameManager.Instance.Game.spendGlobalFunding(node.cost);
+				}
 			}
 		}
-		updateStats(node);
+		if (proceed) {
+			available.Remove(node);
+			node.buy();
+			bought.Add(node);
+			foreach (TechNode child in node.children) {
+				if (!available.Contains(child)) {
+					available.Add(child);
+					child.unlock();
+				}
+			}
+			updateStats(node);
+		}
 	}
 
 	public void setDefaults() {
 		if (_storm) {
-			treeWeather.setGlobalDefault();
-			treeGeo.setGlobalDefault();
+			treeWeather.setGlobalDefaults();
+			treeGeo.setGlobalDefaults();
 		} else {
-			treeWeather.setGlobalDefault();
-			treeGeo.setGlobalDefault();
-			treeHuman.setGlobalDefault();
+			treeWeather.setGlobalDefaults();
+			treeGeo.setGlobalDefaults();
+			treeHuman.setGlobalDefaults();
 		}
 	}
 
 	public void updateStats(TechNode node) {
+		// After buying node, add effects of node to tech tree variables
+		// FIXME: just made it a different function oops this is why we comment our code kids
 		if (_storm) {
-			for (int i=0; i<node.weather.vars.Length; i++) {
+			for (int i=0; i<treeWeather.vars.Length; i++) {
 				if (node.weather.vars[i] != 0) {
-					treeWeather.vars[i] += node.weather.vars[i];
+					treeWeather.vars[i] = treeWeather.globalDefaults[i] + node.weather.vars[i];
 				}
 			}
-			for (int i=0; i<node.geo.vars.Length; i++) {
+			for (int i=0; i<treeGeo.vars.Length; i++) {
 				if (node.geo.vars[i] != 0) {
-					treeGeo.vars[i] += node.geo.vars[i];
+					treeGeo.vars[i] = treeGeo.globalDefaults[i] + node.geo.vars[i];
 				}
 			}
 		} else {
-			for (int i=0; i<node.weather.vars.Length; i++) {
+			for (int i=0; i<treeWeather.vars.Length; i++) {
 				if (node.weather.vars[i] != 0) {
-					treeWeather.vars[i] += node.weather.vars[i];
+					treeWeather.vars[i] = treeWeather.globalDefaults[i] + node.weather.vars[i];
 				}
 			}
-			for (int i=0; i<node.geo.vars.Length; i++) {
+			for (int i=0; i<treeGeo.vars.Length; i++) {
 				if (node.geo.vars[i] != 0) {
-					treeGeo.vars[i] += node.geo.vars[i];
+					treeGeo.vars[i] = treeGeo.globalDefaults[i] + node.geo.vars[i];
 				}
 			}
-			for (int i=0; i<node.human.vars.Length; i++) {
+			for (int i=0; i<treeHuman.vars.Length; i++) {
 				if (node.human.vars[i] != 0) {
-					treeHuman.vars[i] += node.human.vars[i];
+					treeHuman.vars[i] = treeHuman.globalDefaults[i] + node.human.vars[i];
 				}
 			}
 		}
