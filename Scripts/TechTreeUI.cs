@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class TechTreeUi : Control
+public partial class TechTreeUI : Control
 {
 	[Export] public TextureButton CloseButton;
-	
-	public Control treeArea;
+	[Export] public Control techTreeContent;
 	private Dictionary<string, TechNodeButton> nameToButton = new(); // Maps node names to their buttons
 
 	public override void _Ready()
@@ -15,16 +14,8 @@ public partial class TechTreeUi : Control
 		// Close button
 		CloseButton.Pressed += OnClosePressed;
 
-		// Get button container
-		treeArea = GetNodeOrNull<Control>("ScrollArea/TreeArea"); 
-		if (treeArea == null)
-		{
-			GD.PrintErr("TechTreeUi: TreeArea node not found.");
-			return;
-		}
-		
 		// Set listeners for buttons
-		foreach (Node child in treeArea.GetChildren())
+		foreach (Node child in techTreeContent.GetChildren())
 		{
 			if (child is TechNodeButton btn)
 			{
@@ -38,7 +29,7 @@ public partial class TechTreeUi : Control
 		
 		// lookup table
 		nameToButton.Clear();
-		foreach (Node child in treeArea.GetChildren())
+		foreach (Node child in techTreeContent.GetChildren())
 		{
 			if (child is TechNodeButton btn)
 				nameToButton[btn.NodeName] = btn;
@@ -67,7 +58,7 @@ public partial class TechTreeUi : Control
 	
 	private void DrawConnectionLines()
 	{
-		var linesNode = treeArea.GetNodeOrNull<Control>("LinesLayer");
+		var linesNode = techTreeContent.GetNodeOrNull<Control>("LinesLayer");
 		if (linesNode == null)
 		{
 			GD.PrintErr("LinesLayer not found in TreeArea.");
@@ -110,7 +101,7 @@ public partial class TechTreeUi : Control
 		if (tree == null) return;
 		
 		// Rebind to updated state and update visuals
-		foreach (Node child in treeArea.GetChildren())
+		foreach (Node child in techTreeContent.GetChildren())
 		{
 			if (child is TechNodeButton btn)
 			{	
@@ -129,7 +120,7 @@ public partial class TechTreeUi : Control
 	{
 		//GD.Print("[TechTreeUi] UpdateAllNodeButtons called");
 
-		foreach (Node child in treeArea.GetChildren())
+		foreach (Node child in techTreeContent.GetChildren())
 		{
 			if (child is TechNodeButton btn)
 			{
