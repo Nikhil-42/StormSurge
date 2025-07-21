@@ -1,10 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://b4d1qg70hud40"]
+[gd_scene load_steps=20 format=3 uid="uid://b4d1qg70hud40"]
 
 [ext_resource type="Texture2D" uid="uid://b2pigmmk0o7l8" path="res://Assets/Notification box .png" id="1_6ipeo"]
-[ext_resource type="Script" uid="uid://b24ngdl824nt" path="res://Scripts/TechTreeUi.cs" id="1_xr3ga"]
+[ext_resource type="Script" uid="uid://b24ngdl824nt" path="res://Scripts/TechTreeUI.cs" id="1_xr3ga"]
+[ext_resource type="Script" uid="uid://w4gb06g4qjsc" path="res://Scripts/PanAndZoom.cs" id="2_0wmf7"]
 [ext_resource type="PackedScene" uid="uid://djgjd2t0jhakl" path="res://Scenes/TechNodeButton.tscn" id="2_6ipeo"]
-[ext_resource type="Script" uid="uid://iu1fsuwl8wcl" path="res://Scripts/ScrollArea.cs" id="2_xr3ga"]
-[ext_resource type="Texture2D" uid="uid://c780n8mre4gfb" path="res://Assets/UIElements/HexGrid2.jpg" id="3_2562u"]
 [ext_resource type="Texture2D" uid="uid://c3yixyjc05bh4" path="res://Assets/UIElements/Climate- locked unclicked.PNG" id="5_73if2"]
 [ext_resource type="Texture2D" uid="uid://byqop4asxodv6" path="res://Assets/UIElements/2HB HOVER.PNG" id="5_p8ylv"]
 [ext_resource type="Texture2D" uid="uid://d22t725og2q4i" path="res://Assets/UIElements/Globe- unlocked.PNG" id="6_0h2ny"]
@@ -21,7 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://c66dtgm8tvu1j" path="res://Assets/UIElements/2HB UNCLICKED.png" id="18_6mmsx"]
 [ext_resource type="Texture2D" uid="uid://cupj6mr1xtlx6" path="res://Assets/UIElements/2HB CLICK.png" id="19_2562u"]
 
-[node name="TechTreeUI" type="Control" node_paths=PackedStringArray("CloseButton")]
+[node name="TechTreeUI" type="Control" node_paths=PackedStringArray("CloseButton", "treeArea")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +28,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xr3ga")
-CloseButton = NodePath("ScrollArea/CloseButton")
+CloseButton = NodePath("TechTreeClip/TechTreeControls/TechTreeContent/CloseButton")
+treeArea = NodePath("TechTreeClip/TechTreeControls/TechTreeContent")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -45,26 +45,26 @@ grow_vertical = 2
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("1_6ipeo")
 
-[node name="HexGrid" type="TextureRect" parent="."]
-visible = false
+[node name="TechTreeClip" type="Control" parent="."]
+clip_children = 2
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_2562u")
 
-[node name="ScrollArea" type="Control" parent="."]
+[node name="TechTreeControls" type="Control" parent="TechTreeClip"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_xr3ga")
+script = ExtResource("2_0wmf7")
 
-[node name="TreeArea" type="Control" parent="ScrollArea"]
+[node name="TechTreeContent" type="Control" parent="TechTreeClip/TechTreeControls"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -74,7 +74,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Oil 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Oil 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -93,7 +93,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Invest in Oil 1"
 
-[node name="Oil 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Oil 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -112,7 +112,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Invest in Oil 2"
 
-[node name="Misinformation 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Misinformation 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -131,7 +131,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Spread Misinformation 1"
 
-[node name="Misinformation 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Misinformation 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -150,7 +150,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Spread Misinformation 2"
 
-[node name="Oil Industry" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Oil Industry" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -169,7 +169,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Oil Industry Government Complex"
 
-[node name="Fake Science" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Fake Science" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -188,7 +188,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Fake Science"
 
-[node name="Reverse Policies" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Reverse Policies" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -207,7 +207,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Reverse Environmental Policies"
 
-[node name="Abolish Agencies" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Abolish Agencies" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -226,7 +226,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Abolish Environmental Agencies"
 
-[node name="Ozone Depletion 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Ozone Depletion 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -245,7 +245,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Ozone Depletion 1"
 
-[node name="Ozone Depletion 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Ozone Depletion 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -264,7 +264,7 @@ texture_pressed = ExtResource("6_e46p3")
 texture_hover = ExtResource("7_mgiwy")
 NodeName = "Ozone Depletion 2"
 
-[node name="Base Radius 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Base Radius 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -283,7 +283,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Base Radius 1"
 
-[node name="Base Radius 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Base Radius 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -302,7 +302,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Base Radius 2"
 
-[node name="Base Radius 3" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Base Radius 3" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -321,7 +321,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Base Radius 3"
 
-[node name="Wind Speed 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Wind Speed 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -340,7 +340,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Wind Speed 1"
 
-[node name="Wind Speed 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Wind Speed 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -359,7 +359,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Wind Speed 2"
 
-[node name="Tornadoes 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Tornadoes 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -378,7 +378,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Tornadoes 1"
 
-[node name="Tornadoes 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Tornadoes 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -397,7 +397,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Tornadoes 2"
 
-[node name="Whirlwind" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Whirlwind" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -416,7 +416,7 @@ texture_pressed = ExtResource("9_fvxac")
 texture_hover = ExtResource("10_d14hm")
 NodeName = "Whirlwind"
 
-[node name="Storm Cult" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Storm Cult" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -435,7 +435,7 @@ texture_pressed = ExtResource("6_0h2ny")
 texture_hover = ExtResource("7_a26c4")
 NodeName = "Storm Cult"
 
-[node name="Cult Following" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Cult Following" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -454,7 +454,7 @@ texture_pressed = ExtResource("6_0h2ny")
 texture_hover = ExtResource("7_a26c4")
 NodeName = "Cult Following"
 
-[node name="Organized Religion" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Organized Religion" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -473,7 +473,7 @@ texture_pressed = ExtResource("6_0h2ny")
 texture_hover = ExtResource("7_a26c4")
 NodeName = "Organized Religion"
 
-[node name="Religious Extremism" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Religious Extremism" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -492,7 +492,7 @@ texture_pressed = ExtResource("6_0h2ny")
 texture_hover = ExtResource("7_a26c4")
 NodeName = "Religious Extremism"
 
-[node name="Regional Spread" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Regional Spread" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -511,7 +511,7 @@ texture_pressed = ExtResource("6_0h2ny")
 texture_hover = ExtResource("7_a26c4")
 NodeName = "Regional Spread"
 
-[node name="Global Spread" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Global Spread" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -530,7 +530,7 @@ texture_pressed = ExtResource("6_0h2ny")
 texture_hover = ExtResource("7_a26c4")
 NodeName = "Global Spread"
 
-[node name="Doomsday Prophecy" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Doomsday Prophecy" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -549,7 +549,7 @@ texture_pressed = ExtResource("6_0h2ny")
 texture_hover = ExtResource("7_a26c4")
 NodeName = "Doomsday Prophecy"
 
-[node name="Weather Balloons" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Weather Balloons" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -568,7 +568,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Sabotage Weather Balloons"
 
-[node name="Satillite 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Satillite 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -587,7 +587,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Hack Satellite Receivers"
 
-[node name="Satillite 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Satillite 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -606,7 +606,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Satellites"
 
-[node name="Satillite 3" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Satillite 3" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -625,7 +625,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy GPS Satellites"
 
-[node name="Food Stores" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Food Stores" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -644,7 +644,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Food Stores"
 
-[node name="Crop Virus 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Crop Virus 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -663,7 +663,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Spread Crop Virus 1"
 
-[node name="Crop Virus 2" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Crop Virus 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -682,7 +682,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Spread Crop Virus 2"
 
-[node name="Blight" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Blight" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -701,7 +701,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Virus Mutates to Blight"
 
-[node name="Supply Chains 1" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Supply Chains 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -720,7 +720,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Supply Chains 1"
 
-[node name="Supply Chains 4" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Supply Chains 4" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -739,7 +739,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Supply Chains 2"
 
-[node name="Ground Flights" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Ground Flights" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -758,7 +758,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Ground Flights"
 
-[node name="Aircrafts" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Aircrafts" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -777,7 +777,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Aircraft"
 
-[node name="Destroy Ports" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Destroy Ports" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -796,7 +796,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Ports"
 
-[node name="Destroy Ships" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Destroy Ships" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -815,7 +815,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Ships"
 
-[node name="Minor Roads" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Minor Roads" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -834,7 +834,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Minor Roads"
 
-[node name="Major Roads" parent="ScrollArea/TreeArea" instance=ExtResource("2_6ipeo")]
+[node name="Major Roads" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -853,7 +853,7 @@ texture_pressed = ExtResource("15_qnjci")
 texture_hover = ExtResource("16_6mmsx")
 NodeName = "Destroy Major Roads"
 
-[node name="LinesLayer" type="Control" parent="ScrollArea/TreeArea"]
+[node name="LinesLayer" type="Control" parent="TechTreeClip/TechTreeControls/TechTreeContent"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -865,7 +865,7 @@ offset_bottom = -87.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CloseButton" type="TextureButton" parent="ScrollArea"]
+[node name="CloseButton" type="TextureButton" parent="TechTreeClip/TechTreeControls/TechTreeContent"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
