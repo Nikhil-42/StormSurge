@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c8ovruwvrfxkn" path="res://Assets/pin.glb" id="4_xe0gy"]
 [ext_resource type="Script" uid="uid://c0ufklqh0cant" path="res://Scripts/Storm.cs" id="6_7ccvn"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Scripts/Map3dFeatures.cs" id="6_p4pkd"]
-[ext_resource type="PackedScene" uid="uid://bdrnkcvvqo6bv" path="res://Scenes/Storm.tscn" id="7_3gigf"]
+[ext_resource type="PackedScene" path="res://Scenes/Storm.tscn" id="7_3gigf"]
 [ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/UIElements/solar_coin.png" id="8_w2mav"]
 [ext_resource type="Script" uid="uid://cf2aqhlheb178" path="res://Scenes/CameraRig.cs" id="8_wjear"]
 [ext_resource type="PackedScene" uid="uid://c4i3qa35h5afx" path="res://Scenes/UI.tscn" id="10_llkvi"]

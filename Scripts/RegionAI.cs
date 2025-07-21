@@ -57,7 +57,6 @@ public class RegionStats
 			.ToList();
 	}
 
-	// FIXME: make print statement to make sure country geographic data is being parsed correctly
 	public void printRegion() {
 		List<string> countryList = GetCountries();
 		string countryString = "";
@@ -75,9 +74,9 @@ public class RegionStats
 }
 
 public partial class RegionAI
-// FIXME: list of region AI should be made and handled in the game state,
-// not game manager, class
 {
+	private int _id;
+
 	enum ReactionState
 	{
 		Research,
@@ -85,6 +84,7 @@ public partial class RegionAI
 		Recovery,
 		Debauchery,
 	}
+	private ReactionState _state;
 
 	public record ActionType
 	{
@@ -114,18 +114,62 @@ public partial class RegionAI
 			secondaryDamage = 0.0f;
 		}
 	}
+	private Progress _progress;
+
+	public RegionStats _regionStats;
+
+	public class Characteristics {  // Variables different for each country that are calculated based on stats
+		// MONIE MATTERS
+		public double income;  // Region usable income based on GDP and population
+		public double globalResearchFunding;  // % usual contribution of income to global research
+
+		// DAMAGE THRESHOLDS
+		public double goodHealth;  // Switch to savings/debauchery/research
+		public double midHealth;  // Switch to recovery/research
+		public double poorHealth;  // Switch to recovery
+
+		public double goodMoney;  // Switch from savings to debauchery, full research investment (rarely happens for poorest regions)
+		public double midMoney;  // Savings, partial research investment
+		public double poorMoney;  // Savings, no research investment
+
+		public double lowAlarmThreshold;  // No debauchery, fund research (75% income), upgrades (25% income) instead
+		public double highAlarmThreshold;  // Upgrades (75% income), and research (25% income)
+
+		// DAMAGE RATE
+		public double windDamageMultiplier;  // Base 1.0, affected by infrastructure and preparedness
+		public double waterDamageMultiplier;  // Base 1.0, highly affected by coastal population
+		public double secondaryDamageMultiplier;  // Base 1.0, highly affected by development index
+
+		// POLITICAL, INFRASTRUCTURE
+		public double governmentEfficiency;  // Base 1.0 multiplier
+		public double emissions;  // Greenhouse gas emissions based on GDP
+		public double internationalRelations;  // Base 1.0 multiplier, likelihood to join/form alliances
+		public double education;  // Base 1.0 multiplier, affects preparation and speed of cult spread
+		public double buildingInfrastructure;  // Base 1.0 multiplier, general quality of architecture in region (based on GDP for now)
+		public double stormPreparedness;  // Base 1.0 multiplier for countries that regularly experience storms normally (based on GDP + coastal pop for now)
+
+		public Characteristics() {
+			double PerCapitaGDP = (_regionStats.GDP * 1000) / _regionStats.Population;
+			if (PerCapitaGDP > 50000) {
+				income = _regionStats.GDP * 0.6;
+				globalResearchFunding = 0.5;
+			} else if (PerCapitaGDP > 20000) {
+				income = _regionStats.GDP * 0.4;
+				globalResearchFunding = 0.2;
+			} else if (PerCapitaGDP > 10000) {
+				income = _regionStats.GDP * 0.3;
+				globalResearchFunding = 0.1;
+			} else {
+				income = _regionStats.GDP * 0.2;
+				globalResearchFunding = 0.05;
+			}
+			income = _regionStats.GDP;
+		}
+	} 
+
+	public TechTree regionTree;
 
 	/*public class Stats {  // Fixed variables
-		public string name;  // region's name
-		public string code;  // 3-lettered unique code
-		public List<string> countries = new List<string>();  // encompassing countries
-		public int pop;  // in millions
-		public double coastalPop;  // decimal
-		public double devIndex;  // development index
-		public double GDP;  // in billions of USD
-		public int minElevation;  // in meters
-		public int maxElevation;  // in meters
-
 		// All values are (1-5) (least-most), except Transport stats (1-3)
 		public int[] values = new int[11];
 		public string[] codes = new string[11] {"RES", "CON", "GTP", "ATP", "STP", "INR", "PRE", 
@@ -134,26 +178,9 @@ public partial class RegionAI
 			"Ground Transport", "Air Transport", "Ship Transport", "International Relations", 
 			"Disaster Preparation", "Government Function", "Education", "Climate Research", 
 			"Storm Susceptibility"};
-
-		var csvPath = "res://Assets/region_geographic_data.csv";
-
-		public Stats(int id) {
-			// FIXME: initiator based on id finds and pulls data from csv
-
-		}
-
-		private readCSV(int id) {
-
 		}
 	}*/
-
-	// 
-	private int _id;
-	private ReactionState _state;
-	private Progress _progress;
 	// private Stats _stats;  // FIXME: if entertree region stats works, edit Stats object
-	public RegionStats _regionStats;  // FIXME: make sure this works and rename
-	public TechTree regionTree;
 
 	public RegionAI(int id)
 	{
