@@ -20,7 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://c66dtgm8tvu1j" path="res://Assets/UIElements/2HB UNCLICKED.png" id="18_6mmsx"]
 [ext_resource type="Texture2D" uid="uid://cupj6mr1xtlx6" path="res://Assets/UIElements/2HB CLICK.png" id="19_2562u"]
 
-[node name="TechTreeUI" type="Control" node_paths=PackedStringArray("CloseButton", "treeArea")]
+[node name="TechTreeUI" type="Control" node_paths=PackedStringArray("CloseButton", "techTreeContent")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xr3ga")
 CloseButton = NodePath("TechTreeClip/TechTreeControls/TechTreeContent/CloseButton")
-treeArea = NodePath("TechTreeClip/TechTreeControls/TechTreeContent")
+techTreeContent = NodePath("TechTreeClip/TechTreeControls/TechTreeContent")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
