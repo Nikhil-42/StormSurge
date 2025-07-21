@@ -206,6 +206,7 @@ public partial class RegionAI
 		_state = ReactionState.Savings; // Initial state
 		_progress = new Progress();
 		_regionStats = regionStats;
+		_chars = new Characteristics(regionStats);
 
 		if (GameManager.Instance.PrintDebug) GD.Print("Creating region AI tech tree...");
 		regionTree = new TechTree(false);
