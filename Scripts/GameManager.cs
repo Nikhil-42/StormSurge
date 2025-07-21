@@ -75,7 +75,7 @@ public partial class GameState {  // Move node attributes, make not a node, make
 		_regionAIs = new RegionAI[regionNames.Count-1];
 		for (int i = 0; i < regionNames.Count-1; i++) {
 			_regionAIs[i] = new RegionAI(i+1);
-			_regionAIs[i].setRegionStats(regionStats[i], GameManager.Instance.PrintDebug);
+			_regionAIs[i].setRegionStatsChars(regionStats[i], GameManager.Instance.PrintDebug);
 		}
 	}
 

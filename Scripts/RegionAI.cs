@@ -83,6 +83,7 @@ public partial class RegionAI
 		Savings,
 		Recovery,
 		Debauchery,
+		Death,
 	}
 	private ReactionState _state;
 
@@ -92,6 +93,7 @@ public partial class RegionAI
 		public record Research(TechNode node) : ActionType;
 		public record Recover() : ActionType;
 		public record Debauch() : ActionType;
+		public record Death() : ActionType;
 	}
 
 	public class Progress {	 // Dynamic variables
@@ -140,7 +142,7 @@ public partial class RegionAI
 
 		// DAMAGE RATE
 		public double windDamageMultiplier;  // Base 1.0, affected by infrastructure and preparedness
-		public double waterDamageMultiplier;  // Base 1.0, highly affected by coastal population
+		public double floodDamageMultiplier;  // Base 1.0, highly affected by coastal population
 		public double secondaryDamageMultiplier;  // Base 1.0, highly affected by development index
 
 		// POLITICAL, INFRASTRUCTURE
@@ -151,60 +153,61 @@ public partial class RegionAI
 		public double buildingInfrastructure;  // Base 1.0 multiplier, general quality of architecture in region (based on GDP for now)
 		public double stormPreparedness;  // Base 1.0 multiplier for countries that regularly experience storms normally (based on GDP + coastal pop for now)
 
-		public Characteristics() {
+		public Characteristics(RegionStats stats) {
 			// income, globalResearchFunding, Money's, emissions
-			double PerCapitaGDP = (_regionStats.GDP * 1000) / _regionStats.Population;
+			double PerCapitaGDP = (stats.GDP * 1000) / stats.Population;
 			if (PerCapitaGDP > 50000) {
-				income = _regionStats.GDP * 0.6;
+				income = stats.GDP * 0.6;
 				globalResearchFunding = 0.5;
 
 				goodMoney = 0.9;
 				midMoney = 0.75;
 				poorMoney = 0.5;
 			} else if (PerCapitaGDP > 20000) {
-				income = _regionStats.GDP * 0.4;
+				income = stats.GDP * 0.4;
 				globalResearchFunding = 0.2;
 
 				goodMoney = 0.8;
 				midMoney = 0.6;
 				poorMoney = 0.3;
 			} else if (PerCapitaGDP > 10000) {
-				income = _regionStats.GDP * 0.3;
+				income = stats.GDP * 0.3;
 				globalResearchFunding = 0.1;
 
 				goodMoney = 0.7;
 				midMoney = 0.5;
 				poorMoney = 0.2;
 			} else {
-				income = _regionStats.GDP * 0.2;
+				income = stats.GDP * 0.2;
 				globalResearchFunding = 0.05;
 
 				goodMoney = 0.6;
 				midMoney = 0.4;
 				poorMoney = 0.2;
 			}
-			emissions = _regionStats.GDP / 1000;
+			emissions = stats.GDP / 1000;
 
 			// Health's, alarm thresholds, damage multipliers, etc.
-			goodHealth = 0.8 + (0.2 * _regionStats.DevelopmentIndex);
-			midHealth = 0.6 + (0.4 * _regionStats.DevelopmentIndex);
-			poorHealth = 0.4 + (0.6 * _regionStats.DevelopmentIndex);
+			goodHealth = 0.8 + (0.2 * stats.DevelopmentIndex);
+			midHealth = 0.6 + (0.4 * stats.DevelopmentIndex);
+			poorHealth = 0.4 + (0.6 * stats.DevelopmentIndex);
 
-			lowAlarmThreshold = 0.9 + (0.1 * _regionStats.DevelopmentIndex);
-			highAlarmThreshold = 0.75 + (0.25 * _regionStats.DevelopmentIndex);
+			lowAlarmThreshold = 0.9 + (0.1 * stats.DevelopmentIndex);
+			highAlarmThreshold = 0.75 + (0.25 * stats.DevelopmentIndex);
 
-			windDamageMultiplier = 1 + ((1 - _regionStats.DevelopmentIndex)/2);
-			floodDamageMultiplier = 1 + _regionStats.CoastalPopulation;
-			secondaryDamageMultiplier = 1 + (1 - _regionStats.DevelopmentIndex);
+			windDamageMultiplier = 1 + ((1 - stats.DevelopmentIndex)/2);
+			floodDamageMultiplier = 1 + stats.CoastalPopulation;
+			secondaryDamageMultiplier = 1 + (1 - stats.DevelopmentIndex);
 
-			governmentEfficiency = 0.5 + _regionStats.DevelopmentIndex;
-			internationalRelations = 0.5 + _regionStats.DevelopmentIndex;
-			education = 0.5 + _regionStats.DevelopmentIndex;
-			buildingInfrastructure = 0.5 + _regionStats.DevelopmentIndex;
+			governmentEfficiency = 0.5 + stats.DevelopmentIndex;
+			internationalRelations = 0.5 + stats.DevelopmentIndex;
+			education = 0.5 + stats.DevelopmentIndex;
+			buildingInfrastructure = 0.5 + stats.DevelopmentIndex;
 
-			stormPreparedness = 0.5 + (_regionStats.DevelopmentIndex * _regionStats.CoastalPopulation);
+			stormPreparedness = 0.5 + (stats.DevelopmentIndex * stats.CoastalPopulation);
 		}
-	} 
+	}
+	public Characteristics _chars;
 
 	public TechTree regionTree;
 
@@ -233,62 +236,69 @@ public partial class RegionAI
 		regionTree.setDefaults();
 	}
 
-	public void setRegionStats(RegionStats stats, bool debug) {
+	public void setRegionStatsChars(RegionStats stats, bool debug) {
 		_regionStats = stats;
 		if (debug) _regionStats.printRegion();
+
+		_chars = new Characteristics(stats);
 	}
 
 	private ReactionState GetNextState()
 	{
 		var nextState = _state;
-		switch (_state)
-		{
-			case ReactionState.Research:
-				if (_progress.health < 0.5) // Hardcoded decision points, should be members later
-				{
-					nextState = ReactionState.Recovery; // Switch to recovery if health is low
-				}
-				else if (_progress.health > 0.9)
-				{
-					nextState = ReactionState.Savings; // Switch to savings if health is high
-				}
-				break;
-			case ReactionState.Savings:
-				if (_progress.health < 0.8)
-				{
-					nextState = ReactionState.Research; // Switch to research if we get damaged 
-				}
-				if (_progress.monies > 100.0)
-				{
-					nextState = ReactionState.Debauchery; // Switch to debauchery if money is high
-				}
-				break;
-			case ReactionState.Recovery:
-				if (_progress.health > 0.8 || _progress.monies == 0.0)
-				{
-					nextState = ReactionState.Savings; // Switch to savings if health is high
-				}
-				break;
-			case ReactionState.Debauchery:
-				if (_progress.monies < 50.0 || _progress.health < 0.5)
-				{
-					nextState = ReactionState.Savings; // Switch back to savings after debauchery 
-				}
-				break;
-			default:
-				return _state; // Fallback to current state if unknown
+		if (_state == ReactionState.Death || _progress.health <= 0.0) {
+			nextState = ReactionState.Death;
+		} else {
+			switch (_state)
+			{
+				case ReactionState.Research:
+					if (_progress.health < _chars.poorHealth) // Hardcoded decision points, should be members later
+					{
+						nextState = ReactionState.Recovery; // Switch to recovery if health is low
+					}
+					else if (_progress.health > _chars.goodHealth)
+					{
+						nextState = ReactionState.Savings; // Switch to savings if health is high
+					}
+					break;
+				case ReactionState.Savings:
+					if (_progress.health < _chars.midHealth)
+					{
+						nextState = ReactionState.Research; // Switch to research if we get damaged 
+					}
+					if (_progress.monies > _chars.goodMoney)
+					{
+						nextState = ReactionState.Debauchery; // Switch to debauchery if money is high
+					}
+					break;
+				case ReactionState.Recovery:
+					if (_progress.health > _chars.goodHealth || _progress.monies == 0.0)
+					{
+						nextState = ReactionState.Savings; // Switch to savings if health is high
+					}
+					break;
+				case ReactionState.Debauchery:
+					if (_progress.monies < _chars.midMoney || _progress.health < _chars.midHealth)
+					{
+						nextState = ReactionState.Savings; // Switch back to savings after debauchery 
+					}
+					break;
+				default:
+					return _state; // Fallback to current state if unknown
+			}
 		}
 		return nextState;
 	}
 
 	public void Process(double deltaTime, GameState gameState)
 	{
+		double currentIncome = (_chars.income/52) * deltaTime * _progress.health;
 		ActionType decision = Decide(gameState);
 		switch (decision)
 		{
 			case ActionType.Save:
 				// Small additional income from savings
-				_progress.monies += 5.0 * 1.2 * deltaTime * _progress.health;
+				_progress.monies += currentIncome;
 				break;
 			case ActionType.Research(TechNode node):
 				if (_progress.monies >= node.cost && gameState.humanTree.available.Contains(node))
@@ -296,16 +306,24 @@ public partial class RegionAI
 					_progress.monies -= node.cost; // Deduct cost of research
 					gameState.humanTree.buyNode(node); // Perform the research
 				}
-				_progress.monies += 5.0 * deltaTime * _progress.health; // Passive income based on health
+				_progress.monies += currentIncome; // Passive income based on health
 				break;
 			case ActionType.Recover:
-				var spending = Mathf.Min(5.0 * deltaTime, _progress.monies); // Spend up to 0.1 money per second)
+				var spending = Mathf.Min(currentIncome, _progress.monies); // Spend up to 0.1 money per second)
 				_progress.health += 0.01 * spending;
 				_progress.monies -= spending; // Deduct the money spent on recovery
 				break;
 			case ActionType.Debauch:
-				var debauchSpending = Mathf.Min(5.0 * deltaTime, _progress.monies); // Spend up to 0.1 money per second on luxuries
+				var debauchSpending = Mathf.Min(currentIncome, _progress.monies); // Spend up to 0.1 money per second on luxuries
 				_progress.monies -= debauchSpending; // Deduct the money spent on luxuries
+				break;
+			case ActionType.Death:  // cannot undie
+				if (_progress.monies > 0.0) {
+					_progress.monies = 0.0;
+				}
+				if (_progress.health > 0.0) {
+					_progress.health = 0.0;
+				}
 				break;
 			default:
 				GD.PrintErr($"Unknown action type: {decision}");
@@ -342,6 +360,8 @@ public partial class RegionAI
 			case ReactionState.Debauchery:
 				// Humanity spends money on luxuries, no action taken
 				return new ActionType.Debauch();
+			case ReactionState.Death:
+				return new ActionType.Death();
 			default:
 				GD.PrintErr($"Unknown state: {_state}");
 				return new ActionType.Save(); // Fallback action
@@ -354,16 +374,16 @@ public partial class RegionAI
 		switch (type)
 		{
 			case DamageType.Wind:
-				_progress.windDamage += damage;
-				_progress.health -= 0.1 * damage; // Wind damage reduces health
+				_progress.windDamage += damage * _chars.windDamageMultiplier;
+				_progress.health -= 0.1 * (damage * _chars.windDamageMultiplier); // Wind damage reduces health
 				break;
 			case DamageType.Flood:
-				_progress.floodDamage += damage;
-				_progress.health -= 0.2 * damage; // Flood damage reduces health more
+				_progress.floodDamage += damage * _chars.floodDamageMultiplier;
+				_progress.health -= 0.2 * (damage * _chars.floodDamageMultiplier); // Flood damage reduces health more
 				break;
 			case DamageType.Secondary:
-				_progress.secondaryDamage += damage;
-				_progress.health -= 0.05 * damage; // Secondary damage reduces health slightly
+				_progress.secondaryDamage += damage * _chars.secondaryDamageMultiplier;
+				_progress.health -= 0.05 * (damage * _chars.secondaryDamageMultiplier); // Secondary damage reduces health slightly
 				break;
 			default:
 				GD.PrintErr($"Unknown damage type: {type}");
