@@ -32,7 +32,7 @@ public class GameState {  // Move node attributes, make not a node, make private
 	public RegionAI[] RegionAIs { get => _regionAIs; }
 	
 	// ================= INITIALIZER ================================
-	public GameState(string[] regionNames, Dictionary<string, RegionStats> regionStats) {
+	public GameState(RegionStats[] regionStats) {
 		if (GameManager.Instance.PrintDebug) {
 			GD.Print("Creating game state object...");
 			GD.Print("Creating game storm and human tech tree...");
@@ -47,9 +47,10 @@ public class GameState {  // Move node attributes, make not a node, make private
 		
 		if (GameManager.Instance.PrintDebug) GD.Print("\nCreating Region AI objects...");
 
-		_regionAIs = new RegionAI[regionStats.Count];
-		for (int i = 0; i < regionStats.Count; i++) {
-			_regionAIs[i] = new RegionAI(regionStats[regionNames[i+1]]);
+		_regionAIs = new RegionAI[regionStats.Length];
+		for (int i = 0; i < regionStats.Length; i++) {
+			_regionAIs[i] = new RegionAI(regionStats[i]);
+			GD.Print(i, "Name: ", regionStats[i].name, ", ID: ", _regionAIs[i].Id);
 			if (GameManager.Instance.PrintDebug) _regionAIs[i].regionStats.printRegion();
 		}
 	}

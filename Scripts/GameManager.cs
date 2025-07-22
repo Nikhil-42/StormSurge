@@ -20,8 +20,6 @@ public partial class GameManager : Node
 	private bool _printDebug = true;
 
 	private GameState _game = null;
-	private string[] _regionNames = null;
-	private Dictionary<string, RegionStats> _regionStats = null;
 
 	private string currentScreen = "start_menu";
 	private string currentOption = "";
@@ -66,11 +64,8 @@ public partial class GameManager : Node
 			regionsStats.Add(stats.name, stats);
 		}
 
-		_regionStats = regionsStats;
-		_regionNames = ["Ocean", .. regionsStats.Values.OrderBy(r => r.id).Select(r => r.name)];
-
 		GD.Print("GameManager entering tree");  // debugging
-		_game = new GameState(_regionNames, _regionStats);
+		_game = new GameState([.. regionsStats.Values.OrderBy(r => r.id)]);
 
 		intro = GetNode<AudioStreamPlayer>("IntroMusic");
 		loop = GetNode<AudioStreamPlayer>("LoopMusic");
@@ -105,19 +100,29 @@ public partial class GameManager : Node
 
 	public void ApplyDamage(int regionID, double damage, DamageType type)
 	{
-		if (regionID == 0) {
-			// GD.Print("Cannot apply damage to region 0 (Ocean)");
+		if (regionID == -1) {
+			// GD.Print("Cannot apply damage to region -1 (Ocean)");
 			return;
-		} else if (regionID < 0 || regionID > _game.RegionAIs.Length) {
+		} else if (regionID < -1 || regionID >= _game.RegionAIs.Length) {
 			GD.PrintErr($"Invalid region ID: {regionID}");
 			return;
 		}
 		
-		_game.RegionAIs[regionID - 1].ApplyDamage(damage, type);
+		_game.RegionAIs[regionID].ApplyDamage(damage, type);
 		// if (PrintDebug) GD.Print($"Applying {damage} damage of type {type} to humanity AI in region {regionID}");
 	}
 
-	private void OnIntroFinished() {  // Switch to looping music/sound tracks
+	public RegionAI GetRegion(int id)
+	{
+		if (id < 0 || id >= _game.RegionAIs.Length)
+		{
+			return null;
+		}
+		return _game.RegionAIs[id];
+	}
+
+	private void OnIntroFinished()
+	{  // Switch to looping music/sound tracks
 		loop.Seek(0);
 		ambience.Seek(0);
 		loop.Play();
