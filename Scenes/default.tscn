@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=16 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="Script" uid="uid://c4wlwenlkjdy3" path="res://Scripts/GameManager.cs" id="1_xe0gy"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="3_hj5t5"]
@@ -12,6 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://c56ytkypvq14i" path="res://Assets/Cumulus_Intro.mp3" id="10_q5q25"]
 [ext_resource type="AudioStream" uid="uid://dk3k5wky8w0bv" path="res://Assets/Cumulus_Loop.mp3" id="11_p4pkd"]
 [ext_resource type="AudioStream" uid="uid://cabvw8expp1tj" path="res://Assets/ThunderstormAmbience.mp3" id="12_p4pkd"]
+[ext_resource type="PackedScene" uid="uid://brhocv1werbv3" path="res://Scenes/RegionStatsPopup.tscn" id="11_0x8vr"]
 
 [sub_resource type="SystemFont" id="SystemFont_wjear"]
 
@@ -94,6 +95,9 @@ vertical_alignment = 1
 
 [node name="IntroMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_q5q25")
+
+[node name="RegionStatsPopup" parent="." instance=ExtResource("11_0x8vr")]
+visible = false
 autoplay = true
 
 [node name="LoopMusic" type="AudioStreamPlayer" parent="."]
