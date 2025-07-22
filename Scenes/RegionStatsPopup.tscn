@@ -1,0 +1,96 @@
+[gd_scene load_steps=2 format=3 uid="uid://brhocv1werbv3"]
+
+[ext_resource type="Script" uid="uid://b7blpmcxhby8b" path="res://Scripts/RegionStatsPopup.cs" id="1_0x8vr"]
+
+[node name="RegionStatsPopup" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 299.0
+offset_bottom = 330.0
+script = ExtResource("1_0x8vr")
+
+[node name="Background" type="Panel" parent="."]
+modulate = Color(0.2, 0.2, 0.2, 0.9)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.976
+anchor_bottom = 0.978
+offset_right = -0.0160217
+offset_bottom = 0.039978
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchor_right = 0.84
+anchor_bottom = 0.529
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -14.0
+offset_bottom = -0.284027
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 2
+offset_right = 270.0
+offset_bottom = 298.0
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "Region Stats"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="BasicStats" type="VBoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="Control/VBoxContainer/BasicStats"]
+layout_mode = 2
+text = "Health: 100%"
+
+[node name="StateLabel" type="Label" parent="Control/VBoxContainer/BasicStats"]
+layout_mode = 2
+text = "State: Savings"
+
+[node name="MoneyLabel" type="Label" parent="Control/VBoxContainer/BasicStats"]
+layout_mode = 2
+text = "Money: $1000"
+
+[node name="PopulationLabel" type="Label" parent="Control/VBoxContainer/BasicStats"]
+layout_mode = 2
+text = "Population: 10M"
+
+[node name="HSeparator2" type="HSeparator" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="DamageStats" type="VBoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="DamageTitle" type="Label" parent="Control/VBoxContainer/DamageStats"]
+layout_mode = 2
+text = "Damage Statistics"
+horizontal_alignment = 1
+
+[node name="WindDamageLabel" type="Label" parent="Control/VBoxContainer/DamageStats"]
+layout_mode = 2
+text = "Wind Damage: 0"
+
+[node name="FloodDamageLabel" type="Label" parent="Control/VBoxContainer/DamageStats"]
+layout_mode = 2
+text = "Flood Damage: 0"
+
+[node name="SecondaryDamageLabel" type="Label" parent="Control/VBoxContainer/DamageStats"]
+layout_mode = 2
+text = "Secondary Damage: 0"
+
+[node name="HSeparator3" type="HSeparator" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+text = "Close"
