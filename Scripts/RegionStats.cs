@@ -6,15 +6,15 @@ public class RegionStats
 {
     public int id; // Unique ID for the region, used for identification on the texture
     public string name;
-    public string code;
+    public string code;  // Unique 3-letter region code
     public string continent;
     public string countries;
-    public double population;
-    public double coastalPopulation;
-    public double developmentIndex;
-    public double gdp;
-    public int minimumElevation;
-    public int maximumElevation;
+    public double population;  // In millions of people
+    public double coastalPopulation;  // Decimal 0-1
+    public double developmentIndex;  // Scale of 0-1
+    public double gdp;  // In billions of USD/year
+    public int minimumElevation;  // In meters
+    public int maximumElevation;  // In meters
 
     public List<string> GetCountries()
     {

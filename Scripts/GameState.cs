@@ -11,7 +11,6 @@ public class GameState {  // Move node attributes, make not a node, make private
 
 	private int _religionLevel = 1;  // 1: 1% cult followers = 0.2%/0.5%, 2: 1% = 0.5%/1%, 3: 1% = 2%/2%
 	
-
 	private RegionAI[] _regionAIs = null;
 
 	// ================= GLOBAL MONEY & RESEARCH VARIABLES ================================
@@ -51,6 +50,7 @@ public class GameState {  // Move node attributes, make not a node, make private
 		_regionAIs = new RegionAI[regionStats.Count];
 		for (int i = 0; i < regionStats.Count; i++) {
 			_regionAIs[i] = new RegionAI(regionStats[regionNames[i+1]]);
+			if (GameManager.Instance.PrintDebug) _regionAIs[i].regionStats.printRegion();
 		}
 	}
 

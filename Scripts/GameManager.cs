@@ -28,6 +28,10 @@ public partial class GameManager : Node
 	private string currentClick = "";
 	// FIXME: where, when, and how to set and reset these variables in loop
 
+	private AudioStreamPlayer intro;
+	private AudioStreamPlayer loop;
+	private AudioStreamPlayer ambience;
+
 	[Signal]
 	public delegate void SolarChangedEventHandler(int newSolar);  // FIXME: might be put in game manager instead
 	
@@ -67,6 +71,25 @@ public partial class GameManager : Node
 
 		GD.Print("GameManager entering tree");  // debugging
 		_game = new GameState(_regionNames, _regionStats);
+
+		intro = GetNode<AudioStreamPlayer>("IntroMusic");
+		loop = GetNode<AudioStreamPlayer>("LoopMusic");
+		ambience = GetNode<AudioStreamPlayer>("StormAmbience");
+	}
+
+	public override void _Ready()
+	{
+		// Music controls
+		var timer = new Timer();
+		AddChild(timer);
+		timer.OneShot = true;
+		timer.WaitTime = (float)intro.Stream.GetLength();
+
+		timer.Connect("timeout", new Callable(this, nameof(OnIntroFinished)));
+		intro.Play();
+		timer.Start();
+
+		// intro.Connect("finished", new Callable(this, nameof(OnIntroFinished)));
 	}
 	
 	public override void _Process(double deltaTime)
@@ -92,5 +115,12 @@ public partial class GameManager : Node
 		
 		_game.RegionAIs[regionID - 1].ApplyDamage(damage, type);
 		// if (PrintDebug) GD.Print($"Applying {damage} damage of type {type} to humanity AI in region {regionID}");
+	}
+
+	private void OnIntroFinished() {  // Switch to looping music/sound tracks
+		loop.Seek(0);
+		ambience.Seek(0);
+		loop.Play();
+		ambience.Play();
 	}
 }

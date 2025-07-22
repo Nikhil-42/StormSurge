@@ -21,7 +21,7 @@ subpixel_positioning = 0
 font = SubResource("SystemFont_wjear")
 font_size = 100
 
-[node name="Control" type="Control" node_paths=PackedStringArray("NotificationButton", "NotificationHistoryPanel", "HistoryList", "TechTreeButton", "NotificationPopup")]
+[node name="Control" type="Control" node_paths=PackedStringArray("NotificationButton", "NotificationHistoryPanel", "HistoryList", "TechTreeButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,7 +35,6 @@ NotificationHistoryPanel = NodePath("NotificationHistoryPanel")
 HistoryList = NodePath("NotificationHistoryPanel/ScrollContainer/HistoryList")
 TechTreeButton = NodePath("RightButtonsPanel/TechTreeButton")
 TechTreeUIScene = ExtResource("2_n04ve")
-NotificationPopup = NodePath("NotificationPopup")
 
 [node name="Currency" type="Control" parent="."]
 z_index = 3
