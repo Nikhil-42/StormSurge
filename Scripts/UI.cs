@@ -10,9 +10,11 @@ public partial class UI : Control
 	[Export] public VBoxContainer HistoryList;
 	[Export] public BaseButton TechTreeButton;
 	[Export] public PackedScene TechTreeUIScene;
-
+	[Export] private RegionInfoPopup _regionPopup;
 
 	private PackedScene _notificationCardScene;
+	
+	public RegionInfoPopup RegionPopup => _regionPopup;
 
 	private List<string> _testMessages = new()
 	{
@@ -42,6 +44,11 @@ public partial class UI : Control
 		
 		// Tech Tree button
 		TechTreeButton.Pressed += OpenTechTree;
+		
+		// Instantiate region popup
+		//var popupScene = GD.Load<PackedScene>("res://Scenes/RegionInfoPopup.tscn");
+		//_regionPopup = popupScene.Instantiate<RegionInfoPopup>();
+		//AddChild(_regionPopup);
 
 		// Start test loop
 		//_ = RunNotificationTestLoop();

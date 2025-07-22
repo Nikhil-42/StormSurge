@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://bkagshb7dqo6o"]
+
+[ext_resource type="Script" uid="uid://bqtopet2bisp0" path="res://Scripts/RegionInfoPopup.cs" id="1_gcbk1"]
+[ext_resource type="Texture2D" uid="uid://b2pigmmk0o7l8" path="res://Assets/Notification box .png" id="1_l3qil"]
+[ext_resource type="Texture2D" uid="uid://b2imbylwdbxfb" path="res://Assets/Info Button Unclicked.png" id="3_85ryb"]
+[ext_resource type="Texture2D" uid="uid://b16gfly344nev" path="res://Assets/Info Button Clicked.png" id="4_5uyis"]
+[ext_resource type="Texture2D" uid="uid://br6tjbdi3tlf4" path="res://Assets/Info Button Hovered.png" id="5_mlpvv"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ib4eo"]
+texture = ExtResource("1_l3qil")
+
+[node name="RegionInfoPopup" type="Panel"]
+custom_minimum_size = Vector2(200, 200)
+anchors_preset = -1
+offset_right = 200.0
+offset_bottom = 200.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_ib4eo")
+script = ExtResource("1_gcbk1")
+
+[node name="CloseButton" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_top = 11.0
+offset_right = 154.0
+offset_bottom = 219.0
+grow_horizontal = 0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("3_85ryb")
+texture_pressed = ExtResource("4_5uyis")
+texture_hover = ExtResource("5_mlpvv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(160, 110)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -50.0
+offset_right = 80.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ID" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Health" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Population" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="GDP" type="Label" parent="VBoxContainer"]
+layout_mode = 2

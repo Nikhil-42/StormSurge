@@ -135,4 +135,14 @@ public partial class GameManager : Node
 		regionAIs[regionID - 1].ApplyDamage(damage, type);
 		if (PrintDebug) GD.Print($"Applying {damage} damage of type {type} to humanity AI in region {regionID}");
 	}
+	
+	// Public region access function  
+	public RegionAI GetRegionAI(int regionID)
+	{
+		if (regionID <= 0 || regionID > regionAIs.Length)
+			return null;
+
+		return regionAIs[regionID - 1];
+	}
+
 }

@@ -46,6 +46,13 @@ public partial class RegionAI
 	public TechTree regionTree;
 
 	private double _cultFollowers = 0;  // as % of population
+	
+	// Public region state info (Read only access)
+	public int ID => _id;
+	public double Health => _health;
+	public int Population => _population;
+	public double GDP => _GDP; 
+	
 
 	public RegionAI(int id)
 	{

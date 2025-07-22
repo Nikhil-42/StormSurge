@@ -140,6 +140,10 @@ public partial class Globe : Node3D
 				var hitPoint = result[0];
 				var id = GetRegionID(GetLatLon(hitPoint));
 				((ShaderMaterial)_globe.MaterialOverride).SetShaderParameter("selected_region", (uint)id);
+			
+				// Call region info popup
+				var ui = GetNode<UI>("../Control2");
+				ui.RegionPopup.ShowInfo(id);
 			}
 		}
 	}
