@@ -58,8 +58,8 @@ public partial class Storm : Node3D
 			{
 				var hitPoint = result[0];
 				var latlon = _globe.GetLatLon(hitPoint);
-				var regionID = _globe.GetRegionID(latlon);
-				if (regionID == 0)
+				var region = GameManager.Instance.GetRegion(_globe.GetRegionID(latlon));
+				if (region == null)
 				{
 					SpawnStormAt(latlon.X, latlon.Y);
 				}

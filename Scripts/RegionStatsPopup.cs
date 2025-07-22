@@ -38,7 +38,7 @@ public partial class RegionStatsPopup : Control
 		Hide();
 	}
 
-	public void ShowRegionStats(RegionAI region, string regionName = null)
+	public void ShowRegionStats(RegionAI region)
 	{
 		if (region == null)
 		{
@@ -49,12 +49,11 @@ public partial class RegionStatsPopup : Control
 		// Note: Should probably change this to poll the data instead of grabbing it once. ~ Justin
 
 		// Get Current Information
-		_title.Text = regionName ?? $"Region {region.Id}";
+		_title.Text = $"Region {region.Name}";
 
 		_healthLabel.Text = $"Health: {region.Health:P1}";
-		_stateLabel.Text = $"State: {region.State}";
 		_moneyLabel.Text = $"Money: ${region.Money:F0}";
-		_populationLabel.Text = $"Population: {FormatPopulation(region.Population)}";
+		_populationLabel.Text = $"Population: {region.Population:F0}";
 
 		_windDamageLabel.Text = $"Wind Damage: {region.WindDamage:F1}";
 		_floodDamageLabel.Text = $"Flood Damage: {region.FloodDamage:F1}";

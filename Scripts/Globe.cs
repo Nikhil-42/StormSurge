@@ -112,7 +112,7 @@ public partial class Globe : Node3D
 		var point = GetSurfacePoint(latLon);
 		Vector2I pointi = new((int)(point.UV.X * _regionmapImage.GetWidth()), (int)((1.0f - point.UV.Y) * _regionmapImage.GetHeight()));
 		var id = Mathf.RoundToInt(_regionmapImage.GetPixelv(pointi).R * 256);
-		return id;
+		return id - 1;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -135,7 +135,17 @@ public partial class Globe : Node3D
 			{
 				var hitPoint = result[0];
 				var id = GetRegionID(GetLatLon(hitPoint));
-				((ShaderMaterial)_globe.MaterialOverride).SetShaderParameter("selected_region", (uint)id);
+				((ShaderMaterial)_globe.MaterialOverride).SetShaderParameter("selected_region", (uint)(id + 1));
+				
+				// Show region stats popup
+				var gameManager = GameManager.Instance;
+				if (gameManager != null)
+				{
+					var region = gameManager.GetRegion(id);
+					
+					var popup = GetNode<RegionStatsPopup>("../RegionStatsPopup");
+					popup?.ShowRegionStats(region);
+				}
 			}
 		}
 	}

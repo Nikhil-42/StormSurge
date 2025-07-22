@@ -49,6 +49,19 @@ public partial class RegionAI
 
 	public TechTree regionTree;
 
+	private double _cultFollowers = 0;  // as % of population
+
+	// Public getters for accessing region data (turn into getters/setters)
+	public int Id => regionStats.id;
+	public string Name => regionStats.name;
+	public double Health => _progress.health;
+	public double WindDamage => _progress.windDamage;
+	public double FloodDamage => _progress.floodDamage;
+	public double SecondaryDamage => _progress.secondaryDamage;
+	public double Money => _progress.monies;
+	public double GDP => regionStats.gdp;
+	public double Population => regionStats.population;
+
 	public RegionAI(RegionStats regionStats)
 	{
 		_state = ReactionState.Savings; // Initial state
@@ -110,7 +123,7 @@ public partial class RegionAI
 
 	public void Process(double deltaTime, GameState gameState)
 	{
-		double currentIncome = (chars.income/52) * deltaTime * _progress.health;
+		double currentIncome = chars.income/52 * deltaTime * _progress.health;
 		ActionType decision = Decide(gameState);
 		switch (decision)
 		{
