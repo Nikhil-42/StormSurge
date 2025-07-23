@@ -27,7 +27,7 @@ const float H = 100.0;
 const float PI = 3.14159265358979323846;
 const float EARTH_RADIUS = 6371000.0; // m
 const float OMEGA = 7.2921159e-5; // rad/s
-const float TIME_SCALE = 5.0 * 60.0; // 1 second = 1 hour
+const float TIME_SCALE = 720.0 * 60.0; // 1 second = 2 hour
 
 ivec2 normalize_uv(ivec2 uv, ivec2 size) {
 	// The UV coordinates corespond to latitude and longitude, so we need to normalize them to the texture size.
@@ -64,9 +64,6 @@ void main() {
 	ivec2 uv = ivec2(gl_GlobalInvocationID.xy);
 	vec2 latlon = uv_to_rad(uv, size);
 
-	float coriolis_coefficient = 2 * OMEGA * sin(latlon.x);
-	coriolis_coefficient *= 0.0;
-
 	// Just in case the texture size is not divisable by 16.
 	if ((uv.x > size.x) || (uv.y > size.y)) {
 		return;
@@ -77,14 +74,9 @@ void main() {
 	ivec2 left_uv = normalize_uv(uv + ivec2(-1, 0), size);
 	ivec2 right_uv = normalize_uv(uv + ivec2(1, 0), size);
 
-	vec2 up_latlon = uv_to_rad(up_uv, size);
-	vec2 down_latlon = uv_to_rad(down_uv, size);
-	vec2 left_latlon = uv_to_rad(left_uv, size);
-	vec2 right_latlon = uv_to_rad(right_uv, size);
-
 	// Spatial delta
-	float dx = calc_distance(left_latlon, right_latlon, EARTH_RADIUS);
-	float dy = calc_distance(up_latlon, down_latlon, EARTH_RADIUS);
+	float dx = 2.0 * 2.0 * PI * EARTH_RADIUS / float(size.x);
+	float dy = 2.0 * PI * EARTH_RADIUS / float(size.y);
 
 	vec4 center_scalars = imageLoad(current_scalar_field, uv); // height at the current pixel
 	vec4 up_scalars = imageLoad(current_scalar_field, up_uv);
@@ -98,55 +90,29 @@ void main() {
 	vec2 left_wind = imageLoad(current_wind, left_uv).rg;
 	vec2 right_wind = imageLoad(current_wind, right_uv).rg;
 
-	float center_height = texture(heightmap, vec2(uv) / vec2(size)).r;
-	float up_height = texture(heightmap, vec2(up_uv) / vec2(size)).r;
-	float down_height = texture(heightmap, vec2(down_uv) / vec2(size)).r;
-	float left_height = texture(heightmap, vec2(left_uv) / vec2(size)).r;
-	float right_height = texture(heightmap, vec2(right_uv) / vec2(size)).r;
-
-	// Mass flux
-	vec2 center_mass_flux = center_scalars.r * center_wind;
-	vec2 up_mass_flux = up_scalars.r * up_wind;
-	vec2 down_mass_flux = down_scalars.r * down_wind;
-	vec2 left_mass_flux = left_scalars.r * left_wind;
-	vec2 right_mass_flux = right_scalars.r * right_wind;
-
 	// Finite-Difference Derivative Approximation
 	vec4 dsdx = (right_scalars - left_scalars) / dx;
 	vec4 dsdy = (down_scalars - up_scalars) / dy;
 
-	float dheightdx = (right_height - left_height) / dx;
-	float dheightdy = (down_height - up_height) / dy;
-	dheightdx *= 0.0;
-	dheightdy *= 0.0;
-
 	float dwinddx = (right_wind.x - left_wind.x) / dx;
 	float dwinddy = (down_wind.y - up_wind.y) / dy;
-
-	float dmassdx = (right_mass_flux.x - left_mass_flux.x) / dx;
-	float dmassdy = (down_mass_flux.y - up_mass_flux.y) / dy;
-
-	// Pressure gradient 
-	float dpressuredx = dsdx.r + dheightdx;
-	float dpressuredy = dsdy.r + dheightdy;
-	vec2 dpressure = vec2(dpressuredx, dpressuredy);
 
 	// Wind update
 	float dt = params.delta_time * TIME_SCALE;
 
-	vec2 new_wind = center_wind -
-			g * dpressure * dt +
-			vec2(1, -1) * coriolis_coefficient * center_wind.yx * dt;
-	
-	float new_pressure = center_scalars.r - (dmassdx + dmassdy) * dt;
+	float vel_u = center_wind.x - dt * g * dsdx.r;
+	float vel_v = center_wind.y - dt * g * dsdy.r;
+	vec2 new_wind = vec2(vel_u, vel_v);
 
-	if (abs(uv.x - floor(params.add_wave_point.x)) < 2 && abs(uv.y - floor(params.add_wave_point.y)) < 3) {
+	float new_pressure = center_scalars.r - (dwinddx + dwinddy) * dt;
+
+	if (abs(uv.x - floor(params.add_wave_point.x)) < 2 && abs(uv.y - floor(params.add_wave_point.y)) < 2) {
 		if (params.add_wave_point.z > 0.0) {
 			new_pressure += params.add_wave_point.z * dt / 1000;
 		}
 	}
 
-	imageStore(next_scalar_field, uv, vec4(new_pressure, 0.0, 0.0, 0.0));
+	imageStore(next_scalar_field, uv, vec4(new_pressure, center_scalars.gba));
 	if (isinf(new_wind.x) || isinf(new_wind.y) || isnan(new_wind.x) || isnan(new_wind.y)) {
 		new_wind = center_wind;
 	}
