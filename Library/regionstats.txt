@@ -1,44 +1,44 @@
 ID,Name,Code,Continent,Countries,Population,Coastal Population,Development Index,GDP,Minimum Elevation,Maximum Elevation
-1,Greater Russia,RUS,Asia,"Russia, Mongolia",233,0.6,0.24,2750,560,4374
-2,Japan,JAP,Asia,Japan,124,0.7,0.919,4300,0,3776
-3,Greater China,CHI,Asia,"China, South Korea, North Korea, Bhutan, Hong Kong, Taiwan",1450,0.65,0.8,19500,0,8848
-4,Greater Indonesia,IDN,Oceania,"Indonesia, Philippines, Timor-Leste",325,0.75,0.718,2300,0,4884
-5,Micronesia,MCN,Oceania,"Papua New Guinea, Solomon Islands, Vanuatu, Fiji, New Caledonia",13.1,1,0.7,46,0,4500
-6,Greater Australia,AUS,Oceania,"Australia, New Zealand",27.3,0.85,0.951,1770,0,2228
-7,Malay Peninsula,MLP,Asia,"Thailand, Malaysia, Myanmar, Brunei",212,0.65,0.8,1200,0,2565
-8,Indochina,ICN,Asia,"Cambodia, Vietnam, Laos",89,0.6,0.64,410,0,2964
-9,Greater India,IDA,Asia,"India, Bangladesh, Nepal",1800,0.4,0.65,4700,0,8848
-10,Durand Region,DUR,Asia,"Pakistan, Afghanistan",290,0.6,0.52,370,0,7492
-11,Middle East,MDE,Asia,"Iran, Iraq, Syria, Lebanon, Israel, Palestine, Jordan",186,0.65,0.72,1250,-430,4485
-12,Arabia,ARA,Asia,Saudi Arabia,38,0.35,0.82,1100,0,3070
-13,Southern Arabia,SAR,Asia,"Oman, Yemen",47.3,0.32,0.5,129,0,3666
-14,Anatolia,ANA,EU,"Turkey, Armenia, Georgia",89,0.4,0.81,1200,0,5137
-15,Balkans,BLK,EU,"Slovenia, Croatia, Serbia, Bulgaria, Romania",38,0.24,0.863,771,0,2925
-16,Iberia,IBE,EU,"Portugal, Spain",58,0.8,0.875,1600,0,3478
-17,Mediterranea,MDR,EU,"Italy, Greece",70,0.64,0.91,2640,0,4810
-18,United Kingdom,UKD,EU,"United Kingdom, Ireland",72,0.8,0.935,4700,0,1345
-19,Nordic Islands,NIS,EU,"Greenland, Iceland",1,0.98,0.93,31,0,3694
-20,Scandinavia,SNV,EU,"Norway, Sweden, Finland",21.8,0.7,0.95,1500,0,2496
-21,Northern Africa,NAF,Africa,"Morocco, Algeria, Libya, Tunisia, Egypt",212,0.4,0.72,886,-133,4165
-22,Central Sahara,CSH,Africa,"Mali, Burkina Faso, Niger",60,0,0.425,50,200,1155
-23,Central Africa,CAF,Africa,"Sudan, Chad, Central African Republic, South Sudan, DR Congo",205,0.17,0.45,130,0,5109
-24,Madagascar,MAD,Africa,Madagascar,32,0.6,0.54,18,0,2876
-25,Ethiopia,ETH,Africa,"Ethiopia, Kenya, Djibouti, Eritrea",180,0.6,0.54,150,0,4550
-26,East African Coast,EAC,Africa,"Somalia, Tanzania, Uganda, Rwanda, Burundi",166,0.28,0.491,150,0,5895
-27,Southern Africa,SAF,Africa,"Namibia, Botswana, South Africa, Lesotho, Eswatini",69,0.46,0.73,460,0,3482
-28,South African Strip,SAS,Africa,"Angola, Zambia, Zimbabwe, Malawi, Mozambique",131,0.3,0.53,185,0,3002
-29,Guyana,GUY,SA,"Guyana, Suriname, French Guiana",1.72,1,0.75,9,-2,1230
-30,Brazil,BZL,SA,Brazil,205,0.88,0.786,2330,0,2994
-31,Chaco Region,CHA,SA,"Bolivia, Paraguay",18,0,0.74,100,46,6542
-32,Patagonia,PAT,SA,"Argentina, Chile",65.7,0.72,0.84,934,0,6959
-33,Peru,PER,SA,"Peru, Ecuador",33.8,0.4,0.794,303.3,0,6768
-34,Northern South America,NSA,SA,"Colombia, Venezuela",80.6,0.72,0.74,75,0,5700
-35,Central America,CAM,NA,"El Salvador, Costa Rica, Panama, Honduras, Guatemala",185,0.81,0.7,539,0,4220
-36,Mexico,MEX,NA,"Mexico, Belize",126,0.76,0.779,1400,0,5636
-37,Caribbean,CRB,NA,"Cuba, Haiti, Dominican Republic, Jamaica, Puerto Rico",44,1,0.8,136,0,3098
-38,United States,USA,NA,United States,340,0.4,0.938,25000,-86,6190
-39,Canada,CAN,NA,"Canada, Alaska",41,0.9,0.929,2110,0,5959
-40,Western Africa,WAF,Africa,"Western Sahara, Mauritania, Senegal, Gambia, Guinea-Bissau, Guinea, Sierra Leone, ...",417,0.4,0.54,880,0,4040
-41,Central Steppes,CST,Asia,"Kazakhstan, Uzbekistan, Tajikistan, Kyrgyzstan, Turkmenistan",77.8,0,0.74,557,-132,7495
-42,Eastern Europe,EEU,EU,"Poland, Czech Republic, Hungary, Ukraine, Moldova, Slovakia, Belarus, Estonia, Latvia, Lithuania",119.7,0.16,0.86,1.8,0,2655
-43,Western Europe,WEU,EU,"France, Belgium, Switzerland, Netherlands, Germany, Austria, Denmark",200,0.33,0.93,10.3,-6,4810
+0,Greater Russia,RUS,Asia,"Russia, Mongolia",233,0.6,0.24,2750,560,4374
+1,Japan,JAP,Asia,Japan,124,0.7,0.919,4300,0,3776
+2,Greater China,CHI,Asia,"China, South Korea, North Korea, Bhutan, Hong Kong, Taiwan",1450,0.65,0.8,19500,0,8848
+3,Greater Indonesia,IDN,Oceania,"Indonesia, Philippines, Timor-Leste",325,0.75,0.718,2300,0,4884
+4,Micronesia,MCN,Oceania,"Papua New Guinea, Solomon Islands, Vanuatu, Fiji, New Caledonia",13.1,1,0.7,46,0,4500
+5,Greater Australia,AUS,Oceania,"Australia, New Zealand",27.3,0.85,0.951,1770,0,2228
+6,Malay Peninsula,MLP,Asia,"Thailand, Malaysia, Myanmar, Brunei",212,0.65,0.8,1200,0,2565
+7,Indochina,ICN,Asia,"Cambodia, Vietnam, Laos",89,0.6,0.64,410,0,2964
+8,Greater India,IDA,Asia,"India, Bangladesh, Nepal",1800,0.4,0.65,4700,0,8848
+9,Durand Region,DUR,Asia,"Pakistan, Afghanistan",290,0.6,0.52,370,0,7492
+10,Middle East,MDE,Asia,"Iran, Iraq, Syria, Lebanon, Israel, Palestine, Jordan",186,0.65,0.72,1250,-430,4485
+11,Arabia,ARA,Asia,Saudi Arabia,38,0.35,0.82,1100,0,3070
+12,Southern Arabia,SAR,Asia,"Oman, Yemen",47.3,0.32,0.5,129,0,3666
+13,Anatolia,ANA,EU,"Turkey, Armenia, Georgia",89,0.4,0.81,1200,0,5137
+14,Balkans,BLK,EU,"Slovenia, Croatia, Serbia, Bulgaria, Romania",38,0.24,0.863,771,0,2925
+15,Iberia,IBE,EU,"Portugal, Spain",58,0.8,0.875,1600,0,3478
+16,Mediterranea,MDR,EU,"Italy, Greece",70,0.64,0.91,2640,0,4810
+17,United Kingdom,UKD,EU,"United Kingdom, Ireland",72,0.8,0.935,4700,0,1345
+18,Nordic Islands,NIS,EU,"Greenland, Iceland",1,0.98,0.93,31,0,3694
+19,Scandinavia,SNV,EU,"Norway, Sweden, Finland",21.8,0.7,0.95,1500,0,2496
+20,Northern Africa,NAF,Africa,"Morocco, Algeria, Libya, Tunisia, Egypt",212,0.4,0.72,886,-133,4165
+21,Central Sahara,CSH,Africa,"Mali, Burkina Faso, Niger",60,0,0.425,50,200,1155
+22,Central Africa,CAF,Africa,"Sudan, Chad, Central African Republic, South Sudan, DR Congo",205,0.17,0.45,130,0,5109
+23,Madagascar,MAD,Africa,Madagascar,32,0.6,0.54,18,0,2876
+24,Ethiopia,ETH,Africa,"Ethiopia, Kenya, Djibouti, Eritrea",180,0.6,0.54,150,0,4550
+25,East African Coast,EAC,Africa,"Somalia, Tanzania, Uganda, Rwanda, Burundi",166,0.28,0.491,150,0,5895
+26,Southern Africa,SAF,Africa,"Namibia, Botswana, South Africa, Lesotho, Eswatini",69,0.46,0.73,460,0,3482
+27,South African Strip,SAS,Africa,"Angola, Zambia, Zimbabwe, Malawi, Mozambique",131,0.3,0.53,185,0,3002
+28,Guyana,GUY,SA,"Guyana, Suriname, French Guiana",1.72,1,0.75,9,-2,1230
+29,Brazil,BZL,SA,Brazil,205,0.88,0.786,2330,0,2994
+30,Chaco Region,CHA,SA,"Bolivia, Paraguay",18,0,0.74,100,46,6542
+31,Patagonia,PAT,SA,"Argentina, Chile",65.7,0.72,0.84,934,0,6959
+32,Peru,PER,SA,"Peru, Ecuador",33.8,0.4,0.794,303.3,0,6768
+33,Northern South America,NSA,SA,"Colombia, Venezuela",80.6,0.72,0.74,75,0,5700
+34,Central America,CAM,NA,"El Salvador, Costa Rica, Panama, Honduras, Guatemala",185,0.81,0.7,539,0,4220
+35,Mexico,MEX,NA,"Mexico, Belize",126,0.76,0.779,1400,0,5636
+36,Caribbean,CRB,NA,"Cuba, Haiti, Dominican Republic, Jamaica, Puerto Rico",44,1,0.8,136,0,3098
+37,United States,USA,NA,United States,340,0.4,0.938,25000,-86,6190
+38,Canada,CAN,NA,"Canada, Alaska",41,0.9,0.929,2110,0,5959
+39,Western Africa,WAF,Africa,"Western Sahara, Mauritania, Senegal, Gambia, Guinea-Bissau, Guinea, Sierra Leone, ...",417,0.4,0.54,880,0,4040
+40,Central Steppes,CST,Asia,"Kazakhstan, Uzbekistan, Tajikistan, Kyrgyzstan, Turkmenistan",77.8,0,0.74,557,-132,7495
+41,Eastern Europe,EEU,EU,"Poland, Czech Republic, Hungary, Ukraine, Moldova, Slovakia, Belarus, Estonia, Latvia, Lithuania",119.7,0.16,0.86,1.8,0,2655
+42,Western Europe,WEU,EU,"France, Belgium, Switzerland, Netherlands, Germany, Austria, Denmark",200,0.33,0.93,10.3,-6,4810

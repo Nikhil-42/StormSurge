@@ -25,12 +25,14 @@ def on_click(event, x, y, flags, param):
 cv2.namedWindow("Borders", cv2.WINDOW_GUI_NORMAL)
 cv2.setMouseCallback("Borders", on_click)
 
-regions = {}
 try:
-    with open('data/regions.json', 'r') as file:
-        regions = json.load(file)
+    with open('data/regioninfo.json', 'r') as file:
+        regioninfo = json.load(file)
+        names = regioninfo['names']
+        regions = regioninfo['info']
 except:
-    pass
+    names = []
+    regions = {}
 
 for region in regions.values():
     contours = [(np.array(contour) * [[borders.shape[1], borders.shape[0]]]).astype(np.int32) for contour in region['contours']]
@@ -60,12 +62,13 @@ while True:
             # Commit the region
             name = input("Name: ")
             borders[selection] = [0, 0, 0]
+            names.append(name)
             regions[name] = {
                 "contours": [(contour / [[borders.shape[1], borders.shape[0]]]).tolist() for contour in contours],
                 "hierarchy": hierarchy.tolist()
             }
-            with open('data/regions.json', 'w') as file:
-                json.dump(regions, file)
+            with open('data/regioninfo.json', 'w') as file:
+                json.dump({'names': names, 'info': regions}, file)
         else:
             borders[selection] = borders_original[selection]
         cv2.destroyWindow("Current Blob")
