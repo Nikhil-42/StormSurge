@@ -240,9 +240,9 @@ public partial class Storm : Node3D
 			}
 
 			int regionID = _globe.GetRegionID(new(originLat, originLon));
-			if (regionID > 0) 
+			if (regionID >= 0) 
 			{
-				var regionAI = GameManager.Instance.Game.RegionAIs[regionID - 1];
+				var regionAI = GameManager.Instance.Game.RegionAIs[regionID];
 				bool regionAlive = regionAI.Health > 0.0;
 				
 				// Get storm-specific damage multipliers
@@ -297,16 +297,16 @@ public partial class Storm : Node3D
 		techTreeBonus += (radiusMult - 1.0) * 2.0; 
 
 		double regionMultiplier = 1.0;
-		if (regionID > 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length)
+		if (regionID >= 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length)
 		{
-			var regionAI = GameManager.Instance.Game.RegionAIs[regionID - 1];
+			var regionAI = GameManager.Instance.Game.RegionAIs[regionID];
 			regionMultiplier = 0.5 + (regionAI.regionStats.developmentIndex * 1.5);
 		}
 
 		double populationBonus = 0.0;
-		if (regionID > 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length)
+		if (regionID >= 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length)
 		{
-			var regionAI = GameManager.Instance.Game.RegionAIs[regionID - 1];
+			var regionAI = GameManager.Instance.Game.RegionAIs[regionID];
 			double popFactor = Math.Min(regionAI.regionStats.population / 100.0, 5.0); // Scaling bonus (needs work. Has a cap at 5x)
 			populationBonus = popFactor * 0.5;
 		}
