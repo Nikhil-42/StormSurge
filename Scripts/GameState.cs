@@ -14,7 +14,7 @@ public class GameState {  // Move node attributes, make not a node, make private
 	private RegionAI[] _regionAIs = null;
 
 	// ================= GLOBAL MONEY & RESEARCH VARIABLES ================================
-	private double _solar = 0.0;
+	private double _solar = 150.0;
 	private double _passiveIncome = 1.0;  // Rate multiplier
 
 	private int _globalFunding = 0;  // Funding for global research upgrades, FIXME: need to find reasonable rate

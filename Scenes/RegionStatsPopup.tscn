@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://brhocv1werbv3"]
 
-[ext_resource type="Script" uid="uid://b7blpmcxhby8b" path="res://Scripts/RegionStatsPopup.cs" id="1_0x8vr"]
+[ext_resource type="Script" uid="uid://dsm25ws00b4gl" path="res://Scripts/RegionStatsPopup.cs" id="1_0x8vr"]
 
 [node name="RegionStatsPopup" type="Control"]
 layout_mode = 3
