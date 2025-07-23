@@ -27,7 +27,7 @@ const float H = 100.0;
 const float PI = 3.14159265358979323846;
 const float EARTH_RADIUS = 6371000.0; // m
 const float OMEGA = 7.2921159e-5; // rad/s
-const float TIME_SCALE = 60.0 * 60.0; // 1 second = 1 hour
+const float TIME_SCALE = 5.0 * 60.0; // 1 second = 1 hour
 
 ivec2 normalize_uv(ivec2 uv, ivec2 size) {
 	// The UV coordinates corespond to latitude and longitude, so we need to normalize them to the texture size.
@@ -65,6 +65,7 @@ void main() {
 	vec2 latlon = uv_to_rad(uv, size);
 
 	float coriolis_coefficient = 2 * OMEGA * sin(latlon.x);
+	coriolis_coefficient *= 0.0;
 
 	// Just in case the texture size is not divisable by 16.
 	if ((uv.x > size.x) || (uv.y > size.y)) {
@@ -75,6 +76,15 @@ void main() {
 	ivec2 down_uv = normalize_uv(uv + ivec2(0, 1), size);
 	ivec2 left_uv = normalize_uv(uv + ivec2(-1, 0), size);
 	ivec2 right_uv = normalize_uv(uv + ivec2(1, 0), size);
+
+	vec2 up_latlon = uv_to_rad(up_uv, size);
+	vec2 down_latlon = uv_to_rad(down_uv, size);
+	vec2 left_latlon = uv_to_rad(left_uv, size);
+	vec2 right_latlon = uv_to_rad(right_uv, size);
+
+	// Spatial delta
+	float dx = calc_distance(left_latlon, right_latlon, EARTH_RADIUS);
+	float dy = calc_distance(up_latlon, down_latlon, EARTH_RADIUS);
 
 	vec4 center_scalars = imageLoad(current_scalar_field, uv); // height at the current pixel
 	vec4 up_scalars = imageLoad(current_scalar_field, up_uv);
@@ -94,11 +104,6 @@ void main() {
 	float left_height = texture(heightmap, vec2(left_uv) / vec2(size)).r;
 	float right_height = texture(heightmap, vec2(right_uv) / vec2(size)).r;
 
-	vec2 up_latlon = uv_to_rad(up_uv, size);
-	vec2 down_latlon = uv_to_rad(down_uv, size);
-	vec2 left_latlon = uv_to_rad(left_uv, size);
-	vec2 right_latlon = uv_to_rad(right_uv, size);
-
 	// Mass flux
 	vec2 center_mass_flux = center_scalars.r * center_wind;
 	vec2 up_mass_flux = up_scalars.r * up_wind;
@@ -106,16 +111,14 @@ void main() {
 	vec2 left_mass_flux = left_scalars.r * left_wind;
 	vec2 right_mass_flux = right_scalars.r * right_wind;
 
-	// Spatial delta
-	float dx = calc_distance(left_latlon, right_latlon, EARTH_RADIUS);
-	float dy = calc_distance(up_latlon, down_latlon, EARTH_RADIUS);
-
 	// Finite-Difference Derivative Approximation
 	vec4 dsdx = (right_scalars - left_scalars) / dx;
 	vec4 dsdy = (down_scalars - up_scalars) / dy;
 
 	float dheightdx = (right_height - left_height) / dx;
 	float dheightdy = (down_height - up_height) / dy;
+	dheightdx *= 0.0;
+	dheightdy *= 0.0;
 
 	float dwinddx = (right_wind.x - left_wind.x) / dx;
 	float dwinddy = (down_wind.y - up_wind.y) / dy;
@@ -137,14 +140,11 @@ void main() {
 	
 	float new_pressure = center_scalars.r - (dmassdx + dmassdy) * dt;
 
-	// if (uv.x == floor(params.add_wave_point.x) && uv.y == floor(params.add_wave_point.y)) {
-	// 	if (params.add_wave_point.z > 0.0) {
-	// 		new_s = params.add_wave_point.z;
-	// 	}
-	// 	if (params.add_wave_point.w != 0.0) {
-	// 		new_u += params.add_wave_point.w;
-	// 	}
-	// }
+	if (abs(uv.x - floor(params.add_wave_point.x)) < 2 && abs(uv.y - floor(params.add_wave_point.y)) < 3) {
+		if (params.add_wave_point.z > 0.0) {
+			new_pressure += params.add_wave_point.z * dt / 1000;
+		}
+	}
 
 	imageStore(next_scalar_field, uv, vec4(new_pressure, 0.0, 0.0, 0.0));
 	if (isinf(new_wind.x) || isinf(new_wind.y) || isnan(new_wind.x) || isnan(new_wind.y)) {
