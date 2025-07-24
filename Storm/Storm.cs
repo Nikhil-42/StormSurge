@@ -274,8 +274,8 @@ public partial class Storm : Node3D
 				depletion -= 0.1f;
 			}
 
-			GD.Print($"Storm at ({totalDistance:F2}m) | Range: {stormRange:F2}");
-			GD.Print($"Depletion {depletion:F2} | Strength {strength:F2}");
+			// GD.Print($"Storm at ({totalDistance:F2}m) | Range: {stormRange:F2}");
+			// GD.Print($"Depletion {depletion:F2} | Strength {strength:F2}");
 			strength -= depletion * (float)delta; // Base deplete rate + range depletion
 			if (strength < 0.0f)
 				strength = 0.0f;

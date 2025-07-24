@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ntmbq4sjwyma"
-path.s3tc="res://.godot/imported/colormap_night.jpg-bf948b9dd7bbff818a4cd71e2d2136dd.s3tc.ctex"
+uid="uid://cp72tdlkjsnho"
+path="res://.godot/imported/regionmap.png-a9e83ba4ca688c9d3f8e729ca3195ba9.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/colormap_night.jpg"
-dest_files=["res://.godot/imported/colormap_night.jpg-bf948b9dd7bbff818a4cd71e2d2136dd.s3tc.ctex"]
+source_file="res://Globe/regionmap.png"
+dest_files=["res://.godot/imported/regionmap.png-a9e83ba4ca688c9d3f8e729ca3195ba9.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
@@ -26,7 +25,7 @@ mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=true
+process/fix_alpha_border=22
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false

@@ -1,13 +1,13 @@
 [gd_scene load_steps=18 format=3 uid="uid://2eewc0lbfv2j"]
 
-[ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Shaders/spheremap.gdshader" id="1_0w0uy"]
-[ext_resource type="Script" uid="uid://dyd24b70mejfk" path="res://Scripts/Globe.cs" id="1_gdeig"]
-[ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Assets/colormap.png" id="2_d8q2n"]
-[ext_resource type="Texture2D" uid="uid://cp72tdlkjsnho" path="res://Assets/regionmap.png" id="3_27vsr"]
-[ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Assets/heightmap.png" id="3_ne2hg"]
-[ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Assets/heightmap_normal.png" id="4_6fvvo"]
-[ext_resource type="Shader" uid="uid://cunvkjo2byrl0" path="res://Shaders/clouds.gdshader" id="5_wivo2"]
-[ext_resource type="Texture2D" uid="uid://ntmbq4sjwyma" path="res://Assets/colormap_night.jpg" id="6_lulko"]
+[ext_resource type="Shader" uid="uid://c2gmmxyr2shga" path="res://Globe/spheremap.gdshader" id="1_0w0uy"]
+[ext_resource type="Script" uid="uid://dyd24b70mejfk" path="res://Globe/Globe.cs" id="1_gdeig"]
+[ext_resource type="Texture2D" uid="uid://bta1gvemaoj1o" path="res://Globe/colormap.png" id="2_d8q2n"]
+[ext_resource type="Texture2D" uid="uid://cp72tdlkjsnho" path="res://Globe/regionmap.png" id="3_27vsr"]
+[ext_resource type="Texture2D" uid="uid://cm8rwbmdvhyox" path="res://Globe/heightmap.png" id="3_ne2hg"]
+[ext_resource type="Texture2D" uid="uid://dpybatfe0jvxx" path="res://Globe/heightmap_normal.png" id="4_6fvvo"]
+[ext_resource type="Shader" uid="uid://cunvkjo2byrl0" path="res://Globe/clouds.gdshader" id="5_wivo2"]
+[ext_resource type="Texture2D" uid="uid://ntmbq4sjwyma" path="res://Globe/colormap_night.jpg" id="6_lulko"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vwgih"]
 render_priority = 0

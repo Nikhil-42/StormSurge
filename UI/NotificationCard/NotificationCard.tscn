@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bfj5di2ovtyog"]
 
-[ext_resource type="Script" uid="uid://d3xq446qhtyi" path="res://Scripts/NotificationCard.cs" id="1_3mvk0"]
+[ext_resource type="Script" uid="uid://d3xq446qhtyi" path="res://UI/NotificationCard/NotificationCard.cs" id="1_3mvk0"]
 [ext_resource type="Texture2D" uid="uid://dgck7st4nmfw7" path="res://Assets/UIElements/Notification box .png" id="1_pmfn8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pmfn8"]

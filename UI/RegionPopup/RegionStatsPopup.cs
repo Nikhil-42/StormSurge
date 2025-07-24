@@ -24,17 +24,6 @@ public partial class RegionStatsPopup : Control
 
 	public override void _Ready()
 	{
-		// Get references to UI elements
-		_title = GetNode<Label>("Control/VBoxContainer/Title");
-		_healthLabel = GetNode<Label>("Control/VBoxContainer/BasicStats/HealthLabel");
-		_stateLabel = GetNode<Label>("Control/VBoxContainer/BasicStats/StateLabel");
-		_moneyLabel = GetNode<Label>("Control/VBoxContainer/BasicStats/MoneyLabel");
-		_populationLabel = GetNode<Label>("Control/VBoxContainer/BasicStats/PopulationLabel");
-		_windDamageLabel = GetNode<Label>("Control/VBoxContainer/DamageStats/WindDamageLabel");
-		_floodDamageLabel = GetNode<Label>("Control/VBoxContainer/DamageStats/FloodDamageLabel");
-		_secondaryDamageLabel = GetNode<Label>("Control/VBoxContainer/DamageStats/SecondaryDamageLabel");
-		_closeButton = GetNode<Button>("Control/VBoxContainer/CloseButton");
-
 		// Connect close button
 		_closeButton.Pressed += () => {
 			_currentRegion = null;

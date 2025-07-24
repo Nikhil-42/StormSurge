@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://c4i3qa35h5afx"]
+[gd_scene load_steps=17 format=3 uid="uid://c4i3qa35h5afx"]
 
-[ext_resource type="Script" uid="uid://bs8pbjcvfgsk0" path="res://Scripts/UI.cs" id="1_wunin"]
-[ext_resource type="PackedScene" uid="uid://b4d1qg70hud40" path="res://Scenes/TechTreeUI.tscn" id="2_n04ve"]
+[ext_resource type="Script" uid="uid://bs8pbjcvfgsk0" path="res://UI/UI.cs" id="1_wunin"]
+[ext_resource type="PackedScene" uid="uid://b4d1qg70hud40" path="res://UI/TechTree/TechTreeUI.tscn" id="2_n04ve"]
 [ext_resource type="Texture2D" uid="uid://byeh2cdbxrbyu" path="res://Assets/UIElements/Currency display.png" id="2_vqx31"]
 [ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/UIElements/solar_coin.png" id="2_wunin"]
-[ext_resource type="Script" uid="uid://b20hdp4s8aosw" path="res://Scripts/SolarLabel.cs" id="4_b1goy"]
+[ext_resource type="PackedScene" uid="uid://bfj5di2ovtyog" path="res://UI/NotificationCard/NotificationCard.tscn" id="3_npmjx"]
+[ext_resource type="Script" uid="uid://b20hdp4s8aosw" path="res://UI/SolarLabel.cs" id="4_b1goy"]
 [ext_resource type="Texture2D" uid="uid://be03ce4keo26p" path="res://Assets/UIElements/Human ai UI.png" id="4_vqx31"]
 [ext_resource type="Texture2D" uid="uid://c5fexqttn2hjq" path="res://Assets/UIElements/Human AI bar.png" id="5_b1goy"]
 [ext_resource type="Texture2D" uid="uid://dj7elp3f0kyxg" path="res://Assets/UIElements/INFO UNCLICKED.png" id="6_b1goy"]
@@ -21,7 +22,7 @@ subpixel_positioning = 0
 font = SubResource("SystemFont_wjear")
 font_size = 100
 
-[node name="Control" type="Control" node_paths=PackedStringArray("NotificationButton", "NotificationHistoryPanel", "HistoryList", "TechTreeButton")]
+[node name="Control" type="Control" node_paths=PackedStringArray("NotificationButton", "NotificationHistoryPanel", "HistoryList", "TechTreeButton", "NotificationPopup")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,6 +36,8 @@ NotificationHistoryPanel = NodePath("NotificationHistoryPanel")
 HistoryList = NodePath("NotificationHistoryPanel/ScrollContainer/HistoryList")
 TechTreeButton = NodePath("RightButtonsPanel/TechTreeButton")
 TechTreeUIScene = ExtResource("2_n04ve")
+NotificationPopup = NodePath("NotificationPopup")
+_notificationCardScene = ExtResource("3_npmjx")
 
 [node name="Currency" type="Control" parent="."]
 z_index = 3

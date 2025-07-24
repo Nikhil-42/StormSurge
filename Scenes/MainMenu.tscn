@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://ck2ueragucrl1"]
 
 [ext_resource type="Script" uid="uid://ya5j78b4a85b" path="res://Scripts/MainMenu.cs" id="1_koqhg"]
-[ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Scenes/globe.tscn" id="1_tt5f1"]
-[ext_resource type="Script" uid="uid://cuj3l7camk0rg" path="res://Scripts/MenuGlobe.cs" id="2_853f1"]
+[ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Globe/globe.tscn" id="1_tt5f1"]
+[ext_resource type="PackedScene" uid="uid://ean4pdie0k8y" path="res://Scenes/default.tscn" id="2_cmrfp"]
 [ext_resource type="Texture2D" uid="uid://dtt0bde5l5ryv" path="res://Assets/UIElements/LOW RES STORM.png" id="4_koqhg"]
 [ext_resource type="Texture2D" uid="uid://b1vr5478ailro" path="res://Assets/UIElements/LOW RES SURGE.png" id="5_cmrfp"]
 [ext_resource type="Texture2D" uid="uid://dkg48finex54b" path="res://Assets/UIElements/LOW RES NO GLOW.png" id="6_loo7a"]
@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dvfwev85v71kp" path="res://Assets/UIElements/LOW RES LIGHT GLOW.png" id="8_rrcx7"]
 [ext_resource type="AudioStream" uid="uid://cs5slnvfxiuk7" path="res://Assets/StormSurge.mp3" id="9_cmrfp"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" node_paths=PackedStringArray("_globe")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,6 +18,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_koqhg")
+_nextScene = ExtResource("2_cmrfp")
+_globe = NodePath("SubViewportContainer/SubViewport/World")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 layout_mode = 0
@@ -33,7 +35,7 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="World" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_tt5f1")]
-script = ExtResource("2_853f1")
+script = null
 
 [node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.91526, 2.41584, 14.4546)

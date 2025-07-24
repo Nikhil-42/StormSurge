@@ -1,13 +1,22 @@
 [gd_scene load_steps=2 format=3 uid="uid://brhocv1werbv3"]
 
-[ext_resource type="Script" uid="uid://dsm25ws00b4gl" path="res://Scripts/RegionStatsPopup.cs" id="1_0x8vr"]
+[ext_resource type="Script" uid="uid://dsm25ws00b4gl" path="res://UI/RegionPopup/RegionStatsPopup.cs" id="1_0x8vr"]
 
-[node name="RegionStatsPopup" type="Control"]
+[node name="RegionStatsPopup" type="Control" node_paths=PackedStringArray("_title", "_healthLabel", "_stateLabel", "_moneyLabel", "_populationLabel", "_windDamageLabel", "_floodDamageLabel", "_secondaryDamageLabel", "_closeButton")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 299.0
 offset_bottom = 330.0
 script = ExtResource("1_0x8vr")
+_title = NodePath("Control/VBoxContainer/Title")
+_healthLabel = NodePath("Control/VBoxContainer/BasicStats/HealthLabel")
+_stateLabel = NodePath("Control/VBoxContainer/BasicStats/StateLabel")
+_moneyLabel = NodePath("Control/VBoxContainer/BasicStats/MoneyLabel")
+_populationLabel = NodePath("Control/VBoxContainer/BasicStats/PopulationLabel")
+_windDamageLabel = NodePath("Control/VBoxContainer/DamageStats/WindDamageLabel")
+_floodDamageLabel = NodePath("Control/VBoxContainer/DamageStats/FloodDamageLabel")
+_secondaryDamageLabel = NodePath("Control/VBoxContainer/DamageStats/SecondaryDamageLabel")
+_closeButton = NodePath("Control/VBoxContainer/CloseButton")
 
 [node name="Background" type="Panel" parent="."]
 modulate = Color(0.2, 0.2, 0.2, 0.9)

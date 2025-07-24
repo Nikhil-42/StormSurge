@@ -12,7 +12,7 @@ public partial class UI : Control
 	[Export] public PackedScene TechTreeUIScene;
 	[Export] public Control NotificationPopup; 
 
-	private PackedScene _notificationCardScene;
+	[Export] private PackedScene _notificationCardScene;
 
 	private List<string> _testMessages = new()
 	{
@@ -28,8 +28,6 @@ public partial class UI : Control
 	public override void _Ready()
 	{
 		// Load the notification card scene
-		_notificationCardScene = GD.Load<PackedScene>("res://Scenes/NotificationCard.tscn");
-
 		if (_notificationCardScene == null)
 		{
 			GD.PrintErr("ERROR: Could not load NotificationCard.tscn");
