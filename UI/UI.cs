@@ -13,17 +13,8 @@ public partial class UI : Control
 	[Export] public Control NotificationPopup; 
 
 	[Export] private PackedScene _notificationCardScene;
-
-	private List<string> _testMessages = new()
-	{
-		"Research Unlocked!.",
-		"You’ve destroyed a city!",
-		"Alert: humans have unlocked storm walls.",
-		"Storms are now 10% stronger.",
-		"Humanity has come to an agreement. Resources have been shared and global storm resistance has increased.",
-		"You received 500 solar for destroying Moscow.",
-		"Weather warning systems now in affect."
-	};
+	
+	private NotificationManager _notificationManager; 
 
 	public override void _Ready()
 	{
@@ -40,9 +31,11 @@ public partial class UI : Control
 		
 		// Tech Tree button
 		TechTreeButton.Pressed += OpenTechTree;
+		
+		_notificationManager = GetNode<NotificationManager>("../NotificationManager");
 
-		// Start test loop
-		//_ = RunNotificationTestLoop();
+		// Start Generic Notifications Function
+		_ = RunNotificationTestLoop();
 	}
 
 	private void ToggleHistory()
@@ -74,16 +67,28 @@ public partial class UI : Control
 		}
 	}
 	
-	// Testing function (no longer used)
+	// General Notification  function (Change wait to 1min for real game)
 	private async Task RunNotificationTestLoop()
 	{
-		var rng = new Random();
+		int educationIndex = 1;
 
-		while (true)
+		while (educationIndex <= 13)
 		{
-			await Task.Delay(rng.Next(4000, 8000)); // Wait 4-8 seconds before next
-			string msg = _testMessages[rng.Next(_testMessages.Count)];
-			Notify(msg);
+			await Task.Delay(10000); // 10 seconds for now
+
+			string key = $"Education {educationIndex}";
+			string msg = _notificationManager.GetMessage(key);
+
+			if (!string.IsNullOrEmpty(msg))
+			{
+				Notify(msg);
+			}
+			else
+			{
+				GD.PrintErr($"Missing message for {key}");
+			}
+
+			educationIndex++;
 		}
 	}
 	

@@ -14,7 +14,7 @@ script = ExtResource("1_3mvk0")
 LabelNode = NodePath("NinePatchRect/MarginContainer/Label")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
-custom_minimum_size = Vector2(200, 130)
+custom_minimum_size = Vector2(200, 170)
 layout_mode = 2
 texture = ExtResource("1_pmfn8")
 
@@ -35,7 +35,5 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="NinePatchRect/MarginContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-text = "dhgfjsmbcvm
-sndbvbxmcn v"
 label_settings = SubResource("LabelSettings_pmfn8")
 autowrap_mode = 2
