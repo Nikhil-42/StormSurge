@@ -61,13 +61,17 @@ public partial class TechNodeButton : TextureButton
 			isLocked = false;
 			NameLabel.AddThemeColorOverride("font_color", Colors.White);
 			MouseFilter = MouseFilterEnum.Stop;
+
 		}
-		else
+		else // Not bought not available
 		{
 			ButtonPressed = false;
 			isLocked = true;
 			NameLabel.AddThemeColorOverride("font_color", Colors.Gray);
-			MouseFilter = MouseFilterEnum.Ignore;
+			
+			// Hover allowed, disable clicks
+			MouseFilter = MouseFilterEnum.Stop; 
+			Disabled = true;  
 		}
 	}
 	

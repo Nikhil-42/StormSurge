@@ -10,7 +10,7 @@ public partial class TechTreeUI : Control
 	private Dictionary<string, TechNodeButton> nameToButton = new(); // Maps node names to their buttons
 	
 	private HoverPopup hoverPopup;
-	private PackedScene popupScene = GD.Load<PackedScene>("res://Scenes/HoverPopup.tscn");
+	private PackedScene popupScene = GD.Load<PackedScene>("res://UI/TechTree/HoverPopup.tscn");
 
 	public override void _Ready()
 	{
