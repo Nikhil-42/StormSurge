@@ -1,24 +1,78 @@
-[gd_scene load_steps=20 format=3 uid="uid://b4d1qg70hud40"]
+[gd_scene load_steps=74 format=3 uid="uid://b4d1qg70hud40"]
 
 [ext_resource type="Texture2D" uid="uid://b2pigmmk0o7l8" path="res://Assets/Notification box .png" id="1_6ipeo"]
 [ext_resource type="Script" uid="uid://b24ngdl824nt" path="res://UI/TechTree/TechTreeUI.cs" id="1_xr3ga"]
 [ext_resource type="Script" uid="uid://w4gb06g4qjsc" path="res://UI/TechTree/PanAndZoom.cs" id="2_0wmf7"]
 [ext_resource type="PackedScene" uid="uid://djgjd2t0jhakl" path="res://UI/TechTree/TechNodeButton.tscn" id="2_6ipeo"]
-[ext_resource type="Texture2D" uid="uid://c3yixyjc05bh4" path="res://Assets/UIElements/Climate- locked unclicked.PNG" id="5_73if2"]
+[ext_resource type="Texture2D" uid="uid://d4jwjotp6a4cv" path="res://Assets/UIElements/TechTreeNodes/Oil unclicked.png" id="5_3xw34"]
 [ext_resource type="Texture2D" uid="uid://byqop4asxodv6" path="res://Assets/UIElements/2HB HOVER.PNG" id="5_p8ylv"]
-[ext_resource type="Texture2D" uid="uid://d22t725og2q4i" path="res://Assets/UIElements/Globe- unlocked.PNG" id="6_0h2ny"]
-[ext_resource type="Texture2D" uid="uid://dotxwr5rya21s" path="res://Assets/UIElements/Climate-unlocked.PNG" id="6_e46p3"]
-[ext_resource type="Texture2D" uid="uid://b5jeklvq7esd1" path="res://Assets/UIElements/Global-locked hover.PNG" id="7_a26c4"]
-[ext_resource type="Texture2D" uid="uid://dt0pak6favnsa" path="res://Assets/UIElements/Climate- locked hover.PNG" id="7_mgiwy"]
-[ext_resource type="Texture2D" uid="uid://cr5ysvjg8v3vb" path="res://Assets/UIElements/Storm- locked unclicked.PNG" id="8_8mtvy"]
-[ext_resource type="Texture2D" uid="uid://bu5fkg2sdurie" path="res://Assets/UIElements/Globe- locked unclicked.PNG" id="8_whttd"]
-[ext_resource type="Texture2D" uid="uid://bn0tm7rjyrmv0" path="res://Assets/UIElements/Storm- unlocked.PNG" id="9_fvxac"]
-[ext_resource type="Texture2D" uid="uid://c52nn6n04xj0l" path="res://Assets/UIElements/Storm- locked hover.PNG" id="10_d14hm"]
-[ext_resource type="Texture2D" uid="uid://fycijxxmc1iy" path="res://Assets/UIElements/Region- locked unclicked.PNG" id="14_kvncq"]
-[ext_resource type="Texture2D" uid="uid://bg08f87aqvlch" path="res://Assets/UIElements/Region-unlocked.PNG" id="15_qnjci"]
-[ext_resource type="Texture2D" uid="uid://bsuckrm4wlp83" path="res://Assets/UIElements/Region-locked unclicked.PNG" id="16_6mmsx"]
+[ext_resource type="Texture2D" uid="uid://cy03ynqngxldx" path="res://Assets/UIElements/TechTreeNodes/Oil unlock.png" id="6_wg8sy"]
+[ext_resource type="Texture2D" uid="uid://bxgwhgflub554" path="res://Assets/UIElements/TechTreeNodes/Oil hover.png" id="7_2ognr"]
+[ext_resource type="Texture2D" uid="uid://c7jx3bunfrw1u" path="res://Assets/UIElements/TechTreeNodes/Misinfo unclicked_.png" id="8_0j6wd"]
+[ext_resource type="Texture2D" uid="uid://c0casah4u0on4" path="res://Assets/UIElements/TechTreeNodes/Misinfo unlock.png" id="10_220bk"]
+[ext_resource type="Texture2D" uid="uid://cea2c8r3h8y1p" path="res://Assets/UIElements/TechTreeNodes/Misinfo hover.png" id="10_wg8sy"]
+[ext_resource type="Texture2D" uid="uid://decj6ky2hsusj" path="res://Assets/UIElements/TechTreeNodes/Science unclicked.png" id="11_63pme"]
+[ext_resource type="Texture2D" uid="uid://3qg6wo5hco5j" path="res://Assets/UIElements/TechTreeNodes/Science unlock.png" id="12_aa35e"]
+[ext_resource type="Texture2D" uid="uid://b5qh12o1vw5w8" path="res://Assets/UIElements/TechTreeNodes/Science hover.png" id="13_ohcfa"]
+[ext_resource type="Texture2D" uid="uid://c8iq3v7n5fhcb" path="res://Assets/UIElements/TechTreeNodes/Environment unclicked.png" id="14_h1pak"]
+[ext_resource type="Texture2D" uid="uid://cnidqv3lgcjg2" path="res://Assets/UIElements/TechTreeNodes/Environment unlock.png" id="15_gx5rj"]
+[ext_resource type="Texture2D" uid="uid://da3gxmh3s1xbf" path="res://Assets/UIElements/TechTreeNodes/Environment hover.PNG" id="16_grwhn"]
+[ext_resource type="Texture2D" uid="uid://b141v1r6v1xsn" path="res://Assets/UIElements/TechTreeNodes/Ozone uncliked.png" id="17_b6e3i"]
 [ext_resource type="Texture2D" uid="uid://c66dtgm8tvu1j" path="res://Assets/UIElements/2HB UNCLICKED.png" id="18_6mmsx"]
+[ext_resource type="Texture2D" uid="uid://mc8iuk7pynmu" path="res://Assets/UIElements/TechTreeNodes/Ozone unlock.png" id="18_kbfw8"]
+[ext_resource type="Texture2D" uid="uid://dwkrgyb8gn5mw" path="res://Assets/UIElements/TechTreeNodes/Ozone hover.png" id="19_8e3rw"]
 [ext_resource type="Texture2D" uid="uid://cupj6mr1xtlx6" path="res://Assets/UIElements/2HB CLICK.png" id="19_2562u"]
+[ext_resource type="Texture2D" uid="uid://bmu6s2taw7drk" path="res://Assets/UIElements/TechTreeNodes/Base radius uncliked.png" id="20_a4tg0"]
+[ext_resource type="Texture2D" uid="uid://f4w0gd3ua2h5" path="res://Assets/UIElements/TechTreeNodes/Base radius unlocked.png" id="21_u3u80"]
+[ext_resource type="Texture2D" uid="uid://ds7s0t8axhs3p" path="res://Assets/UIElements/TechTreeNodes/Base radius hover.png" id="22_4jcap"]
+[ext_resource type="Texture2D" uid="uid://clmmu30adrg26" path="res://Assets/UIElements/TechTreeNodes/Wind speed unclicked.png" id="23_uepkm"]
+[ext_resource type="Texture2D" uid="uid://b174afh37uddg" path="res://Assets/UIElements/TechTreeNodes/Wind speed unlocked.png" id="24_2tovx"]
+[ext_resource type="Texture2D" uid="uid://vhculvody61p" path="res://Assets/UIElements/TechTreeNodes/Wind speed hover.png" id="25_bj0u6"]
+[ext_resource type="Texture2D" uid="uid://b3srfxt7u61h3" path="res://Assets/UIElements/TechTreeNodes/Tornado unclicked.png" id="26_1wv3i"]
+[ext_resource type="Texture2D" uid="uid://bi40qkoyrdnv3" path="res://Assets/UIElements/TechTreeNodes/Tornado unlocked.png" id="27_vpcr7"]
+[ext_resource type="Texture2D" uid="uid://cnwy6gfxixb7m" path="res://Assets/UIElements/TechTreeNodes/Tornado hover.png" id="28_5l4ft"]
+[ext_resource type="Texture2D" uid="uid://cxwjh68jvsgu8" path="res://Assets/UIElements/TechTreeNodes/Whirlwind uncliked.png" id="29_6lvlr"]
+[ext_resource type="Texture2D" uid="uid://bxgfse3ql1ku6" path="res://Assets/UIElements/TechTreeNodes/Whirl wind unlocked.png" id="30_2rk32"]
+[ext_resource type="Texture2D" uid="uid://itaaq4h63p1x" path="res://Assets/UIElements/TechTreeNodes/Whirl wind hover.png" id="31_1y7bv"]
+[ext_resource type="Texture2D" uid="uid://dar0800ydg725" path="res://Assets/UIElements/TechTreeNodes/Storm cult unclicked.png" id="32_2inil"]
+[ext_resource type="Texture2D" uid="uid://bxmx80ihbhrnr" path="res://Assets/UIElements/TechTreeNodes/Storm cult unlocked.png" id="33_kw7pv"]
+[ext_resource type="Texture2D" uid="uid://cxgfv0khxrjjo" path="res://Assets/UIElements/TechTreeNodes/Storm cult hover.png" id="34_qpac7"]
+[ext_resource type="Texture2D" uid="uid://mjdgm815jrdj" path="res://Assets/UIElements/TechTreeNodes/Organized religion unclicked.png" id="35_bfhkg"]
+[ext_resource type="Texture2D" uid="uid://iakid2cb6q6u" path="res://Assets/UIElements/TechTreeNodes/Organized religion unlocked.png" id="36_1x34g"]
+[ext_resource type="Texture2D" uid="uid://u6tv5bxqt66j" path="res://Assets/UIElements/TechTreeNodes/Organized religion hover.png" id="37_w3c8t"]
+[ext_resource type="Texture2D" uid="uid://cst73cu2macmi" path="res://Assets/UIElements/TechTreeNodes/Religious extremism unclicked.png" id="38_5jk4s"]
+[ext_resource type="Texture2D" uid="uid://nmq4a3jn8khj" path="res://Assets/UIElements/TechTreeNodes/Religious extremism unlocked.png" id="39_0slli"]
+[ext_resource type="Texture2D" uid="uid://bapv3qxur584w" path="res://Assets/UIElements/TechTreeNodes/Religious extremism hover.png" id="40_26mty"]
+[ext_resource type="Texture2D" uid="uid://bavdp10r4icwx" path="res://Assets/UIElements/TechTreeNodes/Regional spread unclicked.png" id="41_qh1rc"]
+[ext_resource type="Texture2D" uid="uid://b2pyg3k58agmq" path="res://Assets/UIElements/TechTreeNodes/Regional spread unlocked.png" id="42_4hfdl"]
+[ext_resource type="Texture2D" uid="uid://hdunch8xt47f" path="res://Assets/UIElements/TechTreeNodes/Regional spread hover.png" id="43_5ki7s"]
+[ext_resource type="Texture2D" uid="uid://dcyno40oi2qvr" path="res://Assets/UIElements/TechTreeNodes/Doomsday unlocked(1).png" id="44_1xybr"]
+[ext_resource type="Texture2D" uid="uid://mxy6matsll7b" path="res://Assets/UIElements/TechTreeNodes/Doomsday unlocked.png" id="45_f14wa"]
+[ext_resource type="Texture2D" uid="uid://dr87818elbcm6" path="res://Assets/UIElements/TechTreeNodes/Doomsday hover.png" id="46_04xw0"]
+[ext_resource type="Texture2D" uid="uid://cwxoxsw01a7wx" path="res://Assets/UIElements/TechTreeNodes/Weather balloon unclicked.png" id="47_qv1mo"]
+[ext_resource type="Texture2D" uid="uid://7aosrcrsd8xv" path="res://Assets/UIElements/TechTreeNodes/Weather balloon unlocked.png" id="48_iqxcb"]
+[ext_resource type="Texture2D" uid="uid://b4y1teu2usdo6" path="res://Assets/UIElements/TechTreeNodes/Weather balloon hover.png" id="49_cu7x4"]
+[ext_resource type="Texture2D" uid="uid://dmoevkcvg4jy5" path="res://Assets/UIElements/TechTreeNodes/Satellite unclicked.png" id="50_objmh"]
+[ext_resource type="Texture2D" uid="uid://dm84y0ylmnrj3" path="res://Assets/UIElements/TechTreeNodes/Satellite unlocked.png" id="51_pgosa"]
+[ext_resource type="Texture2D" uid="uid://c4qxiy7kdmkrn" path="res://Assets/UIElements/TechTreeNodes/Satellite hover.png" id="52_36krm"]
+[ext_resource type="Texture2D" uid="uid://cmnc7livrfe5f" path="res://Assets/UIElements/TechTreeNodes/Food stores unclicked.png" id="53_57320"]
+[ext_resource type="Texture2D" uid="uid://c2erk4lygcvct" path="res://Assets/UIElements/TechTreeNodes/Food stores unlocked.png" id="54_n7l7a"]
+[ext_resource type="Texture2D" uid="uid://duf4e1jlebeyb" path="res://Assets/UIElements/TechTreeNodes/Food stores hover.png" id="55_33r8h"]
+[ext_resource type="Texture2D" uid="uid://c7nu4dpngsgvu" path="res://Assets/UIElements/TechTreeNodes/Crop virus unclicked.png" id="56_wbfgm"]
+[ext_resource type="Texture2D" uid="uid://d1jut8udmit3o" path="res://Assets/UIElements/TechTreeNodes/Crop virus unlocked.png" id="57_h2iqe"]
+[ext_resource type="Texture2D" uid="uid://da6jsjxv8am73" path="res://Assets/UIElements/TechTreeNodes/Crop virus hover.png" id="58_r6fm6"]
+[ext_resource type="Texture2D" uid="uid://d3qvfuj2qri05" path="res://Assets/UIElements/TechTreeNodes/Supply Chain unclicked.png" id="59_f18ud"]
+[ext_resource type="Texture2D" uid="uid://c28mwvuxo8laj" path="res://Assets/UIElements/TechTreeNodes/Supply Chain unlocked.png" id="60_y72g0"]
+[ext_resource type="Texture2D" uid="uid://dyxbu2v26fpjb" path="res://Assets/UIElements/TechTreeNodes/Supply chain hover.png" id="61_f0hwb"]
+[ext_resource type="Texture2D" uid="uid://25grm7wxuw83" path="res://Assets/UIElements/TechTreeNodes/Ground flights unclicked.png" id="62_mrog8"]
+[ext_resource type="Texture2D" uid="uid://cx2aypiplsky8" path="res://Assets/UIElements/TechTreeNodes/Ground fights unlocked.png" id="63_idn3u"]
+[ext_resource type="Texture2D" uid="uid://b1hp5fo0eeg7x" path="res://Assets/UIElements/TechTreeNodes/Ground fights hover.png" id="64_77in6"]
+[ext_resource type="Texture2D" uid="uid://ci3hqebgy87fw" path="res://Assets/UIElements/TechTreeNodes/Ports unclicked.png" id="65_cgsc1"]
+[ext_resource type="Texture2D" uid="uid://05fx16bmg3kg" path="res://Assets/UIElements/TechTreeNodes/Ports unlocked.png" id="66_87c3f"]
+[ext_resource type="Texture2D" uid="uid://d3icxa2wpvwjn" path="res://Assets/UIElements/TechTreeNodes/Ports hover.png" id="67_3ug8o"]
+[ext_resource type="Texture2D" uid="uid://c0tasilx8evks" path="res://Assets/UIElements/TechTreeNodes/roads unclicked_.png" id="68_4s0s0"]
+[ext_resource type="Texture2D" uid="uid://x5gmamskoqxl" path="res://Assets/UIElements/TechTreeNodes/Roads unlocked.png" id="69_d74d1"]
+[ext_resource type="Texture2D" uid="uid://cyitkvije86g0" path="res://Assets/UIElements/TechTreeNodes/Roads hover.png" id="70_je5lk"]
 
 [node name="TechTreeUI" type="Control" node_paths=PackedStringArray("CloseButton", "techTreeContent")]
 layout_mode = 3
@@ -88,9 +142,9 @@ offset_bottom = 218.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("5_3xw34")
+texture_pressed = ExtResource("6_wg8sy")
+texture_hover = ExtResource("7_2ognr")
 NodeName = "Invest in Oil 1"
 
 [node name="Oil 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -107,9 +161,9 @@ offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("5_3xw34")
+texture_pressed = ExtResource("6_wg8sy")
+texture_hover = ExtResource("7_2ognr")
 NodeName = "Invest in Oil 2"
 
 [node name="Misinformation 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -126,9 +180,9 @@ offset_bottom = 147.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("8_0j6wd")
+texture_pressed = ExtResource("10_220bk")
+texture_hover = ExtResource("10_wg8sy")
 NodeName = "Spread Misinformation 1"
 
 [node name="Misinformation 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -145,9 +199,9 @@ offset_bottom = 111.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("8_0j6wd")
+texture_pressed = ExtResource("10_220bk")
+texture_hover = ExtResource("10_wg8sy")
 NodeName = "Spread Misinformation 2"
 
 [node name="Oil Industry" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -164,9 +218,9 @@ offset_bottom = 147.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("5_3xw34")
+texture_pressed = ExtResource("6_wg8sy")
+texture_hover = ExtResource("7_2ognr")
 NodeName = "Oil Industry Government Complex"
 
 [node name="Fake Science" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -183,9 +237,9 @@ offset_bottom = 77.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("11_63pme")
+texture_pressed = ExtResource("12_aa35e")
+texture_hover = ExtResource("13_ohcfa")
 NodeName = "Fake Science"
 
 [node name="Reverse Policies" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -202,9 +256,9 @@ offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("14_h1pak")
+texture_pressed = ExtResource("15_gx5rj")
+texture_hover = ExtResource("16_grwhn")
 NodeName = "Reverse Environmental Policies"
 
 [node name="Abolish Agencies" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -221,9 +275,9 @@ offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("14_h1pak")
+texture_pressed = ExtResource("15_gx5rj")
+texture_hover = ExtResource("16_grwhn")
 NodeName = "Abolish Environmental Agencies"
 
 [node name="Ozone Depletion 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -240,9 +294,9 @@ offset_bottom = 184.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("17_b6e3i")
+texture_pressed = ExtResource("18_kbfw8")
+texture_hover = ExtResource("19_8e3rw")
 NodeName = "Ozone Depletion 1"
 
 [node name="Ozone Depletion 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -259,9 +313,9 @@ offset_bottom = 184.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("5_73if2")
-texture_pressed = ExtResource("6_e46p3")
-texture_hover = ExtResource("7_mgiwy")
+texture_normal = ExtResource("17_b6e3i")
+texture_pressed = ExtResource("18_kbfw8")
+texture_hover = ExtResource("19_8e3rw")
 NodeName = "Ozone Depletion 2"
 
 [node name="Base Radius 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -278,9 +332,9 @@ offset_bottom = 109.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("20_a4tg0")
+texture_pressed = ExtResource("21_u3u80")
+texture_hover = ExtResource("22_4jcap")
 NodeName = "Base Radius 1"
 
 [node name="Base Radius 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -297,9 +351,9 @@ offset_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("20_a4tg0")
+texture_pressed = ExtResource("21_u3u80")
+texture_hover = ExtResource("22_4jcap")
 NodeName = "Base Radius 2"
 
 [node name="Base Radius 3" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -316,9 +370,9 @@ offset_bottom = -35.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("20_a4tg0")
+texture_pressed = ExtResource("21_u3u80")
+texture_hover = ExtResource("22_4jcap")
 NodeName = "Base Radius 3"
 
 [node name="Wind Speed 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -335,9 +389,9 @@ offset_bottom = 111.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("23_uepkm")
+texture_pressed = ExtResource("24_2tovx")
+texture_hover = ExtResource("25_bj0u6")
 NodeName = "Wind Speed 1"
 
 [node name="Wind Speed 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -354,9 +408,9 @@ offset_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("23_uepkm")
+texture_pressed = ExtResource("24_2tovx")
+texture_hover = ExtResource("25_bj0u6")
 NodeName = "Wind Speed 2"
 
 [node name="Tornadoes 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -373,9 +427,9 @@ offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("26_1wv3i")
+texture_pressed = ExtResource("27_vpcr7")
+texture_hover = ExtResource("28_5l4ft")
 NodeName = "Tornadoes 1"
 
 [node name="Tornadoes 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -392,9 +446,9 @@ offset_bottom = -67.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("26_1wv3i")
+texture_pressed = ExtResource("27_vpcr7")
+texture_hover = ExtResource("28_5l4ft")
 NodeName = "Tornadoes 2"
 
 [node name="Whirlwind" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -411,9 +465,9 @@ offset_bottom = -69.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_8mtvy")
-texture_pressed = ExtResource("9_fvxac")
-texture_hover = ExtResource("10_d14hm")
+texture_normal = ExtResource("29_6lvlr")
+texture_pressed = ExtResource("30_2rk32")
+texture_hover = ExtResource("31_1y7bv")
 NodeName = "Whirlwind"
 
 [node name="Storm Cult" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -430,9 +484,9 @@ offset_bottom = 255.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_whttd")
-texture_pressed = ExtResource("6_0h2ny")
-texture_hover = ExtResource("7_a26c4")
+texture_normal = ExtResource("32_2inil")
+texture_pressed = ExtResource("33_kw7pv")
+texture_hover = ExtResource("34_qpac7")
 NodeName = "Storm Cult"
 
 [node name="Cult Following" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -449,9 +503,9 @@ offset_bottom = 292.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_whttd")
-texture_pressed = ExtResource("6_0h2ny")
-texture_hover = ExtResource("7_a26c4")
+texture_normal = ExtResource("32_2inil")
+texture_pressed = ExtResource("33_kw7pv")
+texture_hover = ExtResource("34_qpac7")
 NodeName = "Cult Following"
 
 [node name="Organized Religion" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -468,9 +522,9 @@ offset_bottom = 328.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_whttd")
-texture_pressed = ExtResource("6_0h2ny")
-texture_hover = ExtResource("7_a26c4")
+texture_normal = ExtResource("35_bfhkg")
+texture_pressed = ExtResource("36_1x34g")
+texture_hover = ExtResource("37_w3c8t")
 NodeName = "Organized Religion"
 
 [node name="Religious Extremism" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -487,9 +541,9 @@ offset_bottom = 365.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_whttd")
-texture_pressed = ExtResource("6_0h2ny")
-texture_hover = ExtResource("7_a26c4")
+texture_normal = ExtResource("38_5jk4s")
+texture_pressed = ExtResource("39_0slli")
+texture_hover = ExtResource("40_26mty")
 NodeName = "Religious Extremism"
 
 [node name="Regional Spread" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -506,9 +560,9 @@ offset_bottom = 364.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_whttd")
-texture_pressed = ExtResource("6_0h2ny")
-texture_hover = ExtResource("7_a26c4")
+texture_normal = ExtResource("41_qh1rc")
+texture_pressed = ExtResource("42_4hfdl")
+texture_hover = ExtResource("43_5ki7s")
 NodeName = "Regional Spread"
 
 [node name="Global Spread" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -525,9 +579,9 @@ offset_bottom = 367.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_whttd")
-texture_pressed = ExtResource("6_0h2ny")
-texture_hover = ExtResource("7_a26c4")
+texture_normal = ExtResource("41_qh1rc")
+texture_pressed = ExtResource("42_4hfdl")
+texture_hover = ExtResource("43_5ki7s")
 NodeName = "Global Spread"
 
 [node name="Doomsday Prophecy" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -544,9 +598,9 @@ offset_bottom = 436.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_whttd")
-texture_pressed = ExtResource("6_0h2ny")
-texture_hover = ExtResource("7_a26c4")
+texture_normal = ExtResource("44_1xybr")
+texture_pressed = ExtResource("45_f14wa")
+texture_hover = ExtResource("46_04xw0")
 NodeName = "Doomsday Prophecy"
 
 [node name="Weather Balloons" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -563,9 +617,9 @@ offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("47_qv1mo")
+texture_pressed = ExtResource("48_iqxcb")
+texture_hover = ExtResource("49_cu7x4")
 NodeName = "Sabotage Weather Balloons"
 
 [node name="Satillite 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -582,9 +636,9 @@ offset_bottom = 292.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("50_objmh")
+texture_pressed = ExtResource("51_pgosa")
+texture_hover = ExtResource("52_36krm")
 NodeName = "Hack Satellite Receivers"
 
 [node name="Satillite 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -601,9 +655,9 @@ offset_bottom = 329.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("50_objmh")
+texture_pressed = ExtResource("51_pgosa")
+texture_hover = ExtResource("52_36krm")
 NodeName = "Destroy Satellites"
 
 [node name="Satillite 3" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -620,9 +674,9 @@ offset_bottom = 330.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("50_objmh")
+texture_pressed = ExtResource("51_pgosa")
+texture_hover = ExtResource("52_36krm")
 NodeName = "Destroy GPS Satellites"
 
 [node name="Food Stores" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -639,9 +693,9 @@ offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("53_57320")
+texture_pressed = ExtResource("54_n7l7a")
+texture_hover = ExtResource("55_33r8h")
 NodeName = "Destroy Food Stores"
 
 [node name="Crop Virus 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -658,9 +712,9 @@ offset_bottom = 326.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("56_wbfgm")
+texture_pressed = ExtResource("57_h2iqe")
+texture_hover = ExtResource("58_r6fm6")
 NodeName = "Spread Crop Virus 1"
 
 [node name="Crop Virus 2" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -677,9 +731,9 @@ offset_bottom = 398.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("56_wbfgm")
+texture_pressed = ExtResource("57_h2iqe")
+texture_hover = ExtResource("58_r6fm6")
 NodeName = "Spread Crop Virus 2"
 
 [node name="Blight" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -696,9 +750,9 @@ offset_bottom = 438.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("56_wbfgm")
+texture_pressed = ExtResource("57_h2iqe")
+texture_hover = ExtResource("58_r6fm6")
 NodeName = "Virus Mutates to Blight"
 
 [node name="Supply Chains 1" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -715,9 +769,9 @@ offset_bottom = 148.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("59_f18ud")
+texture_pressed = ExtResource("60_y72g0")
+texture_hover = ExtResource("61_f0hwb")
 NodeName = "Destroy Supply Chains 1"
 
 [node name="Supply Chains 4" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -734,9 +788,9 @@ offset_bottom = 147.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("59_f18ud")
+texture_pressed = ExtResource("60_y72g0")
+texture_hover = ExtResource("61_f0hwb")
 NodeName = "Destroy Supply Chains 2"
 
 [node name="Ground Flights" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -753,9 +807,9 @@ offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("62_mrog8")
+texture_pressed = ExtResource("63_idn3u")
+texture_hover = ExtResource("64_77in6")
 NodeName = "Ground Flights"
 
 [node name="Aircrafts" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -772,9 +826,9 @@ offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("62_mrog8")
+texture_pressed = ExtResource("63_idn3u")
+texture_hover = ExtResource("64_77in6")
 NodeName = "Destroy Aircraft"
 
 [node name="Destroy Ports" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -791,9 +845,9 @@ offset_bottom = 147.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("65_cgsc1")
+texture_pressed = ExtResource("66_87c3f")
+texture_hover = ExtResource("67_3ug8o")
 NodeName = "Destroy Ports"
 
 [node name="Destroy Ships" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -810,9 +864,9 @@ offset_bottom = 183.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("65_cgsc1")
+texture_pressed = ExtResource("66_87c3f")
+texture_hover = ExtResource("67_3ug8o")
 NodeName = "Destroy Ships"
 
 [node name="Minor Roads" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -829,9 +883,9 @@ offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("68_4s0s0")
+texture_pressed = ExtResource("69_d74d1")
+texture_hover = ExtResource("70_je5lk")
 NodeName = "Destroy Minor Roads"
 
 [node name="Major Roads" parent="TechTreeClip/TechTreeControls/TechTreeContent" instance=ExtResource("2_6ipeo")]
@@ -848,9 +902,9 @@ offset_bottom = 216.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("14_kvncq")
-texture_pressed = ExtResource("15_qnjci")
-texture_hover = ExtResource("16_6mmsx")
+texture_normal = ExtResource("68_4s0s0")
+texture_pressed = ExtResource("69_d74d1")
+texture_hover = ExtResource("70_je5lk")
 NodeName = "Destroy Major Roads"
 
 [node name="LinesLayer" type="Control" parent="TechTreeClip/TechTreeControls/TechTreeContent"]
