@@ -1,5 +1,5 @@
 using Godot;
-
+using System;
 
 // Note/TODO: Popup currently does not close if the techtree button/display is opened. 
 //            Should also probably remove the hightlight from a region if the popup is closed.
@@ -81,22 +81,39 @@ public partial class RegionStatsPopup : Control
 		_title.Text = $"Region {_currentRegion.Name}";
 
 		_healthLabel.Text = $"Health: {_currentRegion.Health:P1}";
+		_stateLabel.Text = $"State: {_currentRegion.State}";
 		_moneyLabel.Text = $"Money: ${_currentRegion.Money:F0}";
-		_populationLabel.Text = $"Population: {_currentRegion.Population:F0}";
+		_populationLabel.Text = $"Population: {FormatPopulation(_currentRegion.Population):F0}";
 
 		_windDamageLabel.Text = $"Wind Damage: {_currentRegion.WindDamage:F1}";
 		_floodDamageLabel.Text = $"Flood Damage: {_currentRegion.FloodDamage:F1}";
 		_secondaryDamageLabel.Text = $"Secondary Damage: {_currentRegion.SecondaryDamage:F1}";
 	}
 
-	private string FormatPopulation(int population)
-	{
-		if (population >= 1000000)
-			return $"{population / 1000000.0:F1}M";
-		else if (population >= 1000)
-			return $"{population / 1000.0:F1}K";
-		else
-			return population.ToString();
+	private string FormatPopulation(double millions) {
+		string population = "";
+		int dig;
+		if (millions >= 1000.0) {
+			population = ((int)(millions/1000.0)).ToString() + ",";
+		}
+		if (millions >= 1.0) {
+			dig = (int)millions;
+			if (dig < 10 && millions >= 1000.0) {
+				population += "00" + dig.ToString() + ",";
+			} else if (dig < 100 && millions >= 1000.0) {
+				population += "0" + dig.ToString() + ",";
+			} else {
+				population += dig.ToString() + ",";
+			}
+		}
+		if (millions >= 0.0) {
+			dig = (int)((Math.Round(millions, 3) * 1000) % 1000);
+			if (dig < 10 && millions >= 1.0) population += "00" + dig.ToString() + ",000";
+			else if (dig < 100 && millions >= 1.0) population += "0" + dig.ToString() + ",000";
+			else population += dig.ToString() + ",000";
+		} else population = "0";
+		
+		return population;
 	}
 
 	public override void _Input(InputEvent @event)

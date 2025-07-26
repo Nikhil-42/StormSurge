@@ -1,441 +1,441 @@
 [
-	{
-		"name": "Invest in Oil 1",
-		"category": "Climate Change",
-		"cost": 100.0,
-		"temperature": 1.0,
-		"sea_level": 10.0,
-		"storm_range": 10.0,
-		"prereqs": []
-	},
-	{
-		"name": "Invest in Oil 2",
-		"category": "Climate Change",
-		"cost": 200.0,
-		"temperature": 1.0,
-		"sea_level": 10.0,
-		"storm_range": 10.0,
-		"prereqs": [
-			"Invest in Oil 1"
-		]
-	},
-	{
-		"name": "Spread Misinformation 1",
-		"category": "Climate Change",
-		"cost": 100.0,
-		"compliance": -10.0,
-		"preparation": -10.0,
-		"prereqs": []
-	},
-	{
-		"name": "Spread Misinformation 2",
-		"category": "Climate Change",
-		"cost": 300.0,
-		"compliance": -10.0,
-		"preparation": -10.0,
-		"prereqs": [
-			"Spread Misinformation 1"
-		]
-	},
-	{
-		"name": "Oil Industry Government Complex",
-		"category": "Climate Change",
-		"cost": 500.0,
-		"temperature": 1.0,
-		"sea_level": 20.0,
-		"storm_range": 10.0,
-		"government_function": -10.0,
-		"compliance": -10.0,
-		"preparation": -10.0,
-		"prereqs": [
-			"Invest in Oil 2",
-			"Spread Misinformation 2"
-		]
-	},
-	{
-		"name": "Ozone Depletion 1",
-		"category": "Climate Change",
-		"cost": 600.0,
-		"temperature": 3.0,
-		"sea_level": 50.0,
-		"prereqs": [
-			"Oil Industry Government Complex"
-		]
-	},
-	{
-		"name": "Ozone Depletion 2",
-		"category": "Climate Change",
-		"cost": 800.0,
-		"temperature": 3.0,
-		"sea_level": 50.0,
-		"storm_range": 10.0,
-		"prereqs": [
-			"Ozone Depletion 1"
-		]
-	},
-	{
-		"name": "Fake Science",
-		"category": "Climate Change",
-		"cost": 600.0,
-		"compliance": -20.0,
-		"preparation": -20.0,
-		"prereqs": [
-			"Oil Industry Government Complex"
-		]
-	},
-	{
-		"name": "Reverse Environmental Policies",
-		"category": "Climate Change",
-		"cost": 700.0,
-		"temperature": 2.0,
-		"sea_level": 30.0,
-		"storm_range": 10.0,
-		"prereqs": [
-			"Fake Science"
-		]
-	},
-	{
-		"name": "Abolish Environmental Agencies",
-		"category": "Climate Change",
-		"cost": 800.0,
-		"international_coop": -10.0,
-		"government_function": -10.0,
-		"preparation": -10.0,
-		"prereqs": [
-			"Reverse Environmental Policies"
-		]
-	},
-	{
-		"name": "Deforestation and Mining",
-		"category": "Climate Change",
-		"cost": 900.0,
-		"temperature": 2.0,
-		"sea_level": 30.0,
-		"storm_range": 10.0,
-		"wind_damage": 20.0,
-		"flood_damage": 20.0,
-		"prereqs": [
-			"Reverse Environmental Policies"
-		]
-	},
-	{
-		"name": "Wind Speed 1",
-		"category": "Storm Strength",
-		"cost": 200.0,
-		"wind_damage": 20.0,
-		"storm_speed": 10.0,
-		"prereqs": []
-	},
-	{
-		"name": "Wind Speed 2",
-		"category": "Storm Strength",
-		"cost": 400.0,
-		"wind_damage": 30.0,
-		"storm_speed": 10.0,
-		"prereqs": [
-			"Wind Speed 1"
-		]
-	},
-	{
-		"name": "Tornadoes 1",
-		"category": "Storm Strength",
-		"cost": 700.0,
-		"wind_damage": 50.0,
-		"storm_speed": 10.0,
-		"prereqs": [
-			"Wind Speed 2"
-		]
-	},
-	{
-		"name": "Tornadoes 2",
-		"category": "Storm Strength",
-		"cost": 1000.0,
-		"wind_damage": 50.0,
-		"storm_speed": 10.0,
-		"prereqs": [
-			"Tornadoes 1"
-		]
-	},
-	{
-		"name": "Whirlwind",
-		"category": "Storm Strength",
-		"cost": 900.0,
-		"wind_damage": 20.0,
-		"storm_speed": 50.0,
-		"prereqs": [
-			"Tornadoes 2"
-		]
-	},
-	{
-		"name": "Base Radius 1",
-		"category": "Storm Strength",
-		"cost": 100.0,
-		"storm_radius": 20.0,
-		"flood_damage": 20.0,
-		"prereqs": []
-	},
-	{
-		"name": "Base Radius 2",
-		"category": "Storm Strength",
-		"cost": 300.0,
-		"storm_radius": 30.0,
-		"flood_damage": 20.0,
-		"prereqs": [
-			"Base Radius 1"
-		]
-	},
-	{
-		"name": "Base Radius 3",
-		"category": "Storm Strength",
-		"cost": 800.0,
-		"storm_radius": 50.0,
-		"flood_damage": 20.0,
-		"prereqs": [
-			"Base Radius 2"
-		]
-	},
-	{
-		"name": "Storm Cult",
-		"category": "Geopolitical",
-		"cost": 400.0,
-		"government_function": -5.0,
-		"resources": -5.0,
-		"compliance": -10.0,
-		"preparation": -10.0,
-		"prereqs": []
-	},
-	{
-		"name": "Cult Following",
-		"category": "Geopolitical",
-		"cost": 300.0,
-		"government_function": -5.0,
-		"resources": -5.0,
-		"compliance": -5.0,
-		"preparation": -5.0,
-		"prereqs": [
-			"Storm Cult"
-		]
-	},
-	{
-		"name": "Organized Religion",
-		"category": "Geopolitical",
-		"cost": 500.0,
-		"government_function": -10.0,
-		"resources": -10.0,
-		"compliance": -10.0,
-		"preparation": -10.0,
-		"prereqs": [
-			"Cult Following"
-		]
-	},
-	{
-		"name": "Regional Spread",
-		"category": "Geopolitical",
-		"cost": 300.0,
-		"international_coop": -10.0,
-		"government_function": -5.0,
-		"resources": -5.0,
-		"compliance": -5.0,
-		"preparation": -5.0,
-		"prereqs": [
-			"Organized Religion"
-		]
-	},
-	{
-		"name": "Global Spread",
-		"category": "Geopolitical",
-		"cost": 800.0,
-		"international_coop": -20.0,
-		"government_function": -10.0,
-		"resources": -10.0,
-		"compliance": -10.0,
-		"preparation": -10.0,
-		"prereqs": [
-			"Regional Spread"
-		]
-	},
-	{
-		"name": "Religious Extremism",
-		"category": "Geopolitical",
-		"cost": 500.0,
-		"international_coop": -10.0,
-		"government_function": -10.0,
-		"resources": -10.0,
-		"compliance": -10.0,
-		"preparation": -10.0,
-		"prereqs": []
-	},
-	{
-		"name": "Doomsday Prophecy",
-		"category": "Geopolitical",
-		"cost": 1000.0,
-		"international_coop": -10.0,
-		"government_function": -20.0,
-		"resources": -20.0,
-		"compliance": -20.0,
-		"preparation": -20.0,
-		"prereqs": [
-			"Global Spread",
-			"Religious Extremism"
-		]
-	},
-	{
-		"name": "Destroy Supply Chains 1",
-		"category": "Infrastructure",
-		"cost": 100.0,
-		"resources": -5.0,
-		"prereqs": []
-	},
-	{
-		"name": "Destroy Supply Chains 2",
-		"category": "Infrastructure",
-		"cost": 300.0,
-		"resources": -10.0,
-		"prereqs": [
-			"Destroy Supply Chains 1"
-		]
-	},
-	{
-		"name": "Ground Flights",
-		"category": "Infrastructure",
-		"cost": 400.0,
-		"international_coop": -5.0,
-		"transportation": -10.0,
-		"prereqs": [
-			"Destroy Supply Chains 2"
-		]
-	},
-	{
-		"name": "Destroy Aircraft",
-		"category": "Infrastructure",
-		"cost": 600.0,
-		"international_coop": -10.0,
-		"transportation": -10.0,
-		"resources": -5.0,
-		"prereqs": [
-			"Ground Flights"
-		]
-	},
-	{
-		"name": "Destroy Ports",
-		"category": "Infrastructure",
-		"cost": 400.0,
-		"transportation": -10.0,
-		"resources": -5.0,
-		"prereqs": [
-			"Destroy Supply Chains 2"
-		]
-	},
-	{
-		"name": "Destroy Ships",
-		"category": "Infrastructure",
-		"cost": 600.0,
-		"international_coop": -5.0,
-		"transportation": -10.0,
-		"resources": -10.0,
-		"prereqs": [
-			"Destroy Ports"
-		]
-	},
-	{
-		"name": "Destroy Minor Roads",
-		"category": "Infrastructure",
-		"cost": 800.0,
-		"transportation": -20.0,
-		"resources": -10.0,
-		"compliance": -10.0,
-		"prereqs": [
-			"Destroy Supply Chains 2"
-		]
-	},
-	{
-		"name": "Destroy Major Roads",
-		"category": "Infrastructure",
-		"cost": 1000.0,
-		"transportation": -20.0,
-		"resources": -20.0,
-		"compliance": -20.0,
-		"prereqs": [
-			"Destroy Minor Roads"
-		]
-	},
-	{
-		"name": "Sabotage Weather Balloons",
-		"category": "Infrastructure",
-		"cost": 100.0,
-		"preparation": -5.0,
-		"prereqs": []
-	},
-	{
-		"name": "Hack Satellite Receivers",
-		"category": "Infrastructure",
-		"cost": 300.0,
-		"communications": -10.0,
-		"preparation": -10.0,
-		"prereqs": [
-			"Sabotage Weather Balloons"
-		]
-	},
-	{
-		"name": "Destroy Satellites",
-		"category": "Infrastructure",
-		"cost": 600.0,
-		"communications": -20.0,
-		"international_coop": -10.0,
-		"preparation": -10.0,
-		"prereqs": [
-			"Hack Satellite Receivers"
-		]
-	},
-	{
-		"name": "Destroy GPS Satellites",
-		"category": "Infrastructure",
-		"cost": 1000.0,
-		"communications": -30.0,
-		"preparation": -20.0,
-		"prereqs": [
-			"Destroy Satellites"
-		]
-	},
-	{
-		"name": "Destroy Food Stores",
-		"category": "Infrastructure",
-		"cost": 100.0,
-		"resources": -5.0,
-		"prereqs": []
-	},
-	{
-		"name": "Spread Crop Virus 1",
-		"category": "Infrastructure",
-		"cost": 200.0,
-		"resources": -10.0,
-		"prereqs": [
-			"Destroy Food Stores"
-		]
-	},
-	{
-		"name": "Spread Crop Virus 2",
-		"category": "Infrastructure",
-		"cost": 600.0,
-		"international_coop": -5.0,
-		"resources": -10.0,
-		"compliance": -10.0,
-		"prereqs": [
-			"Spread Crop Virus 1"
-		]
-	},
-	{
-		"name": "Virus Mutates to Blight",
-		"category": "Infrastructure",
-		"cost": 1200.0,
-		"temperature": 2.0,
-		"sea_level": 50.0,
-		"international_coop": -10.0,
-		"government_function": -20.0,
-		"resources": -30.0,
-		"compliance": -20.0,
-		"prereqs": [
-			"Spread Crop Virus 2"
-		]
-	}
+    {
+        "name": "Invest in Oil 1",
+        "category": "Climate Change",
+        "cost": 200.0,
+        "temperature": 1.0,
+        "sea_level": 20.0,
+        "storm_range": 10.0,
+        "prereqs": []
+    },
+    {
+        "name": "Invest in Oil 2",
+        "category": "Climate Change",
+        "cost": 400.0,
+        "temperature": 1.0,
+        "sea_level": 30.0,
+        "storm_range": 10.0,
+        "prereqs": [
+            "Invest in Oil 1"
+        ]
+    },
+    {
+        "name": "Spread Misinformation 1",
+        "category": "Climate Change",
+        "cost": 100.0,
+        "compliance": -10.0,
+        "preparation": -10.0,
+        "prereqs": []
+    },
+    {
+        "name": "Spread Misinformation 2",
+        "category": "Climate Change",
+        "cost": 200.0,
+        "compliance": -10.0,
+        "preparation": -10.0,
+        "prereqs": [
+            "Spread Misinformation 1"
+        ]
+    },
+    {
+        "name": "Oil Industry Government Complex",
+        "category": "Climate Change",
+        "cost": 800.0,
+        "temperature": 1.0,
+        "sea_level": 50.0,
+        "storm_range": 10.0,
+        "government_function": -10.0,
+        "compliance": -10.0,
+        "preparation": -10.0,
+        "prereqs": [
+            "Invest in Oil 2",
+            "Spread Misinformation 2"
+        ]
+    },
+    {
+        "name": "Ozone Depletion 1",
+        "category": "Climate Change",
+        "cost": 800.0,
+        "temperature": 3.0,
+        "sea_level": 50.0,
+        "prereqs": [
+            "Oil Industry Government Complex"
+        ]
+    },
+    {
+        "name": "Ozone Depletion 2",
+        "category": "Climate Change",
+        "cost": 800.0,
+        "temperature": 3.0,
+        "sea_level": 50.0,
+        "storm_range": 10.0,
+        "prereqs": [
+            "Ozone Depletion 1"
+        ]
+    },
+    {
+        "name": "Fake Science",
+        "category": "Climate Change",
+        "cost": 500.0,
+        "compliance": -20.0,
+        "preparation": -20.0,
+        "prereqs": [
+            "Oil Industry Government Complex"
+        ]
+    },
+    {
+        "name": "Reverse Environmental Policies",
+        "category": "Climate Change",
+        "cost": 700.0,
+        "temperature": 2.0,
+        "sea_level": 50.0,
+        "storm_range": 20.0,
+        "prereqs": [
+            "Fake Science"
+        ]
+    },
+    {
+        "name": "Abolish Environmental Agencies",
+        "category": "Climate Change",
+        "cost": 500.0,
+        "international_coop": -10.0,
+        "government_function": -10.0,
+        "preparation": -10.0,
+        "prereqs": [
+            "Reverse Environmental Policies"
+        ]
+    },
+    {
+        "name": "Deforestation and Mining",
+        "category": "Climate Change",
+        "cost": 1000.0,
+        "temperature": 2.0,
+        "sea_level": 50.0,
+        "storm_range": 20.0,
+        "wind_damage": 20.0,
+        "flood_damage": 20.0,
+        "prereqs": [
+            "Reverse Environmental Policies"
+        ]
+    },
+    {
+        "name": "Wind Speed 1",
+        "category": "Storm Strength",
+        "cost": 100.0,
+        "wind_damage": 20.0,
+        "storm_speed": 10.0,
+        "prereqs": []
+    },
+    {
+        "name": "Wind Speed 2",
+        "category": "Storm Strength",
+        "cost": 300.0,
+        "wind_damage": 30.0,
+        "storm_speed": 10.0,
+        "prereqs": [
+            "Wind Speed 1"
+        ]
+    },
+    {
+        "name": "Tornadoes 1",
+        "category": "Storm Strength",
+        "cost": 400.0,
+        "wind_damage": 50.0,
+        "storm_speed": 10.0,
+        "prereqs": [
+            "Wind Speed 2"
+        ]
+    },
+    {
+        "name": "Tornadoes 2",
+        "category": "Storm Strength",
+        "cost": 500.0,
+        "wind_damage": 50.0,
+        "storm_speed": 10.0,
+        "prereqs": [
+            "Tornadoes 1"
+        ]
+    },
+    {
+        "name": "Whirlwind",
+        "category": "Storm Strength",
+        "cost": 600.0,
+        "wind_damage": 30.0,
+        "storm_speed": 50.0,
+        "prereqs": [
+            "Tornadoes 2"
+        ]
+    },
+    {
+        "name": "Base Radius 1",
+        "category": "Storm Strength",
+        "cost": 100.0,
+        "storm_radius": 20.0,
+        "flood_damage": 20.0,
+        "prereqs": []
+    },
+    {
+        "name": "Base Radius 2",
+        "category": "Storm Strength",
+        "cost": 300.0,
+        "storm_radius": 30.0,
+        "flood_damage": 30.0,
+        "prereqs": [
+            "Base Radius 1"
+        ]
+    },
+    {
+        "name": "Base Radius 3",
+        "category": "Storm Strength",
+        "cost": 800.0,
+        "storm_radius": 50.0,
+        "flood_damage": 30.0,
+        "prereqs": [
+            "Base Radius 2"
+        ]
+    },
+    {
+        "name": "Storm Cult",
+        "category": "Geopolitical",
+        "cost": 400.0,
+        "government_function": -5.0,
+        "resources": -5.0,
+        "compliance": -10.0,
+        "preparation": -10.0,
+        "prereqs": []
+    },
+    {
+        "name": "Cult Following",
+        "category": "Geopolitical",
+        "cost": 300.0,
+        "government_function": -5.0,
+        "resources": -5.0,
+        "compliance": -5.0,
+        "preparation": -5.0,
+        "prereqs": [
+            "Storm Cult"
+        ]
+    },
+    {
+        "name": "Organized Religion",
+        "category": "Geopolitical",
+        "cost": 400.0,
+        "government_function": -10.0,
+        "resources": -10.0,
+        "compliance": -10.0,
+        "preparation": -10.0,
+        "prereqs": [
+            "Cult Following"
+        ]
+    },
+    {
+        "name": "Regional Spread",
+        "category": "Geopolitical",
+        "cost": 300.0,
+        "international_coop": -10.0,
+        "government_function": -5.0,
+        "resources": -5.0,
+        "compliance": -5.0,
+        "preparation": -5.0,
+        "prereqs": [
+            "Organized Religion"
+        ]
+    },
+    {
+        "name": "Global Spread",
+        "category": "Geopolitical",
+        "cost": 700.0,
+        "international_coop": -20.0,
+        "government_function": -10.0,
+        "resources": -10.0,
+        "compliance": -10.0,
+        "preparation": -10.0,
+        "prereqs": [
+            "Regional Spread"
+        ]
+    },
+    {
+        "name": "Religious Extremism",
+        "category": "Geopolitical",
+        "cost": 500.0,
+        "international_coop": -10.0,
+        "government_function": -10.0,
+        "resources": -10.0,
+        "compliance": -10.0,
+        "preparation": -10.0,
+        "prereqs": []
+    },
+    {
+        "name": "Doomsday Prophecy",
+        "category": "Geopolitical",
+        "cost": 800.0,
+        "international_coop": -10.0,
+        "government_function": -20.0,
+        "resources": -20.0,
+        "compliance": -20.0,
+        "preparation": -20.0,
+        "prereqs": [
+            "Global Spread",
+            "Religious Extremism"
+        ]
+    },
+    {
+        "name": "Destroy Supply Chains 1",
+        "category": "Infrastructure",
+        "cost": 100.0,
+        "resources": -5.0,
+        "prereqs": []
+    },
+    {
+        "name": "Destroy Supply Chains 2",
+        "category": "Infrastructure",
+        "cost": 200.0,
+        "resources": -10.0,
+        "prereqs": [
+            "Destroy Supply Chains 1"
+        ]
+    },
+    {
+        "name": "Ground Flights",
+        "category": "Infrastructure",
+        "cost": 200.0,
+        "international_coop": -5.0,
+        "transportation": -10.0,
+        "prereqs": [
+            "Destroy Supply Chains 2"
+        ]
+    },
+    {
+        "name": "Destroy Aircraft",
+        "category": "Infrastructure",
+        "cost": 400.0,
+        "international_coop": -10.0,
+        "transportation": -10.0,
+        "resources": -5.0,
+        "prereqs": [
+            "Ground Flights"
+        ]
+    },
+    {
+        "name": "Destroy Ports",
+        "category": "Infrastructure",
+        "cost": 200.0,
+        "transportation": -10.0,
+        "resources": -5.0,
+        "prereqs": [
+            "Destroy Supply Chains 2"
+        ]
+    },
+    {
+        "name": "Destroy Ships",
+        "category": "Infrastructure",
+        "cost": 400.0,
+        "international_coop": -5.0,
+        "transportation": -10.0,
+        "resources": -10.0,
+        "prereqs": [
+            "Destroy Ports"
+        ]
+    },
+    {
+        "name": "Destroy Minor Roads",
+        "category": "Infrastructure",
+        "cost": 400.0,
+        "transportation": -20.0,
+        "resources": -10.0,
+        "compliance": -10.0,
+        "prereqs": [
+            "Destroy Supply Chains 2"
+        ]
+    },
+    {
+        "name": "Destroy Major Roads",
+        "category": "Infrastructure",
+        "cost": 700.0,
+        "transportation": -20.0,
+        "resources": -20.0,
+        "compliance": -20.0,
+        "prereqs": [
+            "Destroy Minor Roads"
+        ]
+    },
+    {
+        "name": "Sabotage Weather Balloons",
+        "category": "Infrastructure",
+        "cost": 100.0,
+        "preparation": -5.0,
+        "prereqs": []
+    },
+    {
+        "name": "Hack Satellite Receivers",
+        "category": "Infrastructure",
+        "cost": 200.0,
+        "communications": -10.0,
+        "preparation": -10.0,
+        "prereqs": [
+            "Sabotage Weather Balloons"
+        ]
+    },
+    {
+        "name": "Destroy Satellites",
+        "category": "Infrastructure",
+        "cost": 400.0,
+        "communications": -20.0,
+        "international_coop": -10.0,
+        "preparation": -10.0,
+        "prereqs": [
+            "Hack Satellite Receivers"
+        ]
+    },
+    {
+        "name": "Destroy GPS Satellites",
+        "category": "Infrastructure",
+        "cost": 500.0,
+        "communications": -30.0,
+        "preparation": -20.0,
+        "prereqs": [
+            "Destroy Satellites"
+        ]
+    },
+    {
+        "name": "Destroy Food Stores",
+        "category": "Infrastructure",
+        "cost": 100.0,
+        "resources": -5.0,
+        "prereqs": []
+    },
+    {
+        "name": "Spread Crop Virus 1",
+        "category": "Infrastructure",
+        "cost": 200.0,
+        "resources": -10.0,
+        "prereqs": [
+            "Destroy Food Stores"
+        ]
+    },
+    {
+        "name": "Spread Crop Virus 2",
+        "category": "Infrastructure",
+        "cost": 400.0,
+        "international_coop": -5.0,
+        "resources": -10.0,
+        "compliance": -10.0,
+        "prereqs": [
+            "Spread Crop Virus 1"
+        ]
+    },
+    {
+        "name": "Virus Mutates to Blight",
+        "category": "Infrastructure",
+        "cost": 900.0,
+        "temperature": 2.0,
+        "sea_level": 50.0,
+        "international_coop": -10.0,
+        "government_function": -20.0,
+        "resources": -30.0,
+        "compliance": -20.0,
+        "prereqs": [
+            "Spread Crop Virus 2"
+        ]
+    }
 ]

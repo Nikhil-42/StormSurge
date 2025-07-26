@@ -84,10 +84,10 @@ def parse_file(file, variables) -> list[Node] | None:
                 # Parse as a node
                 parts = [part.strip() for part in line.split('.')]
                 name = parts[0]
-                cost = int(parts[1]) if len(parts) > 1 else 0
+                cost = float(parts[1]) if len(parts) > 1 else 0
 
                 modified_stats = [variables[i] for i, v in enumerate(parts[2].replace('-', '')) if v == '1']
-                stats = {var: int(v) for var, v in zip(modified_stats, parts[3].split(' '))}
+                stats = {var: float(v) for var, v in zip(modified_stats, parts[3].split(' '))}
                 
                 node = Node(name, category, cost, stats)
                 nodes.append(node)
@@ -104,27 +104,27 @@ def parse_file(file, variables) -> list[Node] | None:
         return nodes
     return None
 
-with open("data/stormtree.txt", 'r') as file:
+with open("Library/stormtree.txt", 'r') as file:
     nodes = parse_file(file, storm_variables)
     if nodes is None:
         print("Failed to parse storm tree data.")
     else:
-        with open("data/stormtree.json", 'w') as file:
+        with open("Library/stormtree.json", 'w') as file:
             json.dump([node.to_dict() for node in nodes], file, indent=4)
 
-with open("data/regiontree.txt", "r") as file:
+with open("Library/regiontree.txt", "r") as file:
     nodes = parse_file(file, human_variables)
     if nodes is None:
         print("Failed to parse region tree data.")
     else:
-        with open("data/regiontree.json", 'w') as file:
+        with open("Library/regiontree.json", 'w') as file:
             json.dump([node.to_dict() for node in nodes], file, indent=4)
     
-with open("data/globaltree.txt", "r") as file:
+with open("Library/globaltree.txt", "r") as file:
     nodes = parse_file(file, human_variables)
     if nodes is None:
         print("Failed to parse global tree data.")
     else:
-        with open("data/globaltree.json", 'w') as file:
+        with open("Library/globaltree.json", 'w') as file:
             json.dump([node.to_dict() for node in nodes], file, indent=4)
             

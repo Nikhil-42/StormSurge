@@ -90,6 +90,8 @@ label_settings = SubResource("LabelSettings_w2mav")
 vertical_alignment = 1
 
 [node name="Control2" parent="." instance=ExtResource("10_llkvi")]
+size_flags_horizontal = 1
+size_flags_vertical = 1
 
 [node name="IntroMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_q5q25")

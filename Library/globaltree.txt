@@ -1,34 +1,34 @@
 = Research & Education
 
-> Climate Research 1 . 500 . 00-000-0000-00000-00000 . .
+> Climate Research 1 . 3000 . 00-000-0000-00000-00000 . .
 ~ Neutralize Carbon Emissions <
 ~ Utilize Renewable Energy <
-Climate Research 2 . 700 . 00-000-0000-00000-00000 . .
+Climate Research 2 . 6000 . 00-000-0000-00000-00000 . .
 ~ Limit Energy Usage <
 ~ Filter Air Pollutants <
-Climate Research 3 . 1000 . 00-000-0000-00000-00000 . .
+Climate Research 3 . 9000 . 00-000-0000-00000-00000 . .
 ~ Sustainable Agriculture <
 ~ Recapture Atmospheric Carbon <
 
 = Geopolitical
 
-> Peace Movements . 100 . 00-000-0000-00000-00100 . -10 .
+> Peace Movements . 2000 . 00-000-0000-00000-00100 . -10 .
 ~ Global Peace Demonstrations <
-Global Peace Demonstrations . 300 . 00-000-0000-00000-00100 . -20 .
+Global Peace Demonstrations . 3000 . 00-000-0000-00000-00100 . -20 .
 ~ United Nations Peace Summit 1 <
-United Nations Peace Summit 1 . 700 . 00-010-0000-00000-00100 . +10 -20 .
+United Nations Peace Summit 1 . 5000 . 00-010-0000-00000-00100 . +10 -20 .
 ~ United Nations Peace Summit 2 <
-United Nations Peace Summit 2 . 1000 . 00-010-0000-00000-00100 . +20 -30 .
+United Nations Peace Summit 2 . 7000 . 00-010-0000-00000-00100 . +20 -30 .
 
 = Infrastructure
 
-> Building Advancements . 400 . 00-000-0000-00000-00000 . .
+> Building Advancements . 3000 . 00-000-0000-00000-00000 . .
 ~ Shutters and Sand Bags <
-Storm Infrastructure . 400 . 00-000-0000-00000-00000 . .
-~ Storm Walls 1 <
-Materials Research . 800 . 00-000-0000-00000-00000 . .
+Storm Infrastructure . 4000 . 00-000-0000-00000-00000 . .
+~ Drainage Systems <
+Materials Research . 10000 . 00-000-0000-00000-00000 . .
 ~ Upgrade Materials <
 ~ Storm Walls 2 <
 
-Communications Research . 600 . 00-110-0000-00000-00000 . 20 10 .
+Communications Research . 8000 . 00-110-0000-00000-00000 . 20 10 .
 ~ Early Warning Systems <

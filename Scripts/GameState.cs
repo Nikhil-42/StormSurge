@@ -22,14 +22,15 @@ public class GameState {  // Move node attributes, make not a node, make private
 	public List<string> lockedResearch = [];
 
 	// ================= GLOBAL TIME VARIABLES ================================
-	private float _timeElapsed = 0.0f;  // real-time since game started, except pauses (minutes.fraction of minute)
-	private float _gameTime = 0.0f;  // in-game time since game started, except pauses (weeks.fraction of week > displayed in days, hours)
+	private float _startTime;
+	private float _timeElapsed = 0.0f;  // milliseconds
 
 	// ================= GLOBAL GETTERS & SETTERS ================================
 	public float PassiveIncome { get => _passiveIncome; set => _passiveIncome = value; }
 	public float GlobalFunding { get => _globalFunding; set => _globalFunding = value; }
 	public float Solar { get => _solar; set => _solar = value; }
 	public RegionAI[] RegionAIs { get => _regionAIs; }
+	public double TimeElapsed { get => _timeElapsed; }
 	
 	// ================= INITIALIZER ================================
 	public GameState(RegionStats[] regionStats, Json stormJson, Json humanityJson, Json regionJson) {
@@ -71,6 +72,8 @@ public class GameState {  // Move node attributes, make not a node, make private
 			GD.Print(i, "Name: ", regionStats[i].name, ", ID: ", _regionAIs[i].Id);
 			if (GameManager.Instance.PrintDebug) _regionAIs[i].regionStats.printRegion();
 		}
+
+		_startTime = Time.GetTicksMsec();
 	}
 
 	public void spendSolar(int amount) {
@@ -79,5 +82,9 @@ public class GameState {  // Move node attributes, make not a node, make private
 
 	public void spendGlobalFunding(int amount) {
 		GlobalFunding -= amount;
+	}
+
+	public void updateTime() {
+		_timeElapsed = Time.GetTicksMsec() - _startTime;
 	}
 }

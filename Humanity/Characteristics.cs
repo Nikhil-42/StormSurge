@@ -77,9 +77,9 @@ public class Characteristics {  // Variables different for each country that are
         lowAlarmThreshold = 0.9f + (0.1f * stats.developmentIndex);
         highAlarmThreshold = 0.75f + (0.25f * stats.developmentIndex);
 
-        windDamageMultiplier = 1f + ((1f - stats.developmentIndex)/2f);
-        floodDamageMultiplier = 1f + stats.coastalPopulation;
-        secondaryDamageMultiplier = 1f + (1f - stats.developmentIndex);
+        windDamageMultiplier = 1f + ((1f - stats.developmentIndex)/2f) + (stats.coastalPopulation/2f);
+        floodDamageMultiplier = 1f + (2f * stats.coastalPopulation);
+        secondaryDamageMultiplier = 1f + ((1f - stats.developmentIndex) * 2f);
 
         governmentEfficiency = 0.5f + stats.developmentIndex;
         internationalRelations = 0.5f + stats.developmentIndex;

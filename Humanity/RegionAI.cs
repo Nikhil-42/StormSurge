@@ -55,6 +55,7 @@ public partial class RegionAI
 	public int Id => regionStats.id;
 	public string Name => regionStats.name;
 	public float Health => _progress.health;
+	public string State => _state.ToString();
 	public bool Alive => _progress.health > 0.0 && _state != ReactionState.Death;
 	public float WindDamage => _progress.windDamage;
 	public float FloodDamage => _progress.floodDamage;
@@ -77,7 +78,7 @@ public partial class RegionAI
 	private ReactionState GetNextState()
 	{
 		var nextState = _state;
-		if (_state == ReactionState.Death || _progress.health <= 0.0) {
+		if (_state == ReactionState.Death || _progress.health <= 0.1) {
 			nextState = ReactionState.Death;
 		} else {
 			switch (_state)

@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-
+using System;
 
 public partial class GameManager : Node
 {
@@ -39,8 +39,10 @@ public partial class GameManager : Node
 	private AudioStreamPlayer loop;
 	private AudioStreamPlayer ambience;
 
+	Vector2 baseResolution = new Vector2(1280, 720);
+
 	[Signal]
-	public delegate void SolarChangedEventHandler(int newSolar);  // FIXME: might be put in game manager instead
+	public delegate void SolarChangedEventHandler(int newSolar);
 	
 	public float Solar { get => _game.Solar;
 		set {
@@ -98,6 +100,8 @@ public partial class GameManager : Node
 
 	public override void _Process(double deltaTime)
 	{
+		Game.updateTime();
+
 		// Update the humanity AIs		
 		for (int i = 0; i < _game.RegionAIs.Length; i++)
 		{
@@ -141,5 +145,21 @@ public partial class GameManager : Node
 		ambience.Seek(0);
 		loop.Play();
 		ambience.Play();
+	}
+
+	public Vector2 ScaleUI(Vector2 toScale) {
+		Vector2 viewportSize = GetViewport().GetVisibleRect().Size;
+
+		float scaleFactor = Math.Min(viewportSize.Y / baseResolution.Y, viewportSize.X / baseResolution.X);
+
+		return new Vector2(toScale.X * scaleFactor, toScale.Y * scaleFactor);
+	}
+
+	public int ScaleFont(int toScale) {
+		Vector2 viewportSize = GetViewport().GetVisibleRect().Size;
+
+		float scaleFactor = Math.Min(viewportSize.Y / baseResolution.Y, viewportSize.X / baseResolution.X);
+
+		return (int)Math.Round(toScale * scaleFactor);
 	}
 }
