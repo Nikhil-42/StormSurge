@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=16 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="Script" uid="uid://c4wlwenlkjdy3" path="res://Scripts/GameManager.cs" id="1_xe0gy"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Globe/globe.tscn" id="3_hj5t5"]
@@ -13,10 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://brhocv1werbv3" path="res://UI/RegionPopup/RegionStatsPopup.tscn" id="11_0x8vr"]
 [ext_resource type="AudioStream" uid="uid://dk3k5wky8w0bv" path="res://Assets/Cumulus_Loop.mp3" id="11_p4pkd"]
 [ext_resource type="AudioStream" uid="uid://cabvw8expp1tj" path="res://Assets/ThunderstormAmbience.mp3" id="12_p4pkd"]
-[ext_resource type="Script" uid="uid://dvmhjop04243c" path="res://Scripts/NotificationManager.cs" id="14_hbynb"]
 
 [sub_resource type="SystemFont" id="SystemFont_wjear"]
-subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_w2mav"]
 font = SubResource("SystemFont_wjear")
@@ -109,10 +107,3 @@ parameters/looping = false
 stream = ExtResource("12_p4pkd")
 volume_db = 0.553
 parameters/looping = false
-
-[node name="NotificationManager" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("14_hbynb")
