@@ -13,9 +13,9 @@ public partial class HoverPopup : Panel
 		Hide(); // Start hidden
 	}
 
-	public void SetInfo(string title, string description, List<(string category, string name, int value)> effects)
+	public void SetInfo<T>(TechNode<T> node, string description) where T : IVars<T>
 	{
-		TitleLabel.Text = title;
+		TitleLabel.Text = node.Name;
 		DescriptionLabel.Text = description;
 
 		// Clear old effect labels
@@ -25,10 +25,10 @@ public partial class HoverPopup : Panel
 		}
 
 		// Add one label per effect
-		foreach (var (category, name, value) in effects)
+		foreach (var (name, value) in node.Vars.ToJson())
 		{
 			var label = new Label();
-			label.Text = $"[{category}] {name}: {(value >= 0 ? "+" : "")}{value}";
+			label.Text = $"[{node.Category}] {node.Name}: {value}";
 			
 			// font size override
 			label.AddThemeFontSizeOverride("font_size", 10);

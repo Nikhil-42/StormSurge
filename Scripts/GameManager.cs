@@ -15,6 +15,12 @@ public partial class GameManager : Node
 
 	[Export]
 	private string regionStatsPath = "res://Library/regionstats.txt";
+	[Export]
+	private Json stormJson = GD.Load<Json>("res://Library/stormtree.json");
+	[Export]
+	private Json humanityJson = GD.Load<Json>("res://Library/globaltree.json");
+	[Export]
+	private Json regionJson = GD.Load<Json>("res://Library/regiontree.json");
 
 	[Export]
 	private bool _printDebug = true;
@@ -33,7 +39,7 @@ public partial class GameManager : Node
 	[Signal]
 	public delegate void SolarChangedEventHandler(int newSolar);  // FIXME: might be put in game manager instead
 	
-	public double Solar { get => _game.Solar;
+	public float Solar { get => _game.Solar;
 		set {
 			if (_game.Solar != value) {
 				_game.Solar = value;
@@ -65,7 +71,7 @@ public partial class GameManager : Node
 		}
 
 		GD.Print("GameManager entering tree");  // debugging
-		_game = new GameState([.. regionsStats.Values.OrderBy(r => r.id)]);
+		_game = new GameState([.. regionsStats.Values.OrderBy(r => r.id)], stormJson, humanityJson, regionJson);
 
 		intro = GetNode<AudioStreamPlayer>("IntroMusic");
 		loop = GetNode<AudioStreamPlayer>("LoopMusic");
@@ -93,12 +99,12 @@ public partial class GameManager : Node
 		for (int i = 0; i < _game.RegionAIs.Length; i++) {
 			_game.RegionAIs[i].Process(deltaTime, _game);
 		}
-		
+
 		// Passive income generation, rate changes by sea level
-		Solar += _game.PassiveIncome * (1 + (0.01 * _game.stormTree.treeWeather.sea_level)) * deltaTime;
+		Solar += (float)(_game.PassiveIncome * (1f + (0.01f * _game.stormTree.Vars.Storm.SeaLevel)) * deltaTime);
 	}
 
-	public void ApplyDamage(int regionID, double damage, DamageType type)
+	public void ApplyDamage(int regionID, float damage, DamageType type)
 	{
 		if (regionID == -1) {
 			// GD.Print("Cannot apply damage to region -1 (Ocean)");

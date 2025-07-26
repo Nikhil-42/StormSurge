@@ -9,10 +9,10 @@ public class RegionStats
     public string code;  // Unique 3-letter region code
     public string continent;
     public string countries;
-    public double population;  // In millions of people
-    public double coastalPopulation;  // Decimal 0-1
-    public double developmentIndex;  // Scale of 0-1
-    public double gdp;  // In billions of USD/year
+    public float population;  // In millions of people
+    public float coastalPopulation;  // Decimal 0-1
+    public float developmentIndex;  // Scale of 0-1
+    public float gdp;  // In billions of USD/year
     public int minimumElevation;  // In meters
     public int maximumElevation;  // In meters
 
@@ -53,10 +53,10 @@ public class RegionStats
             code = fields[2],
             continent = fields[3],
             countries = fields[4],
-            population = double.Parse(fields[5]),
-            coastalPopulation = double.Parse(fields[6]),
-            developmentIndex = double.Parse(fields[7]),
-            gdp = double.Parse(fields[8]),
+            population = float.Parse(fields[5]),
+            coastalPopulation = float.Parse(fields[6]),
+            developmentIndex = float.Parse(fields[7]),
+            gdp = float.Parse(fields[8]),
             minimumElevation = int.Parse(fields[9]),
             maximumElevation = int.Parse(fields[10])
         };

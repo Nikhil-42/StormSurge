@@ -84,6 +84,7 @@ grow_vertical = 2
 script = ExtResource("1_xr3ga")
 CloseButton = NodePath("TechTreeClip/TechTreeControls/TechTreeContent/CloseButton")
 techTreeContent = NodePath("TechTreeClip/TechTreeControls/TechTreeContent")
+popupScene = ExtResource("2_24qqq")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1

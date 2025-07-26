@@ -1,4 +1,4 @@
-= CC
+= Climate Change
 
 > Invest in Oil 1 . 100 . 111-0000-000-0000 . 1 10 10 .
 ~ Invest in Oil 2 <
@@ -22,7 +22,7 @@ Reverse Environmental Policies . 700 . 111-0000-000-0000 . 2 30 10 .
 Abolish Environmental Agencies . 800 . 000-0000-010-1001 . -10 -10 -10 .
 Deforestation and Mining . 900 . 111-1001-000-0000 . 2 30 10 20 20 .
 
-= SS
+= Storm Strength
 
 > Wind Speed 1 . 200 . 000-1100-000-0000 . 20 10 .
 ~ Wind Speed 2 <
@@ -40,7 +40,7 @@ Base Radius 2 . 300 . 000-0011-000-0000 . 30 20 .
 ~ Base Radius 3 <
 Base Radius 3 . 800 . 000-0011-000-0000 . 50 20 .
 
-= GP
+= Geopolitical
 
 > Storm Cult . 400 . 000-0000-000-1111 . -5 -5 -10 -10 .
 ~ Cult Following <
@@ -56,7 +56,7 @@ Religious Extremism . 500 . 000-0000-010-1111 . -10 -10 -10 -10 -10 .
 ~ Doomsday Prophecy <
 Doomsday Prophecy . 1000 . 000-0000-010-1111 . -10 -20 -20 -20 -20 .
 
-= IF
+= Infrastructure
 
 > Destroy Supply Chains 1 . 100 . 000-0000-000-0100 . -5 .
 ~ Destroy Supply Chains 2 <

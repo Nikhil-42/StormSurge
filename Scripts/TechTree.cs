@@ -1,723 +1,485 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 
-public class weatherVars {
+public interface IVars<T> where T : IVars<T>
+{
+	abstract public static T Default { get; }
+	abstract public static T Add(T lhs, T rhs);
+	abstract public static T FromJson(Godot.Collections.Dictionary<string, Variant> json);
+	abstract public Godot.Collections.Dictionary<string, Variant> ToJson();
+}
+
+// 15, 0, 40, 1.0, 1.0, 100, 100
+public class GlobalVars : IVars<GlobalVars>
+{
+	public StormVars Storm { get; init; }
+	public GeopoliticalVars Geopolitical { get; init; }
+
+	public static GlobalVars Default => new GlobalVars
+	{
+		Storm = StormVars.Default,
+		Geopolitical = GeopoliticalVars.Default
+	};
+
+	public static GlobalVars Add(GlobalVars lhs, GlobalVars rhs)
+	{
+		return lhs + rhs;
+	}
+
+	public static GlobalVars operator +(GlobalVars lhs, GlobalVars rhs)
+	{
+		return new GlobalVars
+		{
+			Storm = lhs.Storm + rhs.Storm,
+			Geopolitical = lhs.Geopolitical + rhs.Geopolitical
+		};
+	}
+
+	public static GlobalVars FromJson(Godot.Collections.Dictionary<string, Variant> json)
+	{
+		var stormVars = StormVars.FromJson(json);
+		var geopoliticalVars = GeopoliticalVars.FromJson(json);
+		return new GlobalVars
+		{
+			Storm = stormVars,
+			Geopolitical = geopoliticalVars
+		};
+	}
+
+	public Godot.Collections.Dictionary<string, Variant> ToJson()
+	{
+		var json = new Godot.Collections.Dictionary<string, Variant>();
+		foreach ((string key, var item) in Storm.ToJson()) {
+			json[key] = item;
+		}
+
+		foreach ((string key, var item) in Geopolitical.ToJson())
+		{
+			json[key] = item;
+		}
+
+		return json;
+	}
+}
+
+public class StormVars : IVars<StormVars>
+{
 	// Zeros defaults for node contributions
-	public int[] vars = new int[7];
-	public string[] var_names = new string[7] {"Temperature", "Sea Level", "Storm Range", "Wind Damage", "Wind Speed", 
-	"Storm Radius", "Flood Damage"};
-	public int[] globalDefaults = new int[7] {15, 0, 40, 100, 100, 100, 100};
-	
-	// CLIMATE VARS
-	public int temp {  // 1. degrees Celsius above normal
-		get => vars[0];
-		set => vars[0] = 0;
-	}
-	public int sea_level {  // 2. meters above normal
-		get => vars[1];
-		set => vars[1] = 0;
-	}
-	public int range {  // 3. percent (base 40, up to 100)
-		get => vars[2];
-		set => vars[2] = 0;
+	public float Temperature { get; init; }
+	public float SeaLevel { get; init; }
+	public float Range { get; init; }
+	public float FloodDamage { get; init; }
+	public float WindDamage { get; init; }
+	public float WindSpeed { get; init; }
+	public float StormRadius { get; init; }
+
+	public static StormVars Default => new StormVars
+	{
+		Temperature = 0.0f,
+		SeaLevel = 0.0f,
+		Range = 0.0f,
+		FloodDamage = 0.0f,
+		WindDamage = 0.0f,
+		WindSpeed = 0.0f,
+		StormRadius = 0.0f
+	};
+
+	public static StormVars Add(StormVars lhs, StormVars rhs)
+	{
+		return lhs + rhs;
 	}
 
-	// STORM VARS
-	public int wind_damage {  // 4. percent (base 100)
-		get => vars[3];
-		set => vars[3] = 0;
+	public static StormVars operator +(StormVars lhs, StormVars rhs)
+	{
+		return new StormVars
+		{
+			Temperature = lhs.Temperature + rhs.Temperature,
+			SeaLevel = lhs.SeaLevel + rhs.SeaLevel,
+			Range = lhs.Range + rhs.Range,
+			FloodDamage = lhs.FloodDamage + rhs.FloodDamage,
+			WindDamage = lhs.WindDamage + rhs.WindDamage,
+			WindSpeed = lhs.WindSpeed + rhs.WindSpeed,
+			StormRadius = lhs.StormRadius + rhs.StormRadius
+		};
 	}
-	public int speed {  // 5. percent (base 100)
-		get => vars[4];
-		set => vars[4] = 0;
+
+	public static StormVars FromJson(Godot.Collections.Dictionary<string, Variant> json)
+	{
+		return new StormVars
+		{
+			Temperature = json.ContainsKey("temperature") ? (float)json["temperature"] : 0.0f,
+			SeaLevel = json.ContainsKey("sea_level") ? (float)json["sea_level"] : 0.0f,
+			Range = json.ContainsKey("range") ? (float)json["range"] : 0.0f,
+			FloodDamage = json.ContainsKey("flood_damage") ? (float)json["flood_damage"] : 0.0f,
+			WindDamage = json.ContainsKey("wind_damage") ? (float)json["wind_damage"] : 0.0f,
+			WindSpeed = json.ContainsKey("wind_speed") ? (float)json["wind_speed"] : 0.0f,
+			StormRadius = json.ContainsKey("storm_radius") ? (float)json["storm_radius"] : 0.0f
+		};
 	}
-	public int radius {  // 6. percent (base 100)
-		get => vars[5];
-		set => vars[5] = 0;
-	}
-	public int flood_damage {  // 7. percent (base 100)
-		get => vars[6];
-		set => vars[6] = 0;
-	}
-	
-	public void setGlobalDefaults() {  // Start of game, fresh map
-		for (int i=0; i<vars.Length; i++) {
-			vars[i] = globalDefaults[i];
-		}
+
+	public Godot.Collections.Dictionary<string, Variant> ToJson()
+	{
+		var json = new Godot.Collections.Dictionary<string, Variant>();
+		if (Temperature != 0.0) json["temperature"] = Temperature;
+		if (SeaLevel != 0.0) json["sea_level"] = SeaLevel;
+		if (Range != 0.0) json["range"] = Range;
+		if (FloodDamage != 0.0) json["flood_damage"] = FloodDamage;
+		if (WindDamage != 0.0) json["wind_damage"] = WindDamage;
+		if (WindSpeed != 0.0) json["wind_speed"] = WindSpeed;
+		if (StormRadius != 0.0) json["storm_radius"] = StormRadius;
+		return json;
 	}
 }
 
-public class geoVars {
-	// Zeros defaults for node contributions
-	public int[] vars = new int[7];
-	public string[] var_names = new string[7] {"Communication", "International Cooperation", "Transportation", 
-	"Government Function", "Resources", "Compliance", "Preparation"};
-	public int[] globalDefaults = new int[7] {100, 100, 100, 100, 100, 100, 100};
+public class GeopoliticalVars : IVars<GeopoliticalVars>
+{
+	public float Communication { get; init; }
+	public float InternationalCooperation { get; init; }
+	public float Transportation { get; init; }
+	public float GovernmentFunction { get; init; }
+	public float Resources { get; init; }
+	public float Compliance { get; init; }
+	public float Preparation { get; init; }
 
-	// GLOBAL VARS
-	public int comms {  // 1. percent (base 100)
-		get => vars[0];
-		set => vars[0] = 0;
-	}
-	public int intern_coop {  // 2. percent (base 100)
-		get => vars[1];
-		set => vars[1] = 0;
-	}
-	public int transport {  // 3. percent (base 100)
-		get => vars[2];
-		set => vars[2] = 0;
+	public static GeopoliticalVars Default => new GeopoliticalVars
+	{
+		Communication = 0.0f,
+		InternationalCooperation = 0.0f,
+		Transportation = 0.0f,
+		GovernmentFunction = 0.0f,
+		Resources = 0.0f,
+		Compliance = 0.0f,
+		Preparation = 0.0f
+	};
+
+	public static GeopoliticalVars Add(GeopoliticalVars lhs, GeopoliticalVars rhs)
+	{
+		return lhs + rhs;
 	}
 
-	// INTRAREGIONAL VARS
-	public int govt_function {  // 4. percent (base 100)
-		get => vars[3];
-		set => vars[3] = 0;
+	public static GeopoliticalVars operator +(GeopoliticalVars lhs, GeopoliticalVars rhs)
+	{
+		return new GeopoliticalVars
+		{
+			Communication = lhs.Communication + rhs.Communication,
+			InternationalCooperation = lhs.InternationalCooperation + rhs.InternationalCooperation,
+			Transportation = lhs.Transportation + rhs.Transportation,
+			GovernmentFunction = lhs.GovernmentFunction + rhs.GovernmentFunction,
+			Resources = lhs.Resources + rhs.Resources,
+			Compliance = lhs.Compliance + rhs.Compliance,
+			Preparation = lhs.Preparation + rhs.Preparation
+		};
 	}
-	public int resources {  // 5. percent (base 100)
-		get => vars[4];
-		set => vars[4] = 0;
+
+	public static GeopoliticalVars FromJson(Godot.Collections.Dictionary<string, Variant> json)
+	{
+		return new GeopoliticalVars
+		{
+			Communication = json.ContainsKey("communication") ? (float)json["communication"] : 0.0f,
+			InternationalCooperation = json.ContainsKey("international_cooperation") ? (float)json["international_cooperation"] : 0.0f,
+			Transportation = json.ContainsKey("transportation") ? (float)json["transportation"] : 0.0f,
+			GovernmentFunction = json.ContainsKey("government_function") ? (float)json["government_function"] : 0.0f,
+			Resources = json.ContainsKey("resources") ? (float)json["resources"] : 0.0f,
+			Compliance = json.ContainsKey("compliance") ? (float)json["compliance"] : 0.0f,
+			Preparation = json.ContainsKey("preparation") ? (float)json["preparation"] : 0.0f
+		};
 	}
-	public int compliance {  // 6. percent (base 100)
-		get => vars[5];
-		set => vars[5] = 0;
-	}
-	public int prep {  // 7. percent (base 100)
-		get => vars[6];
-		set => vars[6] = 0;
-	}
-	
-	public void setGlobalDefaults() {  // Start of game, fresh map
-		for (int i=0; i<vars.Length; i++) {
-			vars[i] = globalDefaults[i];
-		}
+
+	public Godot.Collections.Dictionary<string, Variant> ToJson()
+	{
+		var json = new Godot.Collections.Dictionary<string, Variant>();
+		if (Communication != 0.0) json["communication"] = Communication;
+		if (InternationalCooperation != 0.0) json["international_cooperation"] = InternationalCooperation;
+		if (Transportation != 0.0) json["transportation"] = Transportation;
+		if (GovernmentFunction != 0.0) json["government_function"] = GovernmentFunction;
+		if (Resources != 0.0) json["resources"] = Resources;
+		if (Compliance != 0.0) json["compliance"] = Compliance;
+		if (Preparation != 0.0) json["preparation"] = Preparation;
+		return json;
 	}
 }
 
-public class humanVars {
-	// Zeros defaults for node contributions
-	public int[] vars = new int[10];
-	public string[] var_names = new string[10] {"Global Migration", "Regional Migration", "Global Warming", 
-	"Climate Research Costs", "Cult Spread Speed", "Recovery Rate", "Infrastructure Research Costs", 
-	"War Spread Speed", "Detection Time", "Implementation Costs"};
-	public int[] globalDefaults = new int[10] {100, 100, 100, 100, 100, 100, 100, 100, 96, 100};
+public class RegionVars : IVars<RegionVars>
+{
+	public float GlobalMigration { get; init; }
+	public float RegionMigration { get; init; }
+	public float GlobalWarming { get; init; }
+	public float ClimateCosts { get; init; }
+	public float CultSpread { get; init; }
+	public float Recovery { get; init; }
+	public float InfrastructureCosts { get; init; }
+	public float WarSpread { get; init; }
+	public float Detection { get; init; }
+	public float ImplementCosts { get; init; }
 
-	// HUMAN BEHAVIOR VARS
-	public int global_migration {  // 1. percent (base 100, must be enabled)
-		get => vars[0];
-		set => vars[0] = 0;
-	}
-	public int region_migration {  // 2. percent (base 100, must be enabled)
-		get => vars[1];
-		set => vars[1] = 0;
-	}
-	public int global_warming {  // 3. percent (base 100)
-		get => vars[2];
-		set => vars[2] = 0;
-	}
-	public int climate_costs {  // 4. percent (base 100)
-		get => vars[3];
-		set => vars[3] = 0;
-	}
-	public int cult_spread {  // 5. percent (base 100)
-		get => vars[4];
-		set => vars[4] = 0;
-	}
-	public int recovery {  // 6. percent (base 100)
-		get => vars[5];
-		set => vars[5] = 0;
-	}
-	public int infrastructure_costs {  // 7. percent (base 100)
-		get => vars[6];
-		set => vars[6] = 0;
-	}
-	public int war_spread {  // 8. percent (base 100)
-		get => vars[7];
-		set => vars[7] = 0;
-	}
-	public int detection {  // 9. time in hours (base 96)
-		get => vars[8];
-		set => vars[8] = 0;
-	}
-	public int implement_costs {  // 10. percent (base 100)
-		get => vars[9];
-		set => vars[9] = 0;
-	}
-	
-	public void setGlobalDefaults() {  // Start of game, fresh map
-		for (int i=0; i<vars.Length; i++) {
-			vars[i] = globalDefaults[i];
-		}
-	}
-}
+	public static RegionVars Default => new RegionVars
+	{
+		GlobalMigration = 0.0f,
+		RegionMigration = 0.0f,
+		GlobalWarming = 0.0f,
+		ClimateCosts = 0.0f,
+		CultSpread = 0.0f,
+		Recovery = 0.0f,
+		InfrastructureCosts = 0.0f,
+		WarSpread = 0.0f,
+		Detection = 0.0f,
+		ImplementCosts = 0.0f
+	};
 
-public class TechNode {
-	public int cost;
-	public bool storm;  // false = human AI tech node
-	public string name;
-	public string category;
-	public bool available;
-	public bool bought;
-
-	public bool _global;  // human only, false = local (regional) upgrade
-	public bool research_locked = false;  // true if research node only and global research not yet unlocked
-	
-	public List<TechNode> children = new List<TechNode>();
-	
-	public weatherVars weather;  // zero node default
-	public geoVars geo;  // zero node default
-	public humanVars human;  // zero node default
-	
-	public TechNode(int c, bool s, bool g, string n, string cat, bool a, bool b, List<int> positions, List<int> effects) {  // FIX THIS FUNCTION RAHHHHHHHH
-		cost = c;
-		storm = s;
-		_global = g;
-		name = n;
-		category = cat;
-		available = a;
-		bought = b;
-		
-		if (storm) {  // Storm tech tree node
-			weather = new weatherVars();
-			geo = new geoVars();
-
-			for (int i=0; i<positions.Count; i++) {
-				if (positions[i] <= 7) {
-					weather.vars[positions[i]-1] += effects[i];
-				} else {
-					geo.vars[positions[i]-8] += effects[i];
-				}
-			}
-		} else {  // Human AI tech tree node
-			weather = new weatherVars();
-			geo = new geoVars();
-			human = new humanVars();
-
-			if (positions.Count == 0) {
-				research_locked = true;
-			} else {
-				for (int i=0; i<positions.Count; i++) {
-					if (positions[i] == 1) {
-						weather.vars[3] += effects[i];  // wind damage
-					} else if (positions[i] == 2) {
-						weather.vars[6] += effects[i];  // flood damage
-					} else if (positions[i] <= 9) {
-						geo.vars[positions[i]-3] += effects[i];  // geo vars
-					} else {
-						human.vars[positions[i]-10] += effects[i];  // human vars
-					}
-				}
-			}
-		}
+	public static RegionVars Add(RegionVars lhs, RegionVars rhs)
+	{
+		return lhs + rhs;
 	}
 
-	public void addChildNode(TechNode child) {
-		children.Add(child);
-	}
-	
-	public void unlock() {
-		available = true;
+	public static RegionVars operator +(RegionVars lhs, RegionVars rhs)
+	{
+		return new RegionVars
+		{
+			GlobalMigration = lhs.GlobalMigration + rhs.GlobalMigration,
+			RegionMigration = lhs.RegionMigration + rhs.RegionMigration,
+			GlobalWarming = lhs.GlobalWarming + rhs.GlobalWarming,
+			ClimateCosts = lhs.ClimateCosts + rhs.ClimateCosts,
+			CultSpread = lhs.CultSpread + rhs.CultSpread,
+			Recovery = lhs.Recovery + rhs.Recovery,
+			InfrastructureCosts = lhs.InfrastructureCosts + rhs.InfrastructureCosts,
+			WarSpread = lhs.WarSpread + rhs.WarSpread,
+			Detection = lhs.Detection + rhs.Detection,
+			ImplementCosts = lhs.ImplementCosts + rhs.ImplementCosts
+		};
 	}
 
-	public void buy() {
-		available = false;
-		bought = true;
+	public static RegionVars FromJson(Godot.Collections.Dictionary<string, Variant> json)
+	{
+		return new RegionVars
+		{
+			GlobalMigration = json.ContainsKey("global_migration") ? (float)json["global_migration"] : 0.0f,
+			RegionMigration = json.ContainsKey("region_migration") ? (float)json["region_migration"] : 0.0f,
+			GlobalWarming = json.ContainsKey("global_warming") ? (float)json["global_warming"] : 0.0f,
+			ClimateCosts = json.ContainsKey("climate_costs") ? (float)json["climate_costs"] : 0.0f,
+			CultSpread = json.ContainsKey("cult_spread") ? (float)json["cult_spread"] : 0.0f,
+			Recovery = json.ContainsKey("recovery") ? (float)json["recovery"] : 0.0f,
+			InfrastructureCosts = json.ContainsKey("infrastructure_costs") ? (float)json["infrastructure_costs"] : 0.0f,
+			WarSpread = json.ContainsKey("war_spread") ? (float)json["war_spread"] : 0.0f,
+			Detection = json.ContainsKey("detection") ? (float)json["detection"] : 0.0f,
+			ImplementCosts = json.ContainsKey("implement_costs") ? (float)json["implement_costs"] : 0.0f
+		};
 	}
 
-	public void printNode() {
-		string status = "";
-		if (bought) status = "bought";
-		else if (!bought && available) status = "available";
-		else if (!bought && !available) status = "locked";
-		
-		GD.Print("Node: " + name);
-		GD.Print("\t> Cost: " + cost.ToString() + ", Cat: " + category + ", Status: " + status);
-			
-		for (int i=0; i<weather.vars.Length; i++) {
-			if (weather.vars[i] != 0) {
-				GD.Print("\t\t> " + weather.var_names[i] + ": " + weather.vars[i]);
-			}
-		}
-		for (int i=0; i<geo.vars.Length; i++) {
-			if (geo.vars[i] != 0) {
-				GD.Print("\t\t> " + geo.var_names[i] + ": " + geo.vars[i]);
-			}
-		}
-		if (!storm) {
-			for (int i=0; i<human.vars.Length; i++) {
-				if (human.vars[i] != 0) {
-					GD.Print("\t\t> " + human.var_names[i] + ": " + human.vars[i]);
-				}
-			}
-		}
+	public Godot.Collections.Dictionary<string, Variant> ToJson()
+	{
+		var json = new Godot.Collections.Dictionary<string, Variant>();
+		if (GlobalMigration != 0.0) json["global_migration"] = GlobalMigration;
+		if (RegionMigration != 0.0) json["region_migration"] = RegionMigration;
+		if (GlobalMigration != 0.0) json["global_warming"] = GlobalWarming;
+		if (ClimateCosts != 0.0) json["climate_costs"] = ClimateCosts;
+		if (CultSpread != 0.0) json["cult_spread"] = CultSpread;
+		if (Recovery != 0.0) json["recovery"] = Recovery;
+		if (InfrastructureCosts != 0.0) json["infrastructure_costs"] = InfrastructureCosts;
+		if (WarSpread != 0.0) json["war_spread"] = WarSpread;
+		if (Detection != 0.0) json["detection"] = Detection;
+		if (ImplementCosts != 0.0) json["implement_costs"] = ImplementCosts;
+		return json;
 	}
 }
 
-public class TechTree {
-	public string stormDataPath = "res://Library/stormtreedata.txt";
-	public string humanDataPath = "res://Library/humantreedata.txt";
 
-	public weatherVars treeWeather;  // global default
-	public geoVars treeGeo;  // global default
-	public humanVars treeHuman;  // global default
-	private bool _storm;  // true = storm tech tree
+public interface ITechNode
+{
+	string Name { get; }
+	string Category { get; }
+	float Cost { get; }
+	bool Blocked { get; }
+	bool Purchased { get; }
+	bool Available => !Blocked && !Purchased;
+	string[] Parents { get; }
+}
 
-	public List<TechNode> bought = new List<TechNode>();
-	public List<TechNode> available = new List<TechNode>();
-	public List<TechNode> locked = new List<TechNode>();
+public class TechNode<T> : ITechNode where T : IVars<T>
+{
+	public string Name { get; private set; }
+	public string Category { get; private set; }
+	public virtual float Cost { get; private set; }
+	public bool Blocked
+	{
+		get => _prerequisites.Any(req => !req.Purchased);
+	}
+	public bool Purchased { get; protected set; } = false;
+	public bool Available => !Blocked && !Purchased;
+	public string[] Parents { get; private set; } = [];
+	public IVars<T> Vars { get; private set; }
 
-	public TechTree(bool isStorm) {
-		_storm = isStorm;
-		if (_storm) {
-			treeWeather = new weatherVars();
-			treeWeather.setGlobalDefaults();
+	private ITechNode[] _prerequisites = [];
 
-			treeGeo = new geoVars();
-			treeGeo.setGlobalDefaults();
-						
-			if (!Godot.FileAccess.FileExists(stormDataPath)) {
-				if (GameManager.Instance.PrintDebug) GD.PrintErr($"File not found: {stormDataPath}");
-				return;
+	internal void AddPrerequisite(ITechNode prerequisite)
+	{
+		_prerequisites.Append(prerequisite);
+	}
+
+	/// <summary>
+	/// Attempts to buy the node with a downpayment.
+	/// Returns `false` if the downpayment bounced.
+	/// Note, the downpayment need not be the full cost of the node.
+	/// If the payment is sufficient, the node will be marked as purchased.
+	/// </summary>
+	/// <param name="downpayment"></param>
+	/// <returns>`true` if the downpayment should be deducted from the caller's currency, `false` otherwise.</returns>
+	internal virtual bool Buy(ref float balance)
+	{
+		if (!Available)
+		{
+			return false; // Not available for purchase
+		}
+
+		if (balance < Cost)
+		{
+			return false; // Not enough downpayment
+		}
+
+		Purchased = true;
+		balance -= Cost;
+		return true;
+	}
+
+	public void LoadFromJson(Godot.Collections.Dictionary<string, Variant> json) {
+		Name = (string)json["name"];
+		Category = (string)json["category"];
+		Cost = (int)json["cost"];
+		Parents = ((Godot.Collections.Array<string>)json["prereqs"]).ToArray();
+		Vars = T.FromJson(json);
+	}
+}
+
+public class GlobalNode : TechNode<GlobalVars>
+{
+	public override float Cost
+	{
+		get => _cost - _downpayment;
+	}
+
+	private float _cost = 0.0f;
+	private float _downpayment = 0.0f;
+
+	internal override bool Buy(ref float balance)
+	{
+
+		if (!Available)
+		{
+			return false; // Not available for purchase
+		}
+
+		_downpayment += balance;
+		balance -= Cost;
+		if (_downpayment >= Cost)
+		{
+			Purchased = true;
+		}
+		return true;
+	}
+}
+
+public class TechTree<T, V> where T : TechNode<V>, new() where V : IVars<V> {
+	public V Vars { get; private set; }
+	public List<T> Available => _nodes.Values.Where(node => node.Available).ToList();
+	private Dictionary<string, T> _nodes;
+
+	public TechTree(Variant serializedTree)
+	{
+		_nodes = [];
+		Vars = V.Default;
+
+		if (serializedTree.VariantType is not Variant.Type.Array)
+		{
+			GD.PrintErr($"[TechTree] Expected an array, got {serializedTree.VariantType}");
+			return;
+		}
+		var nodes = (Godot.Collections.Array<Variant>)serializedTree;
+
+		foreach (var infoVariant in nodes)
+		{
+			if (infoVariant.VariantType is not Variant.Type.Dictionary)
+			{
+				GD.PrintErr($"[TechTree] Expected a dictionary, got {infoVariant.VariantType}");
+				continue;
 			}
-			
-			using Godot.FileAccess stormFile = Godot.FileAccess.Open(stormDataPath, Godot.FileAccess.ModeFlags.Read);
+			var info = (Godot.Collections.Dictionary<string, Variant>)infoVariant;
+			T node = new();
+			node.LoadFromJson(info);
+			_nodes[node.Name] = node;
+		}
+	}
 
-			int cost = 0;
-			string name = "";
-			string child_name = "";
-			List<int> positions = new List<int>();
-			List<int> effects = new List<int>();
 
-			List<TechNode> parents = new List<TechNode>();
-			List<string> children = new List<string>();
-			TechNode currentNode = null;
-			
-			string currentCat = "";
-
-			while (!stormFile.EofReached()) {
-				var line = stormFile.GetLine().Trim();
-
-				if (string.IsNullOrWhiteSpace(line)) 
+	public void UpdatePrerequisites(Dictionary<string, ITechNode> externalNodes)
+	{
+		foreach (var node in _nodes.Values)
+		{
+			foreach (string prerequisiteName in node.Parents)
+			{
+				ITechNode prerequisite = _nodes.GetValueOrDefault(prerequisiteName);
+				if (prerequisite == null ) externalNodes.GetValueOrDefault(prerequisiteName);
+				if (prerequisite == null)
+				{
+					GD.PrintErr($"[TechTree] Prerequisite {prerequisiteName} not found for node {node.Name}");
 					continue;
-				string[] parts = line.Split(' ');
-
-				string currentType = "";
-				string currentToken = "";
-
-				for (int i = 0; i < parts.Length; i++) {
-					if (i == 0) {
-						switch(parts[i]) {
-							case "=":
-								currentType = "category";
-								break;
-							case ">":
-								currentType = "start_node";
-								currentToken = "name";
-								break;
-							case "~":
-								currentType = "child_name";
-								break;
-							default:
-								currentType = "node";
-								currentToken = "name";
-								name += parts[i];
-								break;
-						}
-						continue;  // Go to next part
-					} else {
-						if (currentType == "category") {
-							currentCat = parts[i];
-							// if (GameManager.Instance.PrintDebug) GD.Print("Set Category: " + currentCat);
-							continue;
-						}
-						if (parts[i] == ".") {
-							switch (currentToken) {
-								case "name":
-									currentToken = "cost";
-									break;
-								case "cost":
-									currentToken = "positions";
-									break;
-								case "positions":
-									currentToken = "effects";
-									break;
-								case "effects":
-									if (currentType == "start_node") {
-										currentNode = new TechNode(cost, _storm, true, name, currentCat, true, false, positions, effects);
-										available.Add(currentNode);
-									} else {
-										currentNode = new TechNode(cost, _storm, true, name, currentCat, false, false, positions, effects);
-										locked.Add(currentNode);
-									}
-									if (GameManager.Instance.PrintDebug) {
-										// currentNode.printNode();
-									}
-									cost = 0;
-									name = "";
-									positions.Clear();
-									effects.Clear();
-									currentType = "";
-									currentToken = "";
-									break;
-							}
-							continue;  // Go to next part
-						}
-						else if (currentType == "start_node" || currentType == "node") {
-							switch (currentToken) {
-								case "name":
-									if (!string.IsNullOrWhiteSpace(name)) {
-										name += " ";
-									}
-									name += parts[i];
-									break;
-								case "cost":
-									cost = int.Parse(parts[i]);
-									break;
-								case "positions":
-									string temp = parts[i].Replace("-", "");
-									for (int j = 0; j < temp.Length; j++) {
-										if (temp[j] == '1') {
-											positions.Add(j+1);
-										}
-									}
-									break;
-								case "effects":
-									effects.Add(int.Parse(parts[i]));
-									break;
-							}
-						} else if (currentType == "child_name") {
-							if (parts[i] == "<") {
-								parents.Add(currentNode);
-								children.Add(child_name);
-
-								child_name = "";
-								currentType = "";
-								currentToken = "";
-								continue;  // Move to next line
-							}
-							if (!string.IsNullOrWhiteSpace(child_name)) {
-								child_name += " ";
-							}
-							child_name += parts[i];
-						}
-					}
 				}
+
+				node.AddPrerequisite(prerequisite);
 			}
-			for (int i=0; i<parents.Count; i++) {
-				foreach (TechNode node in locked) {
-					if (node.name == children[i]) {
-						parents[i].addChildNode(node);
-						// if (GameManager.Instance.PrintDebug) GD.Print(">" + node.name + " added as child of " + parents[i].name);
-					}
-				}
-			}
-			
-			if (GameManager.Instance.PrintDebug) GD.Print("Finished parsing storm data.");
-			stormFile.Close();
-		}
-		else {  // Human AI tech tree
-			treeWeather = new weatherVars();
-			treeWeather.setGlobalDefaults();
-
-			treeGeo = new geoVars();
-			treeGeo.setGlobalDefaults();
-
-			treeHuman = new humanVars();
-			treeHuman.setGlobalDefaults();
-
-			if (!Godot.FileAccess.FileExists(humanDataPath)) {
-				if (GameManager.Instance.PrintDebug) GD.PrintErr($"File not found: {humanDataPath}");
-				return;
-			}
-			
-			using Godot.FileAccess humanFile = Godot.FileAccess.Open(humanDataPath, Godot.FileAccess.ModeFlags.Read);
-
-			string name = "";
-			bool _global = false;
-			int cost = 0;
-			string child_name = "";
-			List<int> positions = new List<int>();
-			List<int> effects = new List<int>();
-
-			List<TechNode> parents = new List<TechNode>();
-			List<string> children = new List<string>();
-			TechNode currentNode = null;
-			
-			string currentCat = "";
-
-			while (!humanFile.EofReached()) {
-				var line = humanFile.GetLine().Trim();
-
-				if (string.IsNullOrWhiteSpace(line)) 
-					continue;
-				string[] parts = line.Split(' ');
-
-				string currentType = "";
-				string currentToken = "";
-
-				for (int i = 0; i < parts.Length; i++) {
-					if (i == 0) {
-						switch(parts[i]) {
-							case "=":
-								currentType = "category";
-								break;
-							case ">":
-								currentType = "start_node";
-								currentToken = "name";
-								break;
-							case "~":
-								currentType = "child_name";
-								break;
-							default:
-								currentType = "node";
-								currentToken = "name";
-								name += parts[i];
-								break;
-						}
-						continue;  // Go to next part
-					} else {
-						if (currentType == "category") {
-							currentCat = parts[i];
-							// if (GameManager.Instance.PrintDebug) GD.Print("Set Category: " + currentCat);
-							continue;
-						}
-						if (parts[i] == ".") {
-							switch (currentToken) {
-								case "name":
-									currentToken = "scale";
-									break;
-								case "scale":
-									currentToken = "cost";
-									break;
-								case "cost":
-									currentToken = "positions";
-									break;
-								case "positions":
-									currentToken = "effects";
-									break;
-								case "effects":
-									if (currentType == "start_node") {
-										currentNode = new TechNode(cost, _storm, _global, name, currentCat, true, false, positions, effects);
-										available.Add(currentNode);
-									} else {
-										currentNode = new TechNode(cost, _storm, _global, name, currentCat, false, false, positions, effects);
-										locked.Add(currentNode);
-									}
-									if (GameManager.Instance.PrintDebug) {
-										// currentNode.printNode();
-									}
-									cost = 0;
-									_global = false;
-									name = "";
-									positions.Clear();
-									effects.Clear();
-									currentType = "";
-									currentToken = "";
-									break;
-							}
-							continue;  // Go to next part
-						}
-						else if (currentType == "start_node" || currentType == "node") {
-							switch (currentToken) {
-								case "name":
-									if (!string.IsNullOrWhiteSpace(name)) {
-										name += " ";
-									}
-									name += parts[i];
-									break;
-								case "scale":
-									if (parts[i] == "G") {
-										_global = true;
-									}
-									break;
-								case "cost":
-									cost = int.Parse(parts[i]);
-									break;
-								case "positions":
-									string temp = parts[i].Replace("-", "");
-									for (int j = 0; j < temp.Length; j++) {
-										if (temp[j] == '1') {
-											positions.Add(j+1);
-										}
-									}
-									break;
-								case "effects":
-									effects.Add(int.Parse(parts[i]));
-									break;
-							}
-						} else if (currentType == "child_name") {
-							if (parts[i] == "<") {
-								parents.Add(currentNode);
-								children.Add(child_name);
-
-								child_name = "";
-								currentType = "";
-								currentToken = "";
-								continue;  // Move to next line
-							}
-							if (!string.IsNullOrWhiteSpace(child_name)) {
-								child_name += " ";
-							}
-							child_name += parts[i];
-						}
-					}
-				}
-			}
-			for (int i=0; i<parents.Count; i++) {
-				foreach (TechNode node in locked) {
-					if (node.name == children[i]) {
-						parents[i].addChildNode(node);
-						// if (GameManager.Instance.PrintDebug) GD.Print(">" + node.name + " added as child of " + parents[i].name);
-					}
-				}
-			}
-			
-			if (GameManager.Instance.PrintDebug) GD.Print("Finished parsing human data.");
-			humanFile.Close();
 		}
 	}
 
-	public void viewNodes() {
-		// Return available nodes
-		if (GameManager.Instance.PrintDebug) {
-			if (_storm) GD.Print("\nAvailable nodes (Storm):");
-			else GD.Print("\nAvailable nodes (Human):");
-		}
-		foreach (TechNode node in available) {
-			if (GameManager.Instance.PrintDebug) GD.Print("\t> " + node.name + ": " + node.cost.ToString());
-		}
+	public TechTree(TechTree<T, V> other)
+	{
+		_nodes = new Dictionary<string, T>(other._nodes);
+		Vars = other.Vars;
 	}
 
-	public TechNode searchNode(string search) {  // Returns node by name search, whether available or locked
-		foreach (TechNode node in bought) {
-			if (node.name == search) {
-				return node;
-			}
-		}
-		foreach (TechNode node in available) {
-			if (node.name == search) {
-				return node;
-			}
-		}
-		foreach (TechNode node in locked) {
-			if (node.name == search) {
-				return node;
-			}
+	public T GetNode(string search)
+	{  // Returns node by name search, whether available or locked
+		if (_nodes.ContainsKey(search))
+		{
+			return _nodes[search];
 		}
 		return null;
 	}
 
-	public TechNode getNode(string search) {  // Returns available node only by name search
-		foreach (TechNode node in available) {
-			if (node.name == search) {
-				return node;
-			}
-		}
-		
-		// Added these for locked/bought
-		foreach (TechNode node in locked){
-			if (node.name == search) {
-				return node;
-			}	
-		}
-			
-		foreach (TechNode node in bought) {
-			if (node.name == search) {
-				return node;
-			}
-		}	
-		return null;
+	public List<T> GetAllNodes() {
+		return _nodes.Values.ToList();
 	}
 
-	public List<TechNode> getAllNodes() {
-		List<TechNode> allNodes = new List<TechNode>();
-
-		foreach (TechNode node in bought) {
-			allNodes.Add(node);
+	public bool BuyNode(T node, ref float balance)
+	{
+		if (node == null || _nodes == null || !_nodes.ContainsKey(node.Name) || _nodes[node.Name] != node)
+		{
+			GD.PrintErr($"Node {node?.Name} not found in the tech tree.");
+			return false; // Node not found
 		}
-		foreach (TechNode node in available) {
-			allNodes.Add(node);
+		bool result = node.Buy(ref balance);
+		if (node.Purchased)
+		{
+			// Update Vars if node is purchased
+			Vars = V.Add(Vars, (V)node.Vars);
 		}
-		foreach (TechNode node in locked) {
-			allNodes.Add(node);
-		}
-
-		return allNodes;
+		return result;
 	}
 
-	public void buyNode(TechNode node) {
-		// FIXME: possibly move checks outside of function, should not be able to buy unless passed
-		bool proceed = false;
-
-		if (available.Contains(node) && !node.research_locked) {
-			if (_storm) {
-				if (GameManager.Instance.Game.Solar >= node.cost) {
-					proceed = true;
-					GameManager.Instance.Game.spendSolar(node.cost);
-				}
-			} else {
-				if (GameManager.Instance.Game.GlobalFunding >= node.cost) {
-					proceed = true;
-					GameManager.Instance.Game.spendGlobalFunding(node.cost);
-				}
-			}
+	public bool BuyNode(string name, ref float balance)
+	{
+		if (_nodes.ContainsKey(name))
+		{
+			var node = _nodes[name];
+			return BuyNode(node, ref balance);
 		}
-		if (proceed) {
-			available.Remove(node);
-			node.buy();
-			bought.Add(node);
-			foreach (TechNode child in node.children) {
-				if (!available.Contains(child)) {
-					available.Add(child);
-					child.unlock();
-				}
-			}
-			updateStats(node);
-		}
+		return false; // Node not found
 	}
 
-	public void setDefaults() {
-		if (_storm) {
-			treeWeather.setGlobalDefaults();
-			treeGeo.setGlobalDefaults();
-		} else {
-			treeWeather.setGlobalDefaults();
-			treeGeo.setGlobalDefaults();
-			treeHuman.setGlobalDefaults();
-		}
-	}
-
-	public void updateStats(TechNode node) {
-		// After buying node, add effects of node to tech tree variables
-		// FIXME: just made it a different function oops this is why we comment our code kids
-		if (_storm) {
-			for (int i=0; i<treeWeather.vars.Length; i++) {
-				if (node.weather.vars[i] != 0) {
-					treeWeather.vars[i] = treeWeather.globalDefaults[i] + node.weather.vars[i];
-				}
-			}
-			for (int i=0; i<treeGeo.vars.Length; i++) {
-				if (node.geo.vars[i] != 0) {
-					treeGeo.vars[i] = treeGeo.globalDefaults[i] + node.geo.vars[i];
-				}
-			}
-		} else {
-			for (int i=0; i<treeWeather.vars.Length; i++) {
-				if (node.weather.vars[i] != 0) {
-					treeWeather.vars[i] = treeWeather.globalDefaults[i] + node.weather.vars[i];
-				}
-			}
-			for (int i=0; i<treeGeo.vars.Length; i++) {
-				if (node.geo.vars[i] != 0) {
-					treeGeo.vars[i] = treeGeo.globalDefaults[i] + node.geo.vars[i];
-				}
-			}
-			for (int i=0; i<treeHuman.vars.Length; i++) {
-				if (node.human.vars[i] != 0) {
-					treeHuman.vars[i] = treeHuman.globalDefaults[i] + node.human.vars[i];
-				}
-			}
+	public void PrintNodes()
+	{
+		GD.Print("All nodes (" + typeof(T).Name + "):");
+		foreach (T node in _nodes.Values)
+		{
+			GD.Print("\t> " + node.Name + ": " + node.Cost.ToString());
 		}
 	}
 }

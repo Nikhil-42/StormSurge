@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://cabvw8expp1tj" path="res://Assets/ThunderstormAmbience.mp3" id="12_p4pkd"]
 
 [sub_resource type="SystemFont" id="SystemFont_wjear"]
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_w2mav"]
 font = SubResource("SystemFont_wjear")
