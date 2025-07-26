@@ -36,8 +36,6 @@ public partial class UI : Control
 		// Tech Tree button
 		TechTreeButton.Pressed += OpenTechTree;
 		
-		_notificationManager = GetNode<NotificationManager>("../NotificationManager");
-
 		// Start Generic Notifications Function
 		_ = RunNotificationTestLoop();
 	}
