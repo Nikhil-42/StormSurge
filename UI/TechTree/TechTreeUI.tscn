@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://b4d1qg70hud40"]
+[gd_scene load_steps=21 format=3 uid="uid://b4d1qg70hud40"]
 
 [ext_resource type="Texture2D" uid="uid://b2pigmmk0o7l8" path="res://Assets/Notification box .png" id="1_6ipeo"]
 [ext_resource type="Script" uid="uid://b24ngdl824nt" path="res://UI/TechTree/TechTreeUI.cs" id="1_xr3ga"]
 [ext_resource type="Script" uid="uid://w4gb06g4qjsc" path="res://UI/TechTree/PanAndZoom.cs" id="2_0wmf7"]
 [ext_resource type="PackedScene" uid="uid://djgjd2t0jhakl" path="res://UI/TechTree/TechNodeButton.tscn" id="2_6ipeo"]
+[ext_resource type="PackedScene" uid="uid://frj4ud7y5uwm" path="res://UI/TechTree/HoverPopup.tscn" id="2_24qqq"]
 [ext_resource type="Texture2D" uid="uid://c3yixyjc05bh4" path="res://Assets/UIElements/Climate- locked unclicked.PNG" id="5_73if2"]
 [ext_resource type="Texture2D" uid="uid://byqop4asxodv6" path="res://Assets/UIElements/2HB HOVER.PNG" id="5_p8ylv"]
 [ext_resource type="Texture2D" uid="uid://d22t725og2q4i" path="res://Assets/UIElements/Globe- unlocked.PNG" id="6_0h2ny"]
@@ -30,6 +31,7 @@ grow_vertical = 2
 script = ExtResource("1_xr3ga")
 CloseButton = NodePath("TechTreeClip/TechTreeControls/TechTreeContent/CloseButton")
 techTreeContent = NodePath("TechTreeClip/TechTreeControls/TechTreeContent")
+popupScene = ExtResource("2_24qqq")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1

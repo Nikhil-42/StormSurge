@@ -10,7 +10,7 @@ public partial class TechTreeUI : Control
 	private Dictionary<string, TechNodeButton> nameToButton = new(); // Maps node names to their buttons
 	
 	private HoverPopup hoverPopup;
-	private PackedScene popupScene = GD.Load<PackedScene>("res://Scenes/HoverPopup.tscn");
+	[Export] private PackedScene popupScene;
 
 	public override void _Ready()
 	{
@@ -45,18 +45,6 @@ public partial class TechTreeUI : Control
 				nameToButton[btn.NodeName] = btn;
 		}
 		
-		// Save parents
-		foreach (var parentNode in tree.locked.Concat(tree.available).Concat(tree.bought))
-		{
-			foreach (var child in parentNode.children)
-			{
-				if (nameToButton.TryGetValue(child.name, out var childBtn))
-				{
-					childBtn.parentNames.Add(parentNode.name);
-				}
-			}
-		}
-
 		UpdateAllNodeButtons();
 		DrawConnectionLines();
 	}
@@ -115,7 +103,7 @@ public partial class TechTreeUI : Control
 		{
 			if (child is TechNodeButton btn)
 			{	
-				var node = tree.getNode(btn.NodeName);
+				var node = tree.GetNode(btn.NodeName);
 				if (node != null)
 				{
 					btn.BoundNode = node;
@@ -146,34 +134,12 @@ public partial class TechTreeUI : Control
 		var tree = GameManager.Instance?.Game?.stormTree;
 		if (tree == null) return;
 
-		var node = tree.getNode(nodeName);
+		var node = tree.GetNode(nodeName);
 		if (node == null) return;
 
-		string desc = $"Cost: {node.cost}";
-		var effects = new List<(string, string, int)>();
+		string desc = $"Cost: {node.Cost}";
 
-		for (int i = 0; i < node.weather.vars.Length; i++)
-		{
-			if (node.weather.vars[i] != 0)
-				effects.Add(("Weather", node.weather.var_names[i], node.weather.vars[i]));
-		}
-
-		for (int i = 0; i < node.geo.vars.Length; i++)
-		{
-			if (node.geo.vars[i] != 0)
-				effects.Add(("Geo", node.geo.var_names[i], node.geo.vars[i]));
-		}
-
-		if (!node.storm && node.human != null)
-		{
-			for (int i = 0; i < node.human.vars.Length; i++)
-			{
-				if (node.human.vars[i] != 0)
-					effects.Add(("Human", node.human.var_names[i], node.human.vars[i]));
-			}
-		}
-
-		hoverPopup.SetInfo(node.name, desc, effects);
+		hoverPopup.SetInfo(node, desc);
 		hoverPopup.ShowAt(position + new Vector2(24, 12));
 	}
 	

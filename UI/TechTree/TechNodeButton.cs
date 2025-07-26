@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 
 public partial class TechNodeButton : TextureButton
@@ -12,7 +11,7 @@ public partial class TechNodeButton : TextureButton
 	public List<string> parentNames = new();
 
 	private Label NameLabel;
-	public TechNode BoundNode { get; set; }
+	public TechNode<GlobalVars> BoundNode { get; set; }
 	private bool _bound = false;
 	private bool isLocked = false;
 
@@ -25,11 +24,11 @@ public partial class TechNodeButton : TextureButton
 		var tree = GameManager.Instance?.Game?.stormTree;
 		if (tree == null) return;
 
-		BoundNode = tree.getNode(NodeName);
+		BoundNode = tree.GetNode(NodeName);
 		if (BoundNode == null) return;
 
 		_bound = true;
-		NameLabel.Text = BoundNode.name;
+		NameLabel.Text = BoundNode.Name;
 
 		UpdateVisual();
 		
@@ -40,6 +39,21 @@ public partial class TechNodeButton : TextureButton
 
 	public void UpdateVisual()
 	{
+		if (!_bound)
+		{
+			// Bind to the tree node
+			var tree = GameManager.Instance?.Game?.stormTree;
+			if (tree == null) return;
+
+			BoundNode = tree.GetNode(NodeName);
+			if (BoundNode == null) return;
+
+			_bound = true;
+			NameLabel.Text = BoundNode.Name;
+
+			UpdateVisual();
+		}
+
 		if (BoundNode == null)
 		{
 			GD.PrintErr($"[TechNodeButton] {NodeName} has no BoundNode.");
@@ -48,14 +62,14 @@ public partial class TechNodeButton : TextureButton
 
 		ToggleMode = true;
 
-		if (BoundNode.bought)
+		if (BoundNode.Purchased)
 		{
 			ButtonPressed = true;
 			isLocked = true;
 			NameLabel.AddThemeColorOverride("font_color", Colors.White);
 			MouseFilter = MouseFilterEnum.Ignore;
 		}
-		else if (BoundNode.available)
+		else if (!BoundNode.Blocked)
 		{
 			ButtonPressed = false;
 			isLocked = false;
@@ -74,12 +88,11 @@ public partial class TechNodeButton : TextureButton
 	// Buy node 
 	private void OnPressed()
 	{
-		if (isLocked || BoundNode == null || !BoundNode.available || BoundNode.bought)
-			return;
-
-		GameManager.Instance.Game.stormTree.buyNode(BoundNode);
+		float balance = GameManager.Instance.Game.Solar;
+		GameManager.Instance.Game.stormTree.BuyNode(BoundNode, ref balance);
+		GameManager.Instance.Solar = balance;
 		UpdateVisual();
-		EmitSignal(SignalName.NodePurchased, BoundNode.name);
+		EmitSignal(SignalName.NodePurchased, BoundNode.Name);
 	}
 
 }
