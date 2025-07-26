@@ -142,12 +142,12 @@ public partial class StormDirectionIndicator : Node3D
 		}
 		
 		// Normalize direction vector (mapping lat/lon to storm direction)
-		Vector2 stormDirection = new Vector2(direction.Y, direction.X);
+		Vector2 stormDirection = new(direction.X, direction.Y);
 		
 		// Adjust for longitude compression at higher latitudes
-		if (Mathf.Abs(stormDirection.Y) > 0.001f) // Avoid division by zero
+		if (Mathf.Abs(stormDirection.X) > 0.001f) // Avoid division by zero
 		{
-			stormDirection.Y /= Mathf.Cos(startLatLon.X);
+			stormDirection.X /= Mathf.Cos(startLatLon.X);
 		}
 
 		// Minimum drag distance threshold (in radians)

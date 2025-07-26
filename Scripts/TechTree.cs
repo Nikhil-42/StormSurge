@@ -76,13 +76,13 @@ public class StormVars : IVars<StormVars>
 
 	public static StormVars Default => new StormVars
 	{
-		Temperature = 0.0f,
-		SeaLevel = 0.0f,
-		Range = 0.0f,
-		FloodDamage = 0.0f,
-		WindDamage = 0.0f,
-		WindSpeed = 0.0f,
-		StormRadius = 0.0f
+		Temperature = 288.0f,  // Kelvin
+		SeaLevel = 0.0f,  // km
+		Range = 5000.0f,  // km
+		FloodDamage = 1.0f,  // multiplier
+		WindDamage = 1.0f,  // multiplier
+		WindSpeed = 100.0f,  // m/s
+		StormRadius = 50.0f  // km
 	};
 
 	public static StormVars Add(StormVars lhs, StormVars rhs)
@@ -144,13 +144,13 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 
 	public static GeopoliticalVars Default => new GeopoliticalVars
 	{
-		Communication = 0.0f,
-		InternationalCooperation = 0.0f,
-		Transportation = 0.0f,
-		GovernmentFunction = 0.0f,
-		Resources = 0.0f,
-		Compliance = 0.0f,
-		Preparation = 0.0f
+		Communication = 1.0f,
+		InternationalCooperation = 1.0f,
+		Transportation = 1.0f,
+		GovernmentFunction = 1.0f,
+		Resources = 1.0f,
+		Compliance = 1.0f,
+		Preparation = 1.0f
 	};
 
 	public static GeopoliticalVars Add(GeopoliticalVars lhs, GeopoliticalVars rhs)
@@ -215,16 +215,16 @@ public class RegionVars : IVars<RegionVars>
 
 	public static RegionVars Default => new RegionVars
 	{
-		GlobalMigration = 0.0f,
-		RegionMigration = 0.0f,
-		GlobalWarming = 0.0f,
-		ClimateCosts = 0.0f,
-		CultSpread = 0.0f,
-		Recovery = 0.0f,
-		InfrastructureCosts = 0.0f,
-		WarSpread = 0.0f,
-		Detection = 0.0f,
-		ImplementCosts = 0.0f
+		GlobalMigration = 1.0f,
+		RegionMigration = 1.0f,
+		GlobalWarming = 1.0f,
+		ClimateCosts = 1.0f,
+		CultSpread = 1.0f,
+		Recovery = 1.0f,
+		InfrastructureCosts = 1.0f,
+		WarSpread = 1.0f,
+		Detection = 1.0f,
+		ImplementCosts = 1.0f
 	};
 
 	public static RegionVars Add(RegionVars lhs, RegionVars rhs)

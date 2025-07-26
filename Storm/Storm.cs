@@ -11,8 +11,7 @@ public enum DamageType
 
 internal struct StormState
 {
-	public float latitude;
-	public float longitude;
+	public Vector2 postition;
 	public float rotationAngle;
 	public List<Node3D> particles;
 	public List<Vector2> offsets;
@@ -34,16 +33,12 @@ public partial class Storm : Node3D
 	private Globe _globe;
 
 	// Storm Particle Params
-	[Export] public int NumParticles = 750;
-	[Export] public float SpiralRadius = 25.0f;
+	[Export] public float ParticleDensity = 0.2f;
 	[Export] public float SpiralTurns = 18.0f;
 	[Export] public float EyeRadius = 4.0f;
 	[Export] public PackedScene ParticleScene;
 	[Export] public float RotationSpeed = 2.0f;
 
-	// Spacing Params for coordinate transformation
-	[Export] public float RadPerUnitX = 0.1f;
-	[Export] public float RadPerUnitY = 0.1f;
 
 	// Movement Params
 	[Export] public float MoveSpeedRadPerSec = 2.0f;
@@ -121,39 +116,35 @@ public partial class Storm : Node3D
 		var weatherVars = GameManager.Instance.Game.stormTree.Vars;
 
 		// Calculate storm properties based on tech tree upgrades (base values modified by upgrades)
-		float stormRadius = SpiralRadius * weatherVars.Storm.StormRadius;
+		float stormRadius = weatherVars.Storm.StormRadius / Utils.EARTH_RADIUS; // Storm radius is halved for better visual density
 		float windSpeed = RotationSpeed * weatherVars.Storm.WindSpeed;
 		float stormRange = weatherVars.Storm.Range;
-		int particleCount = (int)(NumParticles * weatherVars.Storm.StormRadius);
+		int particleCount = (int)(ParticleDensity * weatherVars.Storm.StormRadius * weatherVars.Storm.StormRadius);
 
-		int spawned = 0;
-		int attempts = 0;
-		while (spawned < particleCount && attempts < particleCount * 3)
+		for (int i = 0;  i < particleCount; i++)
 		{
-			float t = attempts / particleCount;
+			float t = (float)i / particleCount;
 			float angle = t * SpiralTurns * Mathf.Tau;
 			float radius = t * stormRadius;
 			float x = Mathf.Cos(angle) * radius;
 			float z = Mathf.Sin(angle) * radius;
-			attempts++;
 
-			if (Mathf.Sqrt(x * x + z * z) < EyeRadius)
+			if (radius < EyeRadius / Utils.EARTH_RADIUS)
 				continue;
 
 			var instance = ParticleScene.Instantiate<Node3D>();
 			instance.Visible = true;
 			instance.Position = Vector3.Zero;
+			instance.Scale = new Vector3(0.2f, 0.2f, 0.2f); // Scale down particles
 			AddChild(instance);
 
 			stormParticles.Add(instance);
 			initialOffsets.Add(new Vector2(x, z));
-			spawned++;
 		}
 
 		var storm = new StormState
 		{ 
-			latitude = lat,
-			longitude = lon,
+			postition = new(lat, lon),
 			rotationAngle = rotationAngle,
 			particles = stormParticles,
 			offsets = initialOffsets,
@@ -179,9 +170,6 @@ public partial class Storm : Node3D
 
 	public override void _Process(double delta)
 	{
-		var FPS = Engine.GetFramesPerSecond();
-		GetTree().Root.Title = $"Storms: {_storms.Count} | FPS: {FPS}";
-
 		var stormsToRemove = new List<int>();
 
 		for (int stormIdx = 0; stormIdx < _storms.Count; stormIdx++)
@@ -192,29 +180,14 @@ public partial class Storm : Node3D
 			float rotationAngle = storm.rotationAngle + stormWindSpeed * (float)delta;
 			storm.rotationAngle = rotationAngle;
 
-			float originLat = storm.latitude;
-			float originLon = storm.longitude;
-
-			Vector2 stormDirection = storm.moveDirection;
-			var moveDelta = stormDirection * MoveSpeedRadPerSec * (float)delta;
-			originLon += moveDelta.X;
-			originLat += moveDelta.Y;
-
-			// Update distance traveled and check range limit
-			float distanceDelta = moveDelta.Length();
-			float totalDistance = storm.totalDistanceTraveled + distanceDelta;
-			storm.totalDistanceTraveled = totalDistance;
-			float stormRange = storm.range;
+			var moveDelta = storm.moveDirection * MoveSpeedRadPerSec * (float)delta;
+			float distanceDelta = Utils.HaversineDistance(storm.postition, storm.postition + moveDelta);
+			storm.postition += moveDelta;
+			storm.totalDistanceTraveled += distanceDelta;
 
 			float depletion = 0.0f;             // Reduce strength based on distance traveled (storms weaken over distance) and latitude
-			depletion += totalDistance > stormRange ? 0.35f : 0.0f;
-			depletion += Mathf.Abs(originLat) * 2.0f / Mathf.Pi;
-
-			storm.latitude = originLat;
-			storm.longitude = originLon;
-
-			var particles = storm.particles;
-			var offsets = storm.offsets;
+			depletion += storm.totalDistanceTraveled > storm.range ? 0.35f : 0.0f;
+			depletion += Mathf.Abs(storm.postition.X) * 2.0f / Mathf.Pi;
 
 			// --- Storm strength and fading ---
 			float strength = storm.strength;
@@ -230,7 +203,7 @@ public partial class Storm : Node3D
 				// Delete particles if fade is complete
 				if (fade <= 0.0f)
 				{
-					foreach (var p in particles)
+					foreach (var p in storm.particles)
 						if (IsInstanceValid(p)) p.QueueFree();
 					stormsToRemove.Add(stormIdx);
 
@@ -247,17 +220,18 @@ public partial class Storm : Node3D
 			}
 
 			// --- Particle positioning ---
-			for (int i = 0; i < particles.Count; i++)
+			for (int i = 0; i < storm.particles.Count; i++)
 			{
-				var offset = offsets[i].Rotated(rotationAngle);
-				float lat = originLat + offset.Y * RadPerUnitY;
-				float lon = originLon + offset.X * RadPerUnitX / Mathf.Cos(lat);
-				var globePoint = _globe.GetSurfacePoint(new(lat, lon));
-				particles[i].GlobalPosition = 1.025f * (globePoint.Position - _globe.Position) + _globe.Position;
+				var offset = storm.offsets[i].Rotated(rotationAngle);
+				offset.X /= Mathf.Cos(storm.postition.X);
+
+				Vector2 latLon = storm.postition + offset;
+				var globePoint = _globe.GetSurfacePoint(latLon);
+				storm.particles[i].GlobalPosition = 1.025f * (globePoint.Position - _globe.Position) + _globe.Position;
 			}
 
 
-			int regionID = _globe.GetRegionID(new(originLat, originLon));
+			int regionID = _globe.GetRegionID(storm.postition);
 			var region = GameManager.Instance.GetRegion(regionID);
 			if (region != null && region.Alive)
 			{
@@ -268,13 +242,12 @@ public partial class Storm : Node3D
 
 				float baseDamagePerSecond = 0.3f;
 
-				float radiusMultiplier = Mathf.Pow(stormRadius / SpiralRadius, 1.5f);
 				float strengthMultiplier = Mathf.Pow(strength, 1.2f);
 
 				// Calculate damage based on multipliers (flood/secondary damage is reduced compared to wind)
-				float windDamage = baseDamagePerSecond * windDamageMult * radiusMultiplier * strengthMultiplier;
-				float floodDamage = baseDamagePerSecond * floodDamageMult * radiusMultiplier * strengthMultiplier * 0.5f;
-				float secondaryDamage = baseDamagePerSecond * radiusMultiplier * strengthMultiplier * 0.25f; // Infrastructure damage
+				float windDamage = baseDamagePerSecond * windDamageMult * strengthMultiplier;
+				float floodDamage = baseDamagePerSecond * floodDamageMult * strengthMultiplier * 0.5f;
+				float secondaryDamage = baseDamagePerSecond * strengthMultiplier * 0.25f; // Infrastructure damage
 
 				// Apply damage to region
 				GameManager.Instance.ApplyDamage(regionID, (float)(windDamage * delta), DamageType.Wind);
@@ -283,7 +256,7 @@ public partial class Storm : Node3D
 
 				// Storms decrease in strength as they travel over land
 				float totalDamage = windDamage + floodDamage + secondaryDamage;
-				float solarGenerated = (float)(CalculateSolarFromDamage(totalDamage, strength, regionID, windDamageMult, floodDamageMult, radiusMultiplier) * delta);
+				float solarGenerated = (float)(CalculateSolarFromDamage(regionID, strength, windDamage, floodDamage, windDamageMult, floodDamageMult) * delta);
 
 				if (solarGenerated > 0)
 				{
@@ -314,16 +287,10 @@ public partial class Storm : Node3D
 			_storms.RemoveAt(idx);
 	}
 
-	private float CalculateSolarFromDamage(float damage, float stormStrength, int regionID, float windMult, float floodMult, float radiusMult)
+	private float CalculateSolarFromDamage(int regionID, float strength, float windDamage, float floodDamage, float windMult, float floodMult)
 	{
-		float baseSolarRate = damage * 100.0f;
-		float strengthBonus = Mathf.Pow(stormStrength, 1.2f) * 1.5f;
-
-		// Arbirtrary multipliers based on tech tree upgrades (by feel...)
-		float techTreeBonus = 0.0f;
-		techTreeBonus += (windMult - 1.0f) * 1.5f;
-		techTreeBonus += (floodMult - 1.0f) * 1.25f;
-		techTreeBonus += (radiusMult - 1.0f) * 2.0f;
+		float baseSolarRate = (windDamage * windMult + floodDamage * floodMult) * 100.0f;
+		float strengthBonus = Mathf.Pow(strength, 1.2f) * 1.5f;
 
 		float regionMultiplier = 1.0f;
 		if (regionID >= 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length)
@@ -340,7 +307,7 @@ public partial class Storm : Node3D
 			populationBonus = popFactor * 0.5f;
 		}
 
-		float finalSolar = 0.25f * (baseSolarRate + strengthBonus + techTreeBonus + populationBonus) * regionMultiplier;
+		float finalSolar = 0.25f * (baseSolarRate + strengthBonus + populationBonus) * regionMultiplier;
 
 		/*
 		// Variance in generation
