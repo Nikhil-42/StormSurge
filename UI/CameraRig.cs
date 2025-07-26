@@ -8,6 +8,8 @@ public partial class CameraRig : Node3D
 	[Export] public float Radius = 18.0f;			// Controls zoomm level
 	[Export] public float MinPitch = -80f;			// Min/Max avoids flipping upside down
 	[Export] public float MaxPitch = 80f;
+	
+	public bool IsTutorialMode = false; // Tutorial mode
 
 	private Camera3D _camera;
 	private float _yaw = 0f;
@@ -22,6 +24,10 @@ public partial class CameraRig : Node3D
 
 	public override void _Input(InputEvent @event)
 	{
+		// Block input in tutorial
+		 if (IsTutorialMode)
+			return;
+		
 		if (@event is InputEventMouseButton mouseButton)
 		{
 			if (mouseButton.ButtonIndex == MouseButton.Left){

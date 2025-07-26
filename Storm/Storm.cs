@@ -35,6 +35,9 @@ public partial class Storm : Node3D
 
 	// Internal state
 	private List<Dictionary<string, object>> storms = new List<Dictionary<string, object>>();
+	
+	// Tutorial mode
+	public bool IsTutorialMode = false; 
 
 	public override void _Ready()
 	{
@@ -58,6 +61,10 @@ public partial class Storm : Node3D
 
 	private void OnDirectionSet(Vector2 startLatLon, Vector2 direction)
 	{
+		// Block storm spawning during tutorial
+		if (IsTutorialMode)
+		return; 
+		
 		SpawnStormAt(startLatLon.X, startLatLon.Y, direction);
 	}
 	
