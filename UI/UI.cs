@@ -16,6 +16,10 @@ public partial class UI : Control
 	
 	private NotificationManager _notificationManager; 
 
+	// Tutorial mode
+	public bool NotificationHistoryEnabled = true;
+	public bool TechTreeEnabled = true;
+
 	public override void _Ready()
 	{
 		// Load the notification card scene
@@ -32,14 +36,15 @@ public partial class UI : Control
 		// Tech Tree button
 		TechTreeButton.Pressed += OpenTechTree;
 		
-		_notificationManager = GetNode<NotificationManager>("../NotificationManager");
-
 		// Start Generic Notifications Function
 		_ = RunNotificationTestLoop();
 	}
 
 	private void ToggleHistory()
 	{
+		if (!NotificationHistoryEnabled)
+			return;
+
 		NotificationHistoryPanel.Visible = !NotificationHistoryPanel.Visible;
 		
 		// Hide Popups when history is open
@@ -94,6 +99,9 @@ public partial class UI : Control
 	
 	private void OpenTechTree()
 	{
+		if (!TechTreeEnabled)
+			return;
+		
 		if (GameManager.Instance == null)
 		{
 			GD.PushError("Tried to open tech tree but GameManager is not ready.");

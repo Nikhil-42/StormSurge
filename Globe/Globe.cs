@@ -13,6 +13,8 @@ public partial class Globe : Node3D
 	private WorldEnvironment _environment;
 	private Texture2D _heightmap;
 	private Image _regionmapImage;
+	
+	public bool IsTutorialMode = false; // Tutorial mode
 
 	public struct SurfacePoint
 	{
@@ -117,6 +119,10 @@ public partial class Globe : Node3D
 
 	public override void _Input(InputEvent @event)
 	{
+		// Block Input in tutorial
+		if (IsTutorialMode)
+			return;
+	
 		if (@event is InputEventMouseButton mouseEvent
 			&& mouseEvent.Pressed
 			&& mouseEvent.ButtonIndex == MouseButton.Right)

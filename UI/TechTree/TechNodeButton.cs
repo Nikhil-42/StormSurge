@@ -33,6 +33,8 @@ public partial class TechNodeButton : TextureButton
 
 		UpdateVisual();
 		
+		//GD.Print($"[Bind] Button {NodeName} → BoundNode: {BoundNode} (Hash: {BoundNode.GetHashCode()})");
+		
 		// Hover signals
 		MouseEntered += () => EmitSignal(SignalName.Hovered, NodeName, GetGlobalMousePosition());
 		MouseExited += () => EmitSignal(SignalName.Unhovered);
@@ -59,15 +61,20 @@ public partial class TechNodeButton : TextureButton
 		{
 			ButtonPressed = false;
 			isLocked = false;
+			Disabled = false;
 			NameLabel.AddThemeColorOverride("font_color", Colors.White);
 			MouseFilter = MouseFilterEnum.Stop;
+
 		}
-		else
+		else // Not bought not available
 		{
 			ButtonPressed = false;
 			isLocked = true;
 			NameLabel.AddThemeColorOverride("font_color", Colors.Gray);
-			MouseFilter = MouseFilterEnum.Ignore;
+			
+			// Hover allowed, disable clicks
+			MouseFilter = MouseFilterEnum.Stop; 
+			Disabled = true;  
 		}
 	}
 	

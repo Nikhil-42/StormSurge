@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://ck2ueragucrl1"]
+[gd_scene load_steps=11 format=3 uid="uid://ck2ueragucrl1"]
 
 [ext_resource type="Script" uid="uid://ya5j78b4a85b" path="res://Scripts/MainMenu.cs" id="1_koqhg"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Globe/globe.tscn" id="1_tt5f1"]
-[ext_resource type="PackedScene" uid="uid://ean4pdie0k8y" path="res://Scenes/default.tscn" id="2_cmrfp"]
+[ext_resource type="PackedScene" uid="uid://dbmx8ns70l0ri" path="res://Scenes/tutorial.tscn" id="2_cmrfp"]
+[ext_resource type="PackedScene" uid="uid://dv8glbdb8ry1q" path="res://UI/ScreenFader/ScreenFader.tscn" id="3_loo7a"]
 [ext_resource type="Texture2D" uid="uid://dtt0bde5l5ryv" path="res://Assets/UIElements/LOW RES STORM.png" id="4_koqhg"]
 [ext_resource type="Texture2D" uid="uid://b1vr5478ailro" path="res://Assets/UIElements/LOW RES SURGE.png" id="5_cmrfp"]
 [ext_resource type="Texture2D" uid="uid://dkg48finex54b" path="res://Assets/UIElements/LOW RES NO GLOW.png" id="6_loo7a"]
@@ -95,5 +96,7 @@ texture_hover = ExtResource("8_rrcx7")
 stream = ExtResource("9_cmrfp")
 autoplay = true
 parameters/looping = false
+
+[node name="ScreenFader" parent="." instance=ExtResource("3_loo7a")]
 
 [connection signal="pressed" from="Start" to="." method="_on_start_button_pressed"]

@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://dbmx8ns70l0ri"]
+
+[ext_resource type="PackedScene" uid="uid://ean4pdie0k8y" path="res://Scenes/default.tscn" id="1_ka2pi"]
+[ext_resource type="Script" uid="uid://lx13xet12g6r" path="res://Scripts/Tutorial.cs" id="1_p1f1o"]
+[ext_resource type="Texture2D" uid="uid://b2pigmmk0o7l8" path="res://Assets/Notification box .png" id="2_p8jf4"]
+[ext_resource type="Texture2D" uid="uid://dbigv3jmbfysg" path="res://Assets/Start Button Unclicked.png" id="3_p1f1o"]
+[ext_resource type="Texture2D" uid="uid://coeoffk4jmvvl" path="res://Assets/Start Button Clicked.png" id="4_ys4pu"]
+[ext_resource type="Texture2D" uid="uid://beymf7jtjyq4e" path="res://Assets/Start Button Hovered.png" id="5_h2ono"]
+[ext_resource type="PackedScene" uid="uid://dv8glbdb8ry1q" path="res://UI/ScreenFader/ScreenFader.tscn" id="7_ys4pu"]
+
+[node name="Tutorial" type="Node"]
+script = ExtResource("1_p1f1o")
+
+[node name="Root" parent="." instance=ExtResource("1_ka2pi")]
+
+[node name="TutorialOverlay" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="TutorialOverlay"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -351.0
+offset_top = -236.0
+offset_right = 707.0
+offset_bottom = 443.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_p8jf4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TutorialOverlay/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -304.5
+offset_top = -106.5
+offset_right = 304.5
+offset_bottom = 106.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TutorialOverlay/TextureRect/VBoxContainer"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "Welcome to Storm Surge!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="TutorialOverlay/TextureRect/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_p1f1o")
+texture_pressed = ExtResource("4_ys4pu")
+texture_hover = ExtResource("5_h2ono")
+
+[node name="ScreenFader" parent="." instance=ExtResource("7_ys4pu")]
