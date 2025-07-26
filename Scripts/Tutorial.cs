@@ -64,7 +64,7 @@ public partial class Tutorial : Node
 				break;
 				
 			case 3:
-				_label.Text = "Spawning storms cost 100 solar each. You can see your current solar in the top right corner.";
+				_label.Text = "Spawning storms cost 100 solar each. You can see your current solar in the top left corner.";
 
 				break;
 
