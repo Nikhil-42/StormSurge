@@ -8,8 +8,6 @@ public partial class TechNodeButton : TextureButton
 	[Signal] public delegate void HoveredEventHandler(string nodeName, Vector2 mousePosition);
 	[Signal] public delegate void UnhoveredEventHandler();
 
-	public List<string> parentNames = new();
-
 	private Label NameLabel;
 	public TechNode<GlobalVars> BoundNode { get; set; }
 	private bool _bound = false;
@@ -71,7 +69,7 @@ public partial class TechNodeButton : TextureButton
 			NameLabel.AddThemeColorOverride("font_color", Colors.White);
 			MouseFilter = MouseFilterEnum.Ignore;
 		}
-		else if (!BoundNode.Blocked)
+		else if (BoundNode.Available)
 		{
 			ButtonPressed = false;
 			isLocked = false;
@@ -85,6 +83,7 @@ public partial class TechNodeButton : TextureButton
 			ButtonPressed = false;
 			isLocked = true;
 			NameLabel.AddThemeColorOverride("font_color", Colors.Gray);
+			Modulate = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Dim the button
 			
 			// Hover allowed, disable clicks
 			MouseFilter = MouseFilterEnum.Stop; 
