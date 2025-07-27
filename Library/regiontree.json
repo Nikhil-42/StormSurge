@@ -196,7 +196,7 @@
         "name": "Cell Service Range",
         "category": "Infrastructure",
         "cost": 400.0,
-        "communicaions": 10.0,
+        "communications": 10.0,
         "government_function": 10.0,
         "compliance": 10.0,
         "prereqs": [
@@ -215,7 +215,7 @@
         "name": "Live Storm Broadcasts",
         "category": "Infrastructure",
         "cost": 200.0,
-        "communicaions": 10.0,
+        "communications": 10.0,
         "preparation": 10.0,
         "prereqs": [
             "Early Warning Systems"
@@ -225,7 +225,7 @@
         "name": "Disaster Relief Broadcasts",
         "category": "Infrastructure",
         "cost": 300.0,
-        "communicaions": 10.0,
+        "communications": 10.0,
         "recovery": 30.0,
         "prereqs": [
             "Early Warning Systems"

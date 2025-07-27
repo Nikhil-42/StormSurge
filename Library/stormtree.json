@@ -123,7 +123,7 @@
         "category": "Storm Strength",
         "cost": 100.0,
         "wind_damage": 20.0,
-        "storm_speed": 10.0,
+        "wind_speed": 10.0,
         "prereqs": []
     },
     {
@@ -131,7 +131,7 @@
         "category": "Storm Strength",
         "cost": 300.0,
         "wind_damage": 30.0,
-        "storm_speed": 10.0,
+        "wind_speed": 10.0,
         "prereqs": [
             "Wind Speed 1"
         ]
@@ -141,7 +141,7 @@
         "category": "Storm Strength",
         "cost": 400.0,
         "wind_damage": 50.0,
-        "storm_speed": 10.0,
+        "wind_speed": 10.0,
         "prereqs": [
             "Wind Speed 2"
         ]
@@ -151,7 +151,7 @@
         "category": "Storm Strength",
         "cost": 500.0,
         "wind_damage": 50.0,
-        "storm_speed": 10.0,
+        "wind_speed": 10.0,
         "prereqs": [
             "Tornadoes 1"
         ]
@@ -161,7 +161,7 @@
         "category": "Storm Strength",
         "cost": 600.0,
         "wind_damage": 30.0,
-        "storm_speed": 50.0,
+        "wind_speed": 50.0,
         "prereqs": [
             "Tornadoes 2"
         ]

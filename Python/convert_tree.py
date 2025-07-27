@@ -6,7 +6,7 @@ storm_variables = [
     "sea_level",
     "storm_range",
     "wind_damage",
-    "storm_speed",
+    "wind_speed",
     "storm_radius",
     "flood_damage",
     "communications",
@@ -21,7 +21,7 @@ storm_variables = [
 human_variables = [
     "wind_damage",
     "flood_damage",
-    "communicaions",
+    "communications",
     "international_cooperation",
     "transportation",
     "government_function",

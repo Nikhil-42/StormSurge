@@ -75,7 +75,7 @@
         "name": "Communications Research",
         "category": "Infrastructure",
         "cost": 8000.0,
-        "communicaions": 20.0,
+        "communications": 20.0,
         "international_cooperation": 10.0,
         "prereqs": []
     }

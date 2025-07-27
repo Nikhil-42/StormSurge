@@ -78,7 +78,7 @@ public partial class RegionAI
 	private ReactionState GetNextState()
 	{
 		var nextState = _state;
-		if (_state == ReactionState.Death || _progress.health <= 0.1) {
+		if (_state == ReactionState.Death || _progress.health <= 0.0) {
 			nextState = ReactionState.Death;
 		} else {
 			switch (_state)

@@ -79,10 +79,10 @@ public class StormVars : IVars<StormVars>
 		Temperature = 288.0f,  // Kelvin
 		SeaLevel = 0.0f,  // km
 		Range = 5000.0f,  // km
-		FloodDamage = 1.0f,  // multiplier
 		WindDamage = 1.0f,  // multiplier
 		WindSpeed = 100.0f,  // m/s
-		Radius = 50.0f  // km
+		Radius = 50.0f,  // km
+		FloodDamage = 1.0f,  // multiplier
 	};
 
 	public static StormVars Add(StormVars lhs, StormVars rhs)
@@ -110,11 +110,11 @@ public class StormVars : IVars<StormVars>
 		{
 			Temperature = json.ContainsKey("temperature") ? (float)json["temperature"] : 0.0f,
 			SeaLevel = json.ContainsKey("sea_level") ? (float)json["sea_level"] : 0.0f,
-			Range = json.ContainsKey("range") ? (float)json["range"] : 0.0f,
-			FloodDamage = json.ContainsKey("flood_damage") ? (float)json["flood_damage"] : 0.0f,
+			Range = json.ContainsKey("storm_range") ? (float)json["storm_range"] : 0.0f,
 			WindDamage = json.ContainsKey("wind_damage") ? (float)json["wind_damage"] : 0.0f,
 			WindSpeed = json.ContainsKey("wind_speed") ? (float)json["wind_speed"] : 0.0f,
 			Radius = json.ContainsKey("storm_radius") ? (float)json["storm_radius"] : 0.0f
+			FloodDamage = json.ContainsKey("flood_damage") ? (float)json["flood_damage"] : 0.0f,
 		};
 	}
 
@@ -134,7 +134,8 @@ public class StormVars : IVars<StormVars>
 
 public class GeopoliticalVars : IVars<GeopoliticalVars>
 {
-	public float Communication { get; init; }
+	public float GlobalMigration { get; init; }
+	public float Communications { get; init; }
 	public float InternationalCooperation { get; init; }
 	public float Transportation { get; init; }
 	public float GovernmentFunction { get; init; }
@@ -144,7 +145,8 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 
 	public static GeopoliticalVars Default => new GeopoliticalVars
 	{
-		Communication = 1.0f,
+		GlobalMigration = 1.0f,
+		Communications = 1.0f,
 		InternationalCooperation = 1.0f,
 		Transportation = 1.0f,
 		GovernmentFunction = 1.0f,
@@ -162,7 +164,8 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	{
 		return new GeopoliticalVars
 		{
-			Communication = lhs.Communication + rhs.Communication,
+			GlobalMigration = lhs.GlobalMigration + rhs.GlobalMigration,
+			Communications = lhs.Communications + rhs.Communications,
 			InternationalCooperation = lhs.InternationalCooperation + rhs.InternationalCooperation,
 			Transportation = lhs.Transportation + rhs.Transportation,
 			GovernmentFunction = lhs.GovernmentFunction + rhs.GovernmentFunction,
@@ -176,7 +179,8 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	{
 		return new GeopoliticalVars
 		{
-			Communication = json.ContainsKey("communication") ? (float)json["communication"] : 0.0f,
+			GlobalMigration = json.ContainsKey("global_migration") ? (float)json["global_migration"] : 0.0f,
+			Communications = json.ContainsKey("communications") ? (float)json["communications"] : 0.0f,
 			InternationalCooperation = json.ContainsKey("international_cooperation") ? (float)json["international_cooperation"] : 0.0f,
 			Transportation = json.ContainsKey("transportation") ? (float)json["transportation"] : 0.0f,
 			GovernmentFunction = json.ContainsKey("government_function") ? (float)json["government_function"] : 0.0f,
@@ -189,7 +193,8 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	public Godot.Collections.Dictionary<string, Variant> ToJson()
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
-		if (Communication != 0.0) json["communication"] = Communication;
+		if (GlobalMigration != 0.0) json["global_migration"] = GlobalMigration;
+		if (Communications != 0.0) json["communication"] = Communications;
 		if (InternationalCooperation != 0.0) json["international_cooperation"] = InternationalCooperation;
 		if (Transportation != 0.0) json["transportation"] = Transportation;
 		if (GovernmentFunction != 0.0) json["government_function"] = GovernmentFunction;
@@ -202,7 +207,6 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 
 public class RegionVars : IVars<RegionVars>
 {
-	public float GlobalMigration { get; init; }
 	public float RegionMigration { get; init; }
 	public float GlobalWarming { get; init; }
 	public float ClimateCosts { get; init; }
@@ -215,7 +219,6 @@ public class RegionVars : IVars<RegionVars>
 
 	public static RegionVars Default => new RegionVars
 	{
-		GlobalMigration = 1.0f,
 		RegionMigration = 1.0f,
 		GlobalWarming = 1.0f,
 		ClimateCosts = 1.0f,
@@ -236,7 +239,6 @@ public class RegionVars : IVars<RegionVars>
 	{
 		return new RegionVars
 		{
-			GlobalMigration = lhs.GlobalMigration + rhs.GlobalMigration,
 			RegionMigration = lhs.RegionMigration + rhs.RegionMigration,
 			GlobalWarming = lhs.GlobalWarming + rhs.GlobalWarming,
 			ClimateCosts = lhs.ClimateCosts + rhs.ClimateCosts,
@@ -253,7 +255,6 @@ public class RegionVars : IVars<RegionVars>
 	{
 		return new RegionVars
 		{
-			GlobalMigration = json.ContainsKey("global_migration") ? (float)json["global_migration"] : 0.0f,
 			RegionMigration = json.ContainsKey("region_migration") ? (float)json["region_migration"] : 0.0f,
 			GlobalWarming = json.ContainsKey("global_warming") ? (float)json["global_warming"] : 0.0f,
 			ClimateCosts = json.ContainsKey("climate_costs") ? (float)json["climate_costs"] : 0.0f,
@@ -269,9 +270,8 @@ public class RegionVars : IVars<RegionVars>
 	public Godot.Collections.Dictionary<string, Variant> ToJson()
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
-		if (GlobalMigration != 0.0) json["global_migration"] = GlobalMigration;
 		if (RegionMigration != 0.0) json["region_migration"] = RegionMigration;
-		if (GlobalMigration != 0.0) json["global_warming"] = GlobalWarming;
+		if (GlobalWarming != 0.0) json["global_warming"] = GlobalWarming;
 		if (ClimateCosts != 0.0) json["climate_costs"] = ClimateCosts;
 		if (CultSpread != 0.0) json["cult_spread"] = CultSpread;
 		if (Recovery != 0.0) json["recovery"] = Recovery;
