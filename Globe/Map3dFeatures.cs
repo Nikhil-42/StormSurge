@@ -65,9 +65,6 @@ public class CityMarkers {
 public partial class Map3dFeatures : Node3D
 {
 	[Export]
-	Globe _globe;
-
-	[Export]
 	float _pin_scale = 0.5f; // Scale for the pin asset
 
 	[Export]
@@ -81,7 +78,7 @@ public partial class Map3dFeatures : Node3D
 			AddChild(pinInstance);
 			
 			pinInstance.Scale = new Vector3(_pin_scale, _pin_scale, _pin_scale);
-			Globe.SurfacePoint point = _globe.GetSurfacePoint(new Vector2(Mathf.DegToRad(c.latitude), Mathf.DegToRad(c.longitude)));
+			Globe.SurfacePoint point = GameManager.Instance.Globe.GetSurfacePoint(new Vector2(Mathf.DegToRad(c.latitude), Mathf.DegToRad(c.longitude)));
 			pinInstance.LookAtFromPosition(point.Position, point.Position + point.Tangent, point.Normal);
 		}
 	}

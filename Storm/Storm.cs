@@ -29,9 +29,6 @@ internal struct StormState
 
 public partial class Storm : Node3D
 {
-	[Export]
-	private Globe _globe;
-
 	// Storm Particle Params
 	[Export] public float ParticleDensity = 0.2f;
 	[Export] public float ParticleSize = 0.04f;
@@ -67,7 +64,6 @@ public partial class Storm : Node3D
 		}
 
 		_directionIndicator.Name = "StormDirectionIndicator";
-		_directionIndicator.Globe = _globe;
 		AddChild(_directionIndicator);
 
 		// Connect to direction indicator signals
@@ -102,7 +98,7 @@ public partial class Storm : Node3D
 			return;
 		}
 
-		if (GameManager.Instance.GetRegion(_globe.GetRegionID(new Vector2(lat, lon)))?.Alive == true)
+		if (GameManager.Instance.GetRegion(GameManager.Instance.Globe.GetRegionID(new Vector2(lat, lon)))?.Alive == true)
 		{
 			GD.Print("Cannot spawn storm in a living region!");
 			return;
@@ -228,11 +224,11 @@ public partial class Storm : Node3D
 				offset /= Utils.EARTH_RADIUS;
 
 				Vector2 latLon = storm.postition + offset;
-				var globePoint = _globe.GetSurfacePoint(latLon);
-				storm.particles[i].GlobalPosition = 1.025f * (globePoint.Position - _globe.Position) + _globe.Position;
+				var globePoint = GameManager.Instance.Globe.GetSurfacePoint(latLon);
+				storm.particles[i].GlobalPosition = 1.025f * (globePoint.Position - GameManager.Instance.Globe.Position) + GameManager.Instance.Globe.Position;
 			}
 
-			int regionID = _globe.GetRegionID(storm.postition);
+			int regionID = GameManager.Instance.Globe.GetRegionID(storm.postition);
 			var region = GameManager.Instance.GetRegion(regionID);
 			if (region != null && region.Alive)
 			{

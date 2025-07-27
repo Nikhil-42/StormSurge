@@ -25,6 +25,9 @@ public partial class GameManager : Node
 	[Export]
 	private bool _printDebug = true;
 
+	[Export]
+	public Globe Globe { get; private set; } = null;
+
 	private GameState _game = null;
 
 	private string currentScreen = "start_menu";
@@ -92,16 +95,21 @@ public partial class GameManager : Node
 
 		// intro.Connect("finished", new Callable(this, nameof(OnIntroFinished)));
 	}
-	
+
 	public override void _Process(double deltaTime)
 	{
 		// Update the humanity AIs		
-		for (int i = 0; i < _game.RegionAIs.Length; i++) {
+		for (int i = 0; i < _game.RegionAIs.Length; i++)
+		{
 			_game.RegionAIs[i].Process(deltaTime, _game);
 		}
 
 		// Passive income generation, rate changes by sea level
 		Solar += (float)(_game.PassiveIncome * (1f + (0.01f * _game.stormTree.Vars.Storm.SeaLevel)) * deltaTime);
+
+		// Update globe water level
+		if (PrintDebug) GD.Print("Updating globe water level...");
+		Globe.WaterLevel = _game.stormTree.Vars.Storm.SeaLevel;
 	}
 
 	public void ApplyDamage(int regionID, float damage, DamageType type)

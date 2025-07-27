@@ -3,7 +3,6 @@ using System;
 
 public partial class StormDirectionIndicator : Node3D
 {
-	[Export] public Globe Globe { get; set; }
 	[Export] public float MaxIndicatorLength = 2.0f;
 	
 	private bool _isDragging = false;
@@ -42,8 +41,8 @@ public partial class StormDirectionIndicator : Node3D
 
 	private void StartDrag(Vector2 screenPos)
 	{
-		// Check if Globe is available
-		if (Globe == null)
+		// Check if GameManager.Instance.Globe is available
+		if (GameManager.Instance.Globe == null)
 		{
 			return;
 		}
@@ -63,11 +62,11 @@ public partial class StormDirectionIndicator : Node3D
 		var dir = camera.ProjectRayNormal(_dragStartPos);
 		var to = from + dir * 1000.0f;
 
-		var result = Geometry3D.SegmentIntersectsSphere(from, to, Globe.Position, Globe.Radius);
+		var result = Geometry3D.SegmentIntersectsSphere(from, to, GameManager.Instance.Globe.Position, GameManager.Instance.Globe.Radius);
 		if (result != null && result.Length > 0)
 		{
 			_dragStartWorldPos = result[0];
-			_dragStartLatLon = Globe.GetLatLon(_dragStartWorldPos);
+			_dragStartLatLon = GameManager.Instance.Globe.GetLatLon(_dragStartWorldPos);
 						
 			/*
 			if (GameManager.Instance.PrintDebug)
@@ -81,7 +80,7 @@ public partial class StormDirectionIndicator : Node3D
 
 	private void UpdateDrag(Vector2 screenPos)
 	{
-		if (Globe == null)
+		if (GameManager.Instance.Globe == null)
 		{
 			return;
 		}
@@ -99,7 +98,7 @@ public partial class StormDirectionIndicator : Node3D
 		var dir = camera.ProjectRayNormal(_dragCurrentPos);
 		var to = from + dir * 1000.0f;
 
-		var result = Geometry3D.SegmentIntersectsSphere(from, to, Globe.Position, Globe.Radius);
+		var result = Geometry3D.SegmentIntersectsSphere(from, to, GameManager.Instance.Globe.Position, GameManager.Instance.Globe.Radius);
 		if (result != null && result.Length > 0)
 		{
 			_dragCurrentWorldPos = result[0];
@@ -135,11 +134,11 @@ public partial class StormDirectionIndicator : Node3D
 
 	private Vector2 CalculateDragDirection()
 	{
-		if (Globe == null || _dragStartWorldPos == Vector3.Zero || _dragCurrentWorldPos == Vector3.Zero)
+		if (GameManager.Instance.Globe == null || _dragStartWorldPos == Vector3.Zero || _dragCurrentWorldPos == Vector3.Zero)
 			return Vector2.Zero; // Default direction if no drag
 
-		var startLatLon = Globe.GetLatLon(_dragStartWorldPos);
-		var currentLatLon = Globe.GetLatLon(_dragCurrentWorldPos);
+		var startLatLon = GameManager.Instance.Globe.GetLatLon(_dragStartWorldPos);
+		var currentLatLon = GameManager.Instance.Globe.GetLatLon(_dragCurrentWorldPos);
 		
 		Vector2 direction = currentLatLon - startLatLon;
 		
@@ -196,8 +195,8 @@ public partial class StormDirectionIndicator : Node3D
 			arrays.Resize((int)Mesh.ArrayType.Max);
 			
 			// Make the line slightly above the surface to ensure visibility
-			var startPos = _dragStartWorldPos + (_dragStartWorldPos - Globe.Position).Normalized() * 0.1f;
-			var rawEndPos = _dragCurrentWorldPos + (_dragCurrentWorldPos - Globe.Position).Normalized() * 0.1f;
+			var startPos = _dragStartWorldPos + (_dragStartWorldPos - GameManager.Instance.Globe.Position).Normalized() * 0.1f;
+			var rawEndPos = _dragCurrentWorldPos + (_dragCurrentWorldPos - GameManager.Instance.Globe.Position).Normalized() * 0.1f;
 			
 			// Clamp the line length to maximum indicator length
 			var lineDirection = (rawEndPos - startPos);
