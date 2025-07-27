@@ -2,17 +2,29 @@ using Godot;
 
 public partial class Globe : Node3D
 {
+	public float WaterLevel
+	{
+		get => _waterPercent * Utils.EVEREST_HEIGHT;
+		set {
+			_waterPercent = value / Utils.EVEREST_HEIGHT;
+			_globeMaterial.SetShaderParameter("water_level", _waterPercent);
+		}
+	} // Water level in meters
+
 	[Export]
 	private Texture2D _regionmap;
 
 	public float Radius => ((SphereMesh)_globe.Mesh).Radius;
 
 	private MeshInstance3D _globe;
+	private ShaderMaterial _globeMaterial;
 	private MeshInstance3D _clouds;
 	private DirectionalLight3D _sun;
 	private WorldEnvironment _environment;
 	private Texture2D _heightmap;
 	private Image _regionmapImage;
+
+	private float _waterPercent = 0.0f;  // Percentange of the height of Everest that the water level is at
 	
 	public bool IsTutorialMode = false; // Tutorial mode
 
@@ -29,6 +41,7 @@ public partial class Globe : Node3D
 	public override void _Ready()
 	{
 		_globe = GetNode<MeshInstance3D>("GlobeMap");
+		_globeMaterial = (ShaderMaterial)_globe.MaterialOverride;
 		_clouds = GetNode<MeshInstance3D>("GlobeMap/Clouds");
 		_sun = GetNode<DirectionalLight3D>("Sun");
 		_environment = GetNode<WorldEnvironment>("WorldsUgliestSkyBox");
@@ -141,7 +154,7 @@ public partial class Globe : Node3D
 			{
 				var hitPoint = result[0];
 				var id = GetRegionID(GetLatLon(hitPoint));
-				((ShaderMaterial)_globe.MaterialOverride).SetShaderParameter("selected_region", (uint)(id + 1));
+				_globeMaterial.SetShaderParameter("selected_region", (uint)(id + 1));
 				
 				// Show region stats popup
 				var gameManager = GameManager.Instance;

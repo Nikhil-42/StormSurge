@@ -22,8 +22,9 @@ font = SubResource("SystemFont_wjear")
 font_size = 80
 font_color = Color(0.854902, 0.635294, 0.105882, 1)
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" node_paths=PackedStringArray("Globe")]
 script = ExtResource("1_xe0gy")
+Globe = NodePath("World")
 
 [node name="World" parent="." instance=ExtResource("3_hj5t5")]
 
@@ -34,15 +35,13 @@ Globe = NodePath("../World")
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 
-[node name="Storm" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
+[node name="Storm" type="Node3D" parent="."]
 script = ExtResource("6_7ccvn")
-_globe = NodePath("../World")
 ParticleScene = ExtResource("7_3gigf")
 MoveSpeedRadPerSec = 0.1
 
-[node name="Map3DFeatures" type="Node3D" parent="." node_paths=PackedStringArray("_globe")]
+[node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
-_globe = NodePath("../World")
 _pinPrefab = ExtResource("4_xe0gy")
 
 [node name="Control" type="Control" parent="."]
