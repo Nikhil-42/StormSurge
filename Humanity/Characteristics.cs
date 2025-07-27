@@ -37,36 +37,39 @@ public class Characteristics {  // Variables different for each country that are
 
     public Characteristics(RegionStats stats) {
         // income, globalResearchFunding, Money's, emissions
-        float PerCapitaGDP = stats.gdp * 1000 / stats.population;
-        if (PerCapitaGDP > 50000) {
-            income = stats.gdp * 0.6f;
-            globalResearchFunding = 0.5f;
+        float perCapitaGDP = stats.gdp * 1000 / stats.population;
+        if (perCapitaGDP > 50000) {
+            income = stats.gdp * 0.5f;
+            globalResearchFunding = stats.gdp * 0.5f;
 
-            goodMoney = 0.9f;
-            midMoney = 0.75f;
-            poorMoney = 0.5f;
-        } else if (PerCapitaGDP > 20000) {
+            goodMoney = stats.gdp * 0.9f;
+            midMoney = stats.gdp * 0.75f;
+            poorMoney = stats.gdp * 0.5f;
+        } else if (perCapitaGDP > 20000) {
             income = stats.gdp * 0.4f;
-            globalResearchFunding = 0.2f;
+            globalResearchFunding = stats.gdp * 0.2f;
 
-            goodMoney = 0.8f;
-            midMoney = 0.6f;
-            poorMoney = 0.3f;
-        } else if (PerCapitaGDP > 10000) {
+            goodMoney = stats.gdp * 0.8f;
+            midMoney = stats.gdp * 0.6f;
+            poorMoney = stats.gdp * 0.3f;
+        } else if (perCapitaGDP > 10000) {
             income = stats.gdp * 0.3f;
-            globalResearchFunding = 0.1f;
+            globalResearchFunding = stats.gdp * 0.1f;
 
-            goodMoney = 0.7f;
-            midMoney = 0.5f;
-            poorMoney = 0.2f;
+            goodMoney = stats.gdp * 0.7f;
+            midMoney = stats.gdp * 0.5f;
+            poorMoney = stats.gdp * 0.2f;
         } else {
             income = stats.gdp * 0.2f;
-            globalResearchFunding = 0.05f;
+            globalResearchFunding = stats.gdp * 0.05f;
 
-            goodMoney = 0.6f;
-            midMoney = 0.4f;
-            poorMoney = 0.2f;
+            goodMoney = stats.gdp * 0.6f;
+            midMoney = stats.gdp * 0.4f;
+            poorMoney = stats.gdp * 0.2f;
         }
+        // Convert yearly income to hourly income 
+        income /= 8760.0f;  // 365 days * 24 hours
+
         emissions = stats.gdp / 1000f;
 
         // Health's, alarm thresholds, damage multipliers, etc.

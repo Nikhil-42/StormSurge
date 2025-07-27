@@ -113,7 +113,7 @@ public class StormVars : IVars<StormVars>
 			Range = json.ContainsKey("storm_range") ? (float)json["storm_range"] : 0.0f,
 			WindDamage = json.ContainsKey("wind_damage") ? (float)json["wind_damage"] : 0.0f,
 			WindSpeed = json.ContainsKey("wind_speed") ? (float)json["wind_speed"] : 0.0f,
-			Radius = json.ContainsKey("storm_radius") ? (float)json["storm_radius"] : 0.0f
+			Radius = json.ContainsKey("storm_radius") ? (float)json["storm_radius"] : 0.0f,
 			FloodDamage = json.ContainsKey("flood_damage") ? (float)json["flood_damage"] : 0.0f,
 		};
 	}
