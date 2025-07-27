@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://djgjd2t0jhakl"]
+[gd_scene load_steps=4 format=3 uid="uid://djgjd2t0jhakl"]
 
 [ext_resource type="Script" uid="uid://c138tr2x8a6cu" path="res://UI/TechTree/TechNodeButton.cs" id="1_4j4nd"]
 [ext_resource type="Texture2D" uid="uid://c66dtgm8tvu1j" path="res://Assets/UIElements/2HB UNCLICKED.png" id="1_58u36"]
+[ext_resource type="AudioStream" uid="uid://ch8osikk6rdeg" path="res://Assets/purchase-succesful-ingame-230550.mp3" id="3_7wqrd"]
 
 [node name="TechNodeButton" type="TextureButton"]
 z_index = 2
@@ -29,3 +30,6 @@ offset_right = 28.5
 offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="PurchaseSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_7wqrd")
