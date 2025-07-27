@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=17 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="Script" uid="uid://c4wlwenlkjdy3" path="res://Scripts/GameManager.cs" id="1_xe0gy"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Globe/globe.tscn" id="3_hj5t5"]
 [ext_resource type="PackedScene" uid="uid://c8ovruwvrfxkn" path="res://Assets/pin.glb" id="4_xe0gy"]
 [ext_resource type="Script" uid="uid://c0ufklqh0cant" path="res://Storm/Storm.cs" id="6_7ccvn"]
+[ext_resource type="AudioStream" uid="uid://6a8ljabg420h" path="res://Assets/peals-of-thunder-191992.mp3" id="6_hbynb"]
 [ext_resource type="Script" uid="uid://b3xhmi6pc83ca" path="res://Globe/Map3dFeatures.cs" id="6_p4pkd"]
 [ext_resource type="PackedScene" uid="uid://bdrnkcvvqo6bv" path="res://Storm/Storm.tscn" id="7_3gigf"]
 [ext_resource type="Texture2D" uid="uid://bioggenpkn6h3" path="res://Assets/UIElements/solar_coin.png" id="8_w2mav"]
@@ -39,6 +40,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.5)
 script = ExtResource("6_7ccvn")
 ParticleScene = ExtResource("7_3gigf")
 MoveSpeedRadPerSec = 0.1
+
+[node name="StormDamage" type="AudioStreamPlayer" parent="Storm"]
+stream = ExtResource("6_hbynb")
 
 [node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
