@@ -194,7 +194,7 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
 		if (GlobalMigration != 0.0) json["global_migration"] = GlobalMigration;
-		if (Communications != 0.0) json["communication"] = Communications;
+		if (Communications != 0.0) json["communications"] = Communications;
 		if (InternationalCooperation != 0.0) json["international_cooperation"] = InternationalCooperation;
 		if (Transportation != 0.0) json["transportation"] = Transportation;
 		if (GovernmentFunction != 0.0) json["government_function"] = GovernmentFunction;
