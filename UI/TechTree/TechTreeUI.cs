@@ -66,7 +66,7 @@ public partial class TechTreeUI : Control
 
 		foreach (var btn in nameToButton.Values)
 		{
-			foreach (string parentName in btn.parentNames)
+			foreach (string parentName in btn.BoundNode.Parents)
 			{
 				if (!nameToButton.TryGetValue(parentName, out var parentBtn))
 					continue;
