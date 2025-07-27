@@ -11,7 +11,7 @@ Spread Misinformation 2 . 200 . 000-0000-000-0011 . -10 -10 .
 Oil Industry Government Complex . 800 . 111-0000-000-1011 . 1 50 10 -10 -10 -10 .
 ~ Fake Science <
 ~ Ozone Depletion 1 <
-Ozone Depletion 1 . 800 . 110-0000-000-0000 . 3 50 10 .
+Ozone Depletion 1 . 800 . 110-0000-000-0000 . 3 50 .
 ~ Ozone Depletion 2 <
 Ozone Depletion 2 . 800 . 111-0000-000-0000 . 3 50 10 .
 Fake Science . 500 . 000-0000-000-0011 . -20 -20 .
