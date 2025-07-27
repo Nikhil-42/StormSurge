@@ -2,18 +2,18 @@
 	{
 		"name": "Invest in Oil 1",
 		"category": "Climate Change",
-		"cost": 100.0,
+		"cost": 200.0,
 		"temperature": 1.0,
-		"sea_level": 10.0,
+		"sea_level": 20.0,
 		"storm_range": 10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Invest in Oil 2",
 		"category": "Climate Change",
-		"cost": 200.0,
+		"cost": 400.0,
 		"temperature": 1.0,
-		"sea_level": 10.0,
+		"sea_level": 30.0,
 		"storm_range": 10.0,
 		"prereqs": [
 			"Invest in Oil 1"
@@ -30,7 +30,7 @@
 	{
 		"name": "Spread Misinformation 2",
 		"category": "Climate Change",
-		"cost": 300.0,
+		"cost": 200.0,
 		"compliance": -10.0,
 		"preparation": -10.0,
 		"prereqs": [
@@ -40,9 +40,9 @@
 	{
 		"name": "Oil Industry Government Complex",
 		"category": "Climate Change",
-		"cost": 500.0,
+		"cost": 800.0,
 		"temperature": 1.0,
-		"sea_level": 20.0,
+		"sea_level": 50.0,
 		"storm_range": 10.0,
 		"government_function": -10.0,
 		"compliance": -10.0,
@@ -55,7 +55,7 @@
 	{
 		"name": "Ozone Depletion 1",
 		"category": "Climate Change",
-		"cost": 600.0,
+		"cost": 800.0,
 		"temperature": 3.0,
 		"sea_level": 50.0,
 		"prereqs": [
@@ -76,7 +76,7 @@
 	{
 		"name": "Fake Science",
 		"category": "Climate Change",
-		"cost": 600.0,
+		"cost": 500.0,
 		"compliance": -20.0,
 		"preparation": -20.0,
 		"prereqs": [
@@ -88,8 +88,8 @@
 		"category": "Climate Change",
 		"cost": 700.0,
 		"temperature": 2.0,
-		"sea_level": 30.0,
-		"storm_range": 10.0,
+		"sea_level": 50.0,
+		"storm_range": 20.0,
 		"prereqs": [
 			"Fake Science"
 		]
@@ -97,7 +97,7 @@
 	{
 		"name": "Abolish Environmental Agencies",
 		"category": "Climate Change",
-		"cost": 800.0,
+		"cost": 500.0,
 		"international_coop": -10.0,
 		"government_function": -10.0,
 		"preparation": -10.0,
@@ -108,10 +108,10 @@
 	{
 		"name": "Deforestation and Mining",
 		"category": "Climate Change",
-		"cost": 900.0,
+		"cost": 1000.0,
 		"temperature": 2.0,
-		"sea_level": 30.0,
-		"storm_range": 10.0,
+		"sea_level": 50.0,
+		"storm_range": 20.0,
 		"wind_damage": 20.0,
 		"flood_damage": 20.0,
 		"prereqs": [
@@ -121,17 +121,17 @@
 	{
 		"name": "Wind Speed 1",
 		"category": "Storm Strength",
-		"cost": 200.0,
+		"cost": 100.0,
 		"wind_damage": 20.0,
-		"storm_speed": 10.0,
+		"wind_speed": 10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Wind Speed 2",
 		"category": "Storm Strength",
-		"cost": 400.0,
+		"cost": 300.0,
 		"wind_damage": 30.0,
-		"storm_speed": 10.0,
+		"wind_speed": 10.0,
 		"prereqs": [
 			"Wind Speed 1"
 		]
@@ -139,9 +139,9 @@
 	{
 		"name": "Tornadoes 1",
 		"category": "Storm Strength",
-		"cost": 700.0,
+		"cost": 400.0,
 		"wind_damage": 50.0,
-		"storm_speed": 10.0,
+		"wind_speed": 10.0,
 		"prereqs": [
 			"Wind Speed 2"
 		]
@@ -149,9 +149,9 @@
 	{
 		"name": "Tornadoes 2",
 		"category": "Storm Strength",
-		"cost": 1000.0,
+		"cost": 500.0,
 		"wind_damage": 50.0,
-		"storm_speed": 10.0,
+		"wind_speed": 10.0,
 		"prereqs": [
 			"Tornadoes 1"
 		]
@@ -159,9 +159,9 @@
 	{
 		"name": "Whirlwind",
 		"category": "Storm Strength",
-		"cost": 900.0,
-		"wind_damage": 20.0,
-		"storm_speed": 50.0,
+		"cost": 600.0,
+		"wind_damage": 30.0,
+		"wind_speed": 50.0,
 		"prereqs": [
 			"Tornadoes 2"
 		]
@@ -179,7 +179,7 @@
 		"category": "Storm Strength",
 		"cost": 300.0,
 		"storm_radius": 30.0,
-		"flood_damage": 20.0,
+		"flood_damage": 30.0,
 		"prereqs": [
 			"Base Radius 1"
 		]
@@ -189,7 +189,7 @@
 		"category": "Storm Strength",
 		"cost": 800.0,
 		"storm_radius": 50.0,
-		"flood_damage": 20.0,
+		"flood_damage": 30.0,
 		"prereqs": [
 			"Base Radius 2"
 		]
@@ -219,7 +219,7 @@
 	{
 		"name": "Organized Religion",
 		"category": "Geopolitical",
-		"cost": 500.0,
+		"cost": 400.0,
 		"government_function": -10.0,
 		"resources": -10.0,
 		"compliance": -10.0,
@@ -244,7 +244,7 @@
 	{
 		"name": "Global Spread",
 		"category": "Geopolitical",
-		"cost": 800.0,
+		"cost": 700.0,
 		"international_coop": -20.0,
 		"government_function": -10.0,
 		"resources": -10.0,
@@ -268,7 +268,7 @@
 	{
 		"name": "Doomsday Prophecy",
 		"category": "Geopolitical",
-		"cost": 1000.0,
+		"cost": 800.0,
 		"international_coop": -10.0,
 		"government_function": -20.0,
 		"resources": -20.0,
@@ -289,7 +289,7 @@
 	{
 		"name": "Destroy Supply Chains 2",
 		"category": "Infrastructure",
-		"cost": 300.0,
+		"cost": 200.0,
 		"resources": -10.0,
 		"prereqs": [
 			"Destroy Supply Chains 1"
@@ -298,7 +298,7 @@
 	{
 		"name": "Ground Flights",
 		"category": "Infrastructure",
-		"cost": 400.0,
+		"cost": 200.0,
 		"international_coop": -5.0,
 		"transportation": -10.0,
 		"prereqs": [
@@ -308,7 +308,7 @@
 	{
 		"name": "Destroy Aircraft",
 		"category": "Infrastructure",
-		"cost": 600.0,
+		"cost": 400.0,
 		"international_coop": -10.0,
 		"transportation": -10.0,
 		"resources": -5.0,
@@ -319,7 +319,7 @@
 	{
 		"name": "Destroy Ports",
 		"category": "Infrastructure",
-		"cost": 400.0,
+		"cost": 200.0,
 		"transportation": -10.0,
 		"resources": -5.0,
 		"prereqs": [
@@ -329,7 +329,7 @@
 	{
 		"name": "Destroy Ships",
 		"category": "Infrastructure",
-		"cost": 600.0,
+		"cost": 400.0,
 		"international_coop": -5.0,
 		"transportation": -10.0,
 		"resources": -10.0,
@@ -340,7 +340,7 @@
 	{
 		"name": "Destroy Minor Roads",
 		"category": "Infrastructure",
-		"cost": 800.0,
+		"cost": 400.0,
 		"transportation": -20.0,
 		"resources": -10.0,
 		"compliance": -10.0,
@@ -351,7 +351,7 @@
 	{
 		"name": "Destroy Major Roads",
 		"category": "Infrastructure",
-		"cost": 1000.0,
+		"cost": 700.0,
 		"transportation": -20.0,
 		"resources": -20.0,
 		"compliance": -20.0,
@@ -369,7 +369,7 @@
 	{
 		"name": "Hack Satellite Receivers",
 		"category": "Infrastructure",
-		"cost": 300.0,
+		"cost": 200.0,
 		"communications": -10.0,
 		"preparation": -10.0,
 		"prereqs": [
@@ -379,7 +379,7 @@
 	{
 		"name": "Destroy Satellites",
 		"category": "Infrastructure",
-		"cost": 600.0,
+		"cost": 400.0,
 		"communications": -20.0,
 		"international_coop": -10.0,
 		"preparation": -10.0,
@@ -390,7 +390,7 @@
 	{
 		"name": "Destroy GPS Satellites",
 		"category": "Infrastructure",
-		"cost": 1000.0,
+		"cost": 500.0,
 		"communications": -30.0,
 		"preparation": -20.0,
 		"prereqs": [
@@ -416,7 +416,7 @@
 	{
 		"name": "Spread Crop Virus 2",
 		"category": "Infrastructure",
-		"cost": 600.0,
+		"cost": 400.0,
 		"international_coop": -5.0,
 		"resources": -10.0,
 		"compliance": -10.0,
@@ -427,7 +427,7 @@
 	{
 		"name": "Virus Mutates to Blight",
 		"category": "Infrastructure",
-		"cost": 1200.0,
+		"cost": 900.0,
 		"temperature": 2.0,
 		"sea_level": 50.0,
 		"international_coop": -10.0,

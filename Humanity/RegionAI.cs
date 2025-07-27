@@ -55,6 +55,7 @@ public partial class RegionAI
 	public int Id => regionStats.id;
 	public string Name => regionStats.name;
 	public float Health => _progress.health;
+	public string State => _state.ToString();
 	public bool Alive => _progress.health > 0.0 && _state != ReactionState.Death;
 	public float WindDamage => _progress.windDamage;
 	public float FloodDamage => _progress.floodDamage;

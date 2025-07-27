@@ -2,32 +2,32 @@
 	{
 		"name": "Climate Research 1",
 		"category": "Research & Education",
-		"cost": 500.0,
+		"cost": 3000.0,
 		"prereqs": []
 	},
 	{
 		"name": "Climate Research 2",
 		"category": "Research & Education",
-		"cost": 700.0,
+		"cost": 6000.0,
 		"prereqs": []
 	},
 	{
 		"name": "Climate Research 3",
 		"category": "Research & Education",
-		"cost": 1000.0,
+		"cost": 9000.0,
 		"prereqs": []
 	},
 	{
 		"name": "Peace Movements",
 		"category": "Geopolitical",
-		"cost": 100.0,
+		"cost": 2000.0,
 		"war_spread": -10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Global Peace Demonstrations",
 		"category": "Geopolitical",
-		"cost": 300.0,
+		"cost": 3000.0,
 		"war_spread": -20.0,
 		"prereqs": [
 			"Peace Movements"
@@ -36,7 +36,7 @@
 	{
 		"name": "United Nations Peace Summit 1",
 		"category": "Geopolitical",
-		"cost": 700.0,
+		"cost": 5000.0,
 		"international_cooperation": 10.0,
 		"war_spread": -20.0,
 		"prereqs": [
@@ -46,7 +46,7 @@
 	{
 		"name": "United Nations Peace Summit 2",
 		"category": "Geopolitical",
-		"cost": 1000.0,
+		"cost": 7000.0,
 		"international_cooperation": 20.0,
 		"war_spread": -30.0,
 		"prereqs": [
@@ -56,26 +56,26 @@
 	{
 		"name": "Building Advancements",
 		"category": "Infrastructure",
-		"cost": 400.0,
+		"cost": 3000.0,
 		"prereqs": []
 	},
 	{
 		"name": "Storm Infrastructure",
 		"category": "Infrastructure",
-		"cost": 400.0,
+		"cost": 4000.0,
 		"prereqs": []
 	},
 	{
 		"name": "Materials Research",
 		"category": "Infrastructure",
-		"cost": 800.0,
+		"cost": 10000.0,
 		"prereqs": []
 	},
 	{
 		"name": "Communications Research",
 		"category": "Infrastructure",
-		"cost": 600.0,
-		"communicaions": 20.0,
+		"cost": 8000.0,
+		"communications": 20.0,
 		"international_cooperation": 10.0,
 		"prereqs": []
 	}

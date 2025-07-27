@@ -82,7 +82,7 @@
 	{
 		"name": "Limit Energy Usage",
 		"category": "Research & Education",
-		"cost": 200.0,
+		"cost": 300.0,
 		"resources": -10.0,
 		"global_warming": -10.0,
 		"prereqs": []
@@ -119,7 +119,7 @@
 	{
 		"name": "Raid Cult Hideouts",
 		"category": "Geopolitical",
-		"cost": 600.0,
+		"cost": 500.0,
 		"cult_spread": -20.0,
 		"prereqs": [
 			"Criminalize Cults"
@@ -128,7 +128,7 @@
 	{
 		"name": "Imprison Cult Followers",
 		"category": "Geopolitical",
-		"cost": 900.0,
+		"cost": 800.0,
 		"cult_spread": -30.0,
 		"prereqs": [
 			"Raid Cult Hideouts"
@@ -157,7 +157,9 @@
 		"category": "Infrastructure",
 		"cost": 300.0,
 		"flood_damage": -20.0,
-		"prereqs": []
+		"prereqs": [
+			"Drainage Systems"
+		]
 	},
 	{
 		"name": "Drainage Systems",
@@ -165,14 +167,12 @@
 		"cost": 300.0,
 		"flood_damage": -10.0,
 		"recovery": 10.0,
-		"prereqs": [
-			"Storm Walls 1"
-		]
+		"prereqs": []
 	},
 	{
 		"name": "Upgrade Materials",
 		"category": "Infrastructure",
-		"cost": 1000.0,
+		"cost": 800.0,
 		"wind_damage": -30.0,
 		"flood_damage": -10.0,
 		"recovery": 20.0,
@@ -181,7 +181,7 @@
 	{
 		"name": "Storm Walls 2",
 		"category": "Infrastructure",
-		"cost": 1000.0,
+		"cost": 800.0,
 		"flood_damage": -50.0,
 		"prereqs": []
 	},
@@ -196,6 +196,7 @@
 		"name": "Cell Service Range",
 		"category": "Infrastructure",
 		"cost": 400.0,
+		"communications": 10.0,
 		"government_function": 10.0,
 		"compliance": 10.0,
 		"prereqs": [
@@ -214,6 +215,7 @@
 		"name": "Live Storm Broadcasts",
 		"category": "Infrastructure",
 		"cost": 200.0,
+		"communications": 10.0,
 		"preparation": 10.0,
 		"prereqs": [
 			"Early Warning Systems"
@@ -223,6 +225,7 @@
 		"name": "Disaster Relief Broadcasts",
 		"category": "Infrastructure",
 		"cost": 300.0,
+		"communications": 10.0,
 		"recovery": 30.0,
 		"prereqs": [
 			"Early Warning Systems"
