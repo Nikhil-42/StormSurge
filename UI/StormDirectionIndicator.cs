@@ -114,20 +114,29 @@ public partial class StormDirectionIndicator : Node3D
 		_isDragging = false;
 		
 		Vector2 direction = CalculateDragDirection();
-		EmitSignal(SignalName.DirectionSet, _dragStartLatLon, direction);
+		if (direction == Vector2.Zero)
+		{
+			if (GameManager.Instance.PrintDebug)
+			{
+				GD.Print("[StormDirectionIndicator] Drag ended - No significant direction set, cancelling.");
+			}
+		}
+		else
+		{
+			EmitSignal(SignalName.DirectionSet, _dragStartLatLon, direction);
+			if (GameManager.Instance.PrintDebug)
+			{
+				GD.Print($"[StormDirectionIndicator] Drag ended - Direction set to: ({direction.X:F3}, {direction.Y:F3})");
+			}
+		}
 		
 		ClearDirectionIndicator();
-		
-		if (GameManager.Instance.PrintDebug)
-		{
-			GD.Print($"[StormDirectionIndicator] Drag ended - Direction set to: ({direction.X:F3}, {direction.Y:F3})");
-		}
 	}
 
 	private Vector2 CalculateDragDirection()
 	{
 		if (Globe == null || _dragStartWorldPos == Vector3.Zero || _dragCurrentWorldPos == Vector3.Zero)
-			return Vector2.Right; // Default direction if no drag
+			return Vector2.Zero; // Default direction if no drag
 
 		var startLatLon = Globe.GetLatLon(_dragStartWorldPos);
 		var currentLatLon = Globe.GetLatLon(_dragCurrentWorldPos);
@@ -158,7 +167,7 @@ public partial class StormDirectionIndicator : Node3D
 			{
 				GD.Print("[StormDirectionIndicator] Drag too small, using default direction");
 			}
-			return Vector2.Right; // Default{Testing} (should cancel drag (no storm to spawn cause too small))
+			return Vector2.Zero; // Default{Testing} (should cancel drag (no storm to spawn cause too small))
 		}
 		
 		if (GameManager.Instance.PrintDebug)
