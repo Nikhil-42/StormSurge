@@ -110,7 +110,7 @@ with open("Library/stormtree.txt", 'r') as file:
         print("Failed to parse storm tree data.")
     else:
         with open("Library/stormtree.json", 'w') as file:
-            json.dump([node.to_dict() for node in nodes], file, indent=4)
+            json.dump([node.to_dict() for node in nodes], file, indent='\t')
 
 with open("Library/regiontree.txt", "r") as file:
     nodes = parse_file(file, human_variables)
@@ -118,7 +118,7 @@ with open("Library/regiontree.txt", "r") as file:
         print("Failed to parse region tree data.")
     else:
         with open("Library/regiontree.json", 'w') as file:
-            json.dump([node.to_dict() for node in nodes], file, indent=4)
+            json.dump([node.to_dict() for node in nodes], file, indent='\t')
     
 with open("Library/globaltree.txt", "r") as file:
     nodes = parse_file(file, human_variables)
@@ -126,5 +126,5 @@ with open("Library/globaltree.txt", "r") as file:
         print("Failed to parse global tree data.")
     else:
         with open("Library/globaltree.json", 'w') as file:
-            json.dump([node.to_dict() for node in nodes], file, indent=4)
+            json.dump([node.to_dict() for node in nodes], file, indent='\t')
             
