@@ -72,7 +72,7 @@ public class StormVars : IVars<StormVars>
 	public float FloodDamage { get; init; }
 	public float WindDamage { get; init; }
 	public float WindSpeed { get; init; }
-	public float StormRadius { get; init; }
+	public float Radius { get; init; }
 
 	public static StormVars Default => new StormVars
 	{
@@ -82,7 +82,7 @@ public class StormVars : IVars<StormVars>
 		FloodDamage = 1.0f,  // multiplier
 		WindDamage = 1.0f,  // multiplier
 		WindSpeed = 100.0f,  // m/s
-		StormRadius = 50.0f  // km
+		Radius = 50.0f  // km
 	};
 
 	public static StormVars Add(StormVars lhs, StormVars rhs)
@@ -100,7 +100,7 @@ public class StormVars : IVars<StormVars>
 			FloodDamage = lhs.FloodDamage + rhs.FloodDamage,
 			WindDamage = lhs.WindDamage + rhs.WindDamage,
 			WindSpeed = lhs.WindSpeed + rhs.WindSpeed,
-			StormRadius = lhs.StormRadius + rhs.StormRadius
+			Radius = lhs.Radius + rhs.Radius
 		};
 	}
 
@@ -114,7 +114,7 @@ public class StormVars : IVars<StormVars>
 			FloodDamage = json.ContainsKey("flood_damage") ? (float)json["flood_damage"] : 0.0f,
 			WindDamage = json.ContainsKey("wind_damage") ? (float)json["wind_damage"] : 0.0f,
 			WindSpeed = json.ContainsKey("wind_speed") ? (float)json["wind_speed"] : 0.0f,
-			StormRadius = json.ContainsKey("storm_radius") ? (float)json["storm_radius"] : 0.0f
+			Radius = json.ContainsKey("storm_radius") ? (float)json["storm_radius"] : 0.0f
 		};
 	}
 
@@ -127,7 +127,7 @@ public class StormVars : IVars<StormVars>
 		if (FloodDamage != 0.0) json["flood_damage"] = FloodDamage;
 		if (WindDamage != 0.0) json["wind_damage"] = WindDamage;
 		if (WindSpeed != 0.0) json["wind_speed"] = WindSpeed;
-		if (StormRadius != 0.0) json["storm_radius"] = StormRadius;
+		if (Radius != 0.0) json["storm_radius"] = Radius;
 		return json;
 	}
 }
