@@ -9,13 +9,17 @@
 		"name": "Climate Research 2",
 		"category": "Research & Education",
 		"cost": 6000.0,
-		"prereqs": []
+		"prereqs": [
+			"Climate Research 1"
+		]
 	},
 	{
 		"name": "Climate Research 3",
 		"category": "Research & Education",
 		"cost": 9000.0,
-		"prereqs": []
+		"prereqs": [
+			"Climate Research 2"
+		]
 	},
 	{
 		"name": "Peace Movements",
