@@ -215,4 +215,171 @@ public partial class RegionAI
 		}
 		if (_progress.health < 0.0f) _progress.health = 0.0f; // Ensure health doesn't go below zero
 	}
+
+	public string TargetNextNode() {
+		// FIXME: Create structure to track values of nodes
+		// FIXME: Random proportional chance choose next node based on value:cost ratio
+		// FIXME: Top 2 nodes have additional chance as well
+
+		List<string> nodeNames = new List<string>();
+		List<float> nodeValues = new List<float>();
+
+		float currentValue = 0.0f;
+		float totalValue = 0.0f;
+
+		foreach (var node in regionTree.Available) {
+			nodeNames.Add(node.Name);
+			currentValue = EvaluateNode(node.Name);
+			nodeValues.Add(currentValue);
+			totalValue += currentValue;
+		}
+
+		List<int> probabilities = new List<int>();
+		float floatTotalCutoff = 0.0f;
+		int currentCutoff = 0;
+		int currentChance = 0;
+
+		for (int i=0; i<nodeNames.Count; i++) {
+			probabilities 
+		}
+
+
+
+		return currentTarget;
+	}
+
+	public float EvaluateNode(string nodeName) {
+		var node = regionTree.GetNode(nodeName);
+		float value;
+		float totalValue;
+
+		// ================================= STORM VARIABLES ==================================================
+		// Wind resistance [0]
+		// INCREASE: current wind damage in region, higher wind speeds, higher wind damage
+		if (node.Storm.WindDamage != 0.0f) {
+			float windValue = Math.Abs(node.Storm.WindDamage);
+			if (WindDamage > 0) {
+				windValue *= (1+WindDamage);
+			}
+			windValue *= GameManager.Instance.Game.stormTree.WindSpeed/100.0f;
+			windValue *= GameManager.Instance.Game.stormTree.WindDamage;
+
+			value += windValue;
+		}
+
+		// Flood resistance [1]
+		// INCREASE: sustained flood damage, higher sea level (TBA), coastal population
+		if (node.Storm.FloodDamage != 0.0f) {
+			float floodValue = Math.Abs(node.Storm.FloodDamage);
+			if (FloodDamage > 0) {
+				floodValue *= (1+FloodDamage);
+			}
+			floodValue *= GameManager.Instance.Game.stormTree.FloodDamage;
+			floodValue *= (1+regionStats.coastalPopulation);
+			// floodValue *= GameManager.Instance.Game.stormTree.SeaLevel;  // FIXME: later
+
+			value += floodValue;
+		}
+
+		// ================================= GEOPOLITICAL VARIABLES ==================================================
+		// Communications [2]
+		if (node.Geopolitical.Communications != 0.0f) {
+			float communicationValue = Math.Abs(node.Geopolitical.Communications);
+			communicationValue *= Math.Abs(GameManager.Instance.Game.stormTree.Communications);
+
+			value += communicationValue;
+		}
+
+		// International Cooperation [3]
+		// DECREASE: global war presence (TBA), global cult presence (TBA)
+		if (node.Geopolitical.InternationalCooperation != 0.0f) {
+			float internationalCooperationValue = Math.Abs(node.Geopolitical.InternationalCooperation);
+			internationalCooperationValue *= Math.Abs(GameManager.Instance.Game.stormTree.InternationalCooperation);
+
+			value += internationalCooperationValue;
+		}
+
+		// Transportation [4]
+		// INCREASE: high gov't function (TBA)
+		if (node.Geopolitical.Transportation != 0.0f) {
+			float transportationValue = Math.Abs(node.Geopolitical.Transportation);
+			transportationValue *= Math.Abs(GameManager.Instance.Game.stormTree.Transportation);
+
+			value += transportationValue;
+		}
+
+		// Resources [5]
+		// INCREASE: lower gdp
+		// DECREASE: higher gdp, further along tech tree (TBA)
+		if (node.Geopolitical.Resources != 0.0f) {
+			float resourcesValue = Math.Abs(node.Geopolitical.Resources);
+			resourcesValue *= Math.Abs(GameManager.Instance.Game.stormTree.Resources);
+
+			if (regionStats.gdp > 10000) resourcesValue *= 0.5f;
+			else if (regionStats.gdp > 1000) resourcesValue *= 0.9f;
+			else if (regionStats.gdp > 500) resourcesValue *= 1.3f;
+			else if (regionStats.gdp > 100) resourcesValue *= 1.6f;
+			else resourcesValue *= 2.0f;
+
+			value += resourcesValue;
+		}
+
+		// Compliance [6]
+		// INCREASE: global war presence (TBA), global cult presence (TBA)
+		if (node.Geopolitical.Compliance != 0.0f) {
+			float complianceValue = Math.Abs(node.Geopolitical.Compliance);
+			complianceValue *= Math.Abs(GameManager.Instance.Game.stormTree.Compliance);
+
+			value += complianceValue;
+		}
+
+		// Preparation [7]
+		// INCREASE: number of prior storms in region (TBA), current damage in region
+		if (node.Geopolitical.Preparation != 0.0f) {
+			float preparationValue = Math.Abs(node.Geopolitical.Preparation);
+			preparationValue *= Math.Abs(GameManager.Instance.Game.stormTree.Preparation);
+			preparationValue *= (1+((FloodDamage+WindDamage+SecondaryDamage)/2));
+
+			value += preparationValue;
+		}
+
+		// ================================= HUMAN AI VARIABLES ==================================================
+		// Global Migration (N/A)
+		// Regional Migration (N/A)
+
+		// Global Warming [2]
+		// INCREASE: higher global temperature
+		if (node.RegionVars.GlobalWarming != 0.0f) {
+			float globalWarmingValue = Math.Abs(node.RegionVars.GlobalWarming);
+			globalWarmingValue *= Math.Abs(GameManager.Instance.Game.stormTree.Temperature);
+
+			value += globalWarmingValue;
+		}
+
+		// Climate Costs (N/A)
+
+		// Cult Spread [4]
+		// INCREASE: cult presence (TBA), current cult population in country (TBA)
+		if (node.RegionVars.CultSpread != 0.0f) {
+			float cultSpreadValue = Math.Abs(node.RegionVars.CultSpread);
+
+			value += cultSpreadValue;
+		}
+
+		// Recovery [5]
+		// INCREASE: current storm damage, number of prior storms in region (TBA)
+		if (node.RegionVars.Recovery != 0.0f) {
+			float recoveryValue = Math.Abs(node.RegionVars.Recovery);
+			recoveryValue *= (1+(FloodDamage+WindDamage+SecondaryDamage));
+
+			value += recoveryValue;
+		}
+
+		// Infrastructure Costs (N/A)
+		// War Spread (N/A)
+		// Detection (N/A)
+		// Implementation Costs (N/A)
+
+		return value;
+	}
 }

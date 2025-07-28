@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-/*public class DNode
+public class DNode
 {
 	public string name;
 	public int cost;
@@ -165,4 +165,3 @@ public class DecisionTree
 
 	}
 }
-*/
