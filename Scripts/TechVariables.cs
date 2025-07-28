@@ -115,8 +115,8 @@ public class StormVars : IVars<StormVars>
 			Temperature = lhs.Temperature + rhs.Temperature,
 			SeaLevel = lhs.SeaLevel + rhs.SeaLevel,
 			Range = lhs.Range + rhs.Range,
-			FloodDamage = lhs.FloodDamage * rhs.FloodDamage,
-			WindDamage = lhs.WindDamage * rhs.WindDamage,
+			FloodDamage = lhs.FloodDamage + rhs.FloodDamage,
+			WindDamage = lhs.WindDamage + rhs.WindDamage,
 			WindSpeed = lhs.WindSpeed + rhs.WindSpeed,
 			Radius = lhs.Radius + rhs.Radius
 		};
@@ -193,13 +193,13 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	{
 		return new GeopoliticalVars
 		{
-			Communications = lhs.Communications * rhs.Communications,
-			InternationalCooperation = lhs.InternationalCooperation * rhs.InternationalCooperation,
-			Transportation = lhs.Transportation * rhs.Transportation,
-			GovernmentFunction = lhs.GovernmentFunction * rhs.GovernmentFunction,
-			Resources = lhs.Resources * rhs.Resources,
-			Compliance = lhs.Compliance * rhs.Compliance,
-			Preparation = lhs.Preparation * rhs.Preparation
+			Communications = lhs.Communications + rhs.Communications,
+			InternationalCooperation = lhs.InternationalCooperation + rhs.InternationalCooperation,
+			Transportation = lhs.Transportation + rhs.Transportation,
+			GovernmentFunction = lhs.GovernmentFunction + rhs.GovernmentFunction,
+			Resources = lhs.Resources + rhs.Resources,
+			Compliance = lhs.Compliance + rhs.Compliance,
+			Preparation = lhs.Preparation + rhs.Preparation
 		};
 	}
 
@@ -265,8 +265,8 @@ public class RegionVars : IVars<RegionVars>
 			Temperature = 0.0f,  // Kelvin
 			SeaLevel = 0.0f,  // km
 			Range = 0.0f,  // km
-			FloodDamage = 1.0f,  // multiplier
-			WindDamage = 1.0f,  // multiplier
+			FloodDamage = 0.0f,  // multiplier
+			WindDamage = 0.0f,  // multiplier
 			WindSpeed = 0.0f,  // m/s
 			Radius = 0.0f,  // km
 		},
@@ -282,16 +282,18 @@ public class RegionVars : IVars<RegionVars>
 	{
 		return new RegionVars
 		{
-			GlobalMigration = lhs.GlobalMigration * rhs.GlobalMigration,
-			RegionMigration = lhs.RegionMigration * rhs.RegionMigration,
-			GlobalWarming = lhs.GlobalWarming * rhs.GlobalWarming,
-			ClimateCosts = lhs.ClimateCosts * rhs.ClimateCosts,
-			CultSpread = lhs.CultSpread * rhs.CultSpread,
-			Recovery = lhs.Recovery * rhs.Recovery,
-			InfrastructureCosts = lhs.InfrastructureCosts * rhs.InfrastructureCosts,
-			WarSpread = lhs.WarSpread * rhs.WarSpread,
-			Detection = lhs.Detection * rhs.Detection,
-			ImplementCosts = lhs.ImplementCosts * rhs.ImplementCosts
+			GlobalMigration = lhs.GlobalMigration + rhs.GlobalMigration,
+			RegionMigration = lhs.RegionMigration + rhs.RegionMigration,
+			GlobalWarming = lhs.GlobalWarming + rhs.GlobalWarming,
+			ClimateCosts = lhs.ClimateCosts + rhs.ClimateCosts,
+			CultSpread = lhs.CultSpread + rhs.CultSpread,
+			Recovery = lhs.Recovery + rhs.Recovery,
+			InfrastructureCosts = lhs.InfrastructureCosts + rhs.InfrastructureCosts,
+			WarSpread = lhs.WarSpread + rhs.WarSpread,
+			Detection = lhs.Detection + rhs.Detection,
+			ImplementCosts = lhs.ImplementCosts + rhs.ImplementCosts,
+			Storm = lhs.Storm + rhs.Storm,
+			Geopolitical = lhs.Geopolitical + rhs.Geopolitical,
 		};
 	}
 
@@ -309,7 +311,9 @@ public class RegionVars : IVars<RegionVars>
 			InfrastructureCosts = json.TryGetValue("infrastructure_costs", out value) ? (float)value : 1.0f,
 			WarSpread = json.TryGetValue("war_spread", out value) ? (float)value : 1.0f,
 			Detection = json.TryGetValue("detection", out value) ? (float)value : 1.0f,
-			ImplementCosts = json.TryGetValue("implement_costs", out value) ? (float)value : 1.0f
+			ImplementCosts = json.TryGetValue("implement_costs", out value) ? (float)value : 1.0f,
+			Storm = StormVars.FromJson(json),
+			Geopolitical = GeopoliticalVars.FromJson(json),
 		};
 	}
 
