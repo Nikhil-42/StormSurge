@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ean4pdie0k8y"]
+[gd_scene load_steps=19 format=3 uid="uid://ean4pdie0k8y"]
 
 [ext_resource type="Script" uid="uid://c4wlwenlkjdy3" path="res://Scripts/GameManager.cs" id="1_xe0gy"]
 [ext_resource type="PackedScene" uid="uid://2eewc0lbfv2j" path="res://Globe/globe.tscn" id="3_hj5t5"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://brhocv1werbv3" path="res://UI/RegionPopup/RegionStatsPopup.tscn" id="11_0x8vr"]
 [ext_resource type="AudioStream" uid="uid://dk3k5wky8w0bv" path="res://Assets/Cumulus_Loop.mp3" id="11_p4pkd"]
 [ext_resource type="AudioStream" uid="uid://cabvw8expp1tj" path="res://Assets/ThunderstormAmbience.mp3" id="12_p4pkd"]
+[ext_resource type="AudioStream" uid="uid://xc37dvvjwp0i" path="res://Assets/cinematic-rock-smash-177982.mp3" id="13_yjuq7"]
+[ext_resource type="AudioStream" uid="uid://cbh7gdyxlfnde" path="res://Assets/ui-button-click-5-327756.mp3" id="16_4nbie"]
 
 [sub_resource type="SystemFont" id="SystemFont_wjear"]
 subpixel_positioning = 0
@@ -43,6 +45,7 @@ MoveSpeedRadPerSec = 0.1
 
 [node name="StormDamage" type="AudioStreamPlayer" parent="Storm"]
 stream = ExtResource("6_hbynb")
+volume_db = 5.0
 
 [node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
@@ -97,17 +100,27 @@ vertical_alignment = 1
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="IntroMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("10_q5q25")
-
 [node name="RegionStatsPopup" parent="." instance=ExtResource("11_0x8vr")]
 visible = false
 
+[node name="IntroMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_q5q25")
+volume_db = -5.0
+
 [node name="LoopMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_p4pkd")
+volume_db = -5.0
 parameters/looping = false
 
 [node name="StormAmbience" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_p4pkd")
 volume_db = 0.553
 parameters/looping = false
+
+[node name="SelectSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_yjuq7")
+volume_db = -5.0
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_4nbie")
+volume_db = 2.0
