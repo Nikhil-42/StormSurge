@@ -6,12 +6,12 @@ public class GameState {  // Move node attributes, make not a node, make private
 	// ================= GLOBAL TECH TREE VARIABLES ================================
 	public TechTree<TechNode<GlobalVars>, GlobalVars> stormTree = null;  // global default
 	public TechTree<GlobalNode, GlobalVars> humanityTree = null;  // global default
-
 	public GlobalVars GlobalVars => stormTree.Vars + humanityTree.Vars;
 
 	private int _religionLevel = 1;  // 1: 1% cult followers = 0.2%/0.5%, 2: 1% = 0.5%/1%, 3: 1% = 2%/2%
-	
 	private RegionAI[] _regionAIs = null;
+
+	private RandomNumberGenerator _rng = new RandomNumberGenerator();
 
 	// ================= GLOBAL MONEY & RESEARCH VARIABLES ================================
 	private float _solar = 500.0f;
@@ -31,6 +31,7 @@ public class GameState {  // Move node attributes, make not a node, make private
 	public float Solar { get => _solar; set => _solar = value; }
 	public RegionAI[] RegionAIs { get => _regionAIs; }
 	public double TimeElapsed { get => _timeElapsed; }
+	public RandomNumberGenerator RNG { get => _rng; }
 	
 	// ================= INITIALIZER ================================
 	public GameState(RegionStats[] regionStats, Json stormJson, Json humanityJson, Json regionJson) {

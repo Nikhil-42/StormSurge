@@ -15,7 +15,7 @@ public partial class HoverPopup : Panel
 
 	public void SetInfo<T>(TechNode<T> node, string description) where T : IVars<T>
 	{
-		TitleLabel.Text = node.Name;
+		TitleLabel.Text = node.Name + " [" + node.Category + "]";
 		DescriptionLabel.Text = description;
 
 		// Clear old effect labels
@@ -28,7 +28,8 @@ public partial class HoverPopup : Panel
 		foreach (var (name, value) in node.Vars.ToJson())
 		{
 			var label = new Label();
-			label.Text = $"[{node.Category}] {node.Name}: {value}";
+			label.Text = $"{name}: {(float)value:F2}";
+			// FIXME: multiply only percent values by 100
 			
 			// font size override
 			label.AddThemeFontSizeOverride("font_size", 10);
