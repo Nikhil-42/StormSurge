@@ -97,8 +97,8 @@ public class StormVars : IVars<StormVars>
 			Temperature = lhs.Temperature + rhs.Temperature,
 			SeaLevel = lhs.SeaLevel + rhs.SeaLevel,
 			Range = lhs.Range + rhs.Range,
-			FloodDamage = lhs.FloodDamage + rhs.FloodDamage,
-			WindDamage = lhs.WindDamage + rhs.WindDamage,
+			FloodDamage = lhs.FloodDamage * rhs.FloodDamage,
+			WindDamage = lhs.WindDamage * rhs.WindDamage,
 			WindSpeed = lhs.WindSpeed + rhs.WindSpeed,
 			Radius = lhs.Radius + rhs.Radius
 		};
@@ -106,28 +106,29 @@ public class StormVars : IVars<StormVars>
 
 	public static StormVars FromJson(Godot.Collections.Dictionary<string, Variant> json)
 	{
+		Variant value;
 		return new StormVars
 		{
-			Temperature = json.ContainsKey("temperature") ? (float)json["temperature"] : 0.0f,
-			SeaLevel = json.ContainsKey("sea_level") ? (float)json["sea_level"] : 0.0f,
-			Range = json.ContainsKey("storm_range") ? (float)json["storm_range"] : 0.0f,
-			WindDamage = json.ContainsKey("wind_damage") ? (float)json["wind_damage"] : 0.0f,
-			WindSpeed = json.ContainsKey("wind_speed") ? (float)json["wind_speed"] : 0.0f,
-			Radius = json.ContainsKey("storm_radius") ? (float)json["storm_radius"] : 0.0f,
-			FloodDamage = json.ContainsKey("flood_damage") ? (float)json["flood_damage"] : 0.0f,
+			Temperature = json.TryGetValue("temperature", out value) ? (float)value : 0.0f,
+			SeaLevel = json.TryGetValue("sea_level", out value) ? (float)value : 0.0f,
+			Range = json.TryGetValue("storm_range", out value) ? (float)value : 0.0f,
+			WindDamage = json.TryGetValue("wind_damage", out value) ? (float)value : 1.0f,
+			WindSpeed = json.TryGetValue("wind_speed", out value) ? (float)value : 0.0f,
+			Radius = json.TryGetValue("storm_radius", out value) ? (float)value : 0.0f,
+			FloodDamage = json.TryGetValue("flood_damage", out value) ? (float)value : 1.0f,
 		};
 	}
 
 	public Godot.Collections.Dictionary<string, Variant> ToJson()
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
-		if (Temperature != 0.0) json["temperature"] = Temperature;
-		if (SeaLevel != 0.0) json["sea_level"] = SeaLevel;
-		if (Range != 0.0) json["range"] = Range;
-		if (FloodDamage != 0.0) json["flood_damage"] = FloodDamage;
-		if (WindDamage != 0.0) json["wind_damage"] = WindDamage;
-		if (WindSpeed != 0.0) json["wind_speed"] = WindSpeed;
-		if (Radius != 0.0) json["storm_radius"] = Radius;
+		if (Temperature != 0.0f) json["temperature"] = Temperature;
+		if (SeaLevel != 0.0f) json["sea_level"] = SeaLevel;
+		if (Range != 0.0f) json["range"] = Range;
+		if (FloodDamage != 1.0f) json["flood_damage"] = FloodDamage;
+		if (WindDamage != 1.0f) json["wind_damage"] = WindDamage;
+		if (WindSpeed != 0.0f) json["wind_speed"] = WindSpeed;
+		if (Radius != 0.0f) json["storm_radius"] = Radius;
 		return json;
 	}
 }
@@ -162,40 +163,41 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	{
 		return new GeopoliticalVars
 		{
-			Communications = lhs.Communications + rhs.Communications,
-			InternationalCooperation = lhs.InternationalCooperation + rhs.InternationalCooperation,
-			Transportation = lhs.Transportation + rhs.Transportation,
-			GovernmentFunction = lhs.GovernmentFunction + rhs.GovernmentFunction,
-			Resources = lhs.Resources + rhs.Resources,
-			Compliance = lhs.Compliance + rhs.Compliance,
-			Preparation = lhs.Preparation + rhs.Preparation
+			Communications = lhs.Communications * rhs.Communications,
+			InternationalCooperation = lhs.InternationalCooperation * rhs.InternationalCooperation,
+			Transportation = lhs.Transportation * rhs.Transportation,
+			GovernmentFunction = lhs.GovernmentFunction * rhs.GovernmentFunction,
+			Resources = lhs.Resources * rhs.Resources,
+			Compliance = lhs.Compliance * rhs.Compliance,
+			Preparation = lhs.Preparation * rhs.Preparation
 		};
 	}
 
 	public static GeopoliticalVars FromJson(Godot.Collections.Dictionary<string, Variant> json)
 	{
+		Variant value;
 		return new GeopoliticalVars
 		{
-			Communications = json.ContainsKey("communications") ? (float)json["communications"] : Default.Communications,
-			InternationalCooperation = json.ContainsKey("international_cooperation") ? (float)json["international_cooperation"] : Default.InternationalCooperation,
-			Transportation = json.ContainsKey("transportation") ? (float)json["transportation"] : Default.Transportation,
-			GovernmentFunction = json.ContainsKey("government_function") ? (float)json["government_function"] : Default.GovernmentFunction,
-			Resources = json.ContainsKey("resources") ? (float)json["resources"] : Default.Resources,
-			Compliance = json.ContainsKey("compliance") ? (float)json["compliance"] : Default.Compliance,
-			Preparation = json.ContainsKey("preparation") ? (float)json["preparation"] : Default.Preparation,
+			Communications = json.TryGetValue("communications", out value) ? (float)value : 1.0f,
+			InternationalCooperation = json.TryGetValue("international_cooperation", out value) ? (float)value : 1.0f,
+			Transportation = json.TryGetValue("transportation", out value) ? (float)value : 1.0f,
+			GovernmentFunction = json.TryGetValue("government_function", out value) ? (float)value : 1.0f,
+			Resources = json.TryGetValue("resources", out value) ? (float)value : 1.0f,
+			Compliance = json.TryGetValue("compliance", out value) ? (float)value : 1.0f,
+			Preparation = json.TryGetValue("preparation", out value) ? (float)value : 1.0f
 		};
 	}
 
 	public Godot.Collections.Dictionary<string, Variant> ToJson()
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
-		if (Communications != Default.Communications) json["communications"] = Communications;
-		if (InternationalCooperation != Default.InternationalCooperation) json["international_cooperation"] = InternationalCooperation;
-		if (Transportation != Default.Transportation) json["transportation"] = Transportation;
-		if (GovernmentFunction != Default.GovernmentFunction) json["government_function"] = GovernmentFunction;
-		if (Resources != Default.Resources) json["resources"] = Resources;
-		if (Compliance != Default.Compliance) json["compliance"] = Compliance;
-		if (Preparation != Default.Preparation) json["preparation"] = Preparation;
+		if (Communications != 1.0f) json["communications"] = Communications;
+		if (InternationalCooperation != 1.0f) json["international_cooperation"] = InternationalCooperation;
+		if (Transportation != 1.0f) json["transportation"] = Transportation;
+		if (GovernmentFunction != 1.0f) json["government_function"] = GovernmentFunction;
+		if (Resources != 1.0f) json["resources"] = Resources;
+		if (Compliance != 1.0f) json["compliance"] = Compliance;
+		if (Preparation != 1.0f) json["preparation"] = Preparation;
 		return json;
 	}
 }
@@ -250,61 +252,58 @@ public class RegionVars : IVars<RegionVars>
 	{
 		return new RegionVars
 		{
-			GlobalMigration = lhs.GlobalMigration + rhs.GlobalMigration,
-			RegionMigration = lhs.RegionMigration + rhs.RegionMigration,
-			GlobalWarming = lhs.GlobalWarming + rhs.GlobalWarming,
-			ClimateCosts = lhs.ClimateCosts + rhs.ClimateCosts,
-			CultSpread = lhs.CultSpread + rhs.CultSpread,
-			Recovery = lhs.Recovery + rhs.Recovery,
-			InfrastructureCosts = lhs.InfrastructureCosts + rhs.InfrastructureCosts,
-			WarSpread = lhs.WarSpread + rhs.WarSpread,
-			Detection = lhs.Detection + rhs.Detection,
-			ImplementCosts = lhs.ImplementCosts + rhs.ImplementCosts,
-			Storm = lhs.Storm + rhs.Storm,
-			Geopolitical = lhs.Geopolitical + rhs.Geopolitical,
+			GlobalMigration = lhs.GlobalMigration * rhs.GlobalMigration,
+			RegionMigration = lhs.RegionMigration * rhs.RegionMigration,
+			GlobalWarming = lhs.GlobalWarming * rhs.GlobalWarming,
+			ClimateCosts = lhs.ClimateCosts * rhs.ClimateCosts,
+			CultSpread = lhs.CultSpread * rhs.CultSpread,
+			Recovery = lhs.Recovery * rhs.Recovery,
+			InfrastructureCosts = lhs.InfrastructureCosts * rhs.InfrastructureCosts,
+			WarSpread = lhs.WarSpread * rhs.WarSpread,
+			Detection = lhs.Detection * rhs.Detection,
+			ImplementCosts = lhs.ImplementCosts * rhs.ImplementCosts
 		};
 	}
 
 	public static RegionVars FromJson(Godot.Collections.Dictionary<string, Variant> json)
 	{
+		Variant value;
 		return new RegionVars
 		{
-			GlobalMigration = json.ContainsKey("global_migration") ? (float)json["global_migration"] : Default.GlobalMigration,
-			RegionMigration = json.ContainsKey("region_migration") ? (float)json["region_migration"] : Default.RegionMigration,
-			GlobalWarming = json.ContainsKey("global_warming") ? (float)json["global_warming"] : Default.GlobalWarming,
-			ClimateCosts = json.ContainsKey("climate_costs") ? (float)json["climate_costs"] : Default.ClimateCosts,
-			CultSpread = json.ContainsKey("cult_spread") ? (float)json["cult_spread"] : Default.CultSpread,
-			Recovery = json.ContainsKey("recovery") ? (float)json["recovery"] : Default.Recovery,
-			InfrastructureCosts = json.ContainsKey("infrastructure_costs") ? (float)json["infrastructure_costs"] : Default.InfrastructureCosts,
-			WarSpread = json.ContainsKey("war_spread") ? (float)json["war_spread"] : Default.WarSpread,
-			Detection = json.ContainsKey("detection") ? (float)json["detection"] : Default.Detection,
-			ImplementCosts = json.ContainsKey("implement_costs") ? (float)json["implement_costs"] : Default.ImplementCosts,
-			Storm = StormVars.FromJson(json),
-			Geopolitical = GeopoliticalVars.FromJson(json),
+			GlobalMigration = json.TryGetValue("global_migration", out value) ? (float)value : 1.0f,
+			RegionMigration = json.TryGetValue("region_migration", out value) ? (float)value : 1.0f,
+			GlobalWarming = json.TryGetValue("global_warming", out value) ? (float)value : 1.0f,
+			ClimateCosts = json.TryGetValue("climate_costs", out value) ? (float)value : 1.0f,
+			CultSpread = json.TryGetValue("cult_spread", out value) ? (float)value : 1.0f,
+			Recovery = json.TryGetValue("recovery", out value) ? (float)value : 1.0f,
+			InfrastructureCosts = json.TryGetValue("infrastructure_costs", out value) ? (float)value : 1.0f,
+			WarSpread = json.TryGetValue("war_spread", out value) ? (float)value : 1.0f,
+			Detection = json.TryGetValue("detection", out value) ? (float)value : 1.0f,
+			ImplementCosts = json.TryGetValue("implement_costs", out value) ? (float)value : 1.0f
 		};
 	}
 
 	public Godot.Collections.Dictionary<string, Variant> ToJson()
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
-		if (GlobalMigration != Default.GlobalMigration) json["global_migration"] = GlobalMigration;
-		if (RegionMigration != Default.RegionMigration) json["region_migration"] = RegionMigration;
-		if (GlobalWarming != Default.GlobalWarming) json["global_warming"] = GlobalWarming;
-		if (ClimateCosts != Default.ClimateCosts) json["climate_costs"] = ClimateCosts;
-		if (CultSpread != Default.CultSpread) json["cult_spread"] = CultSpread;
-		if (Recovery != Default.Recovery) json["recovery"] = Recovery;
-		if (InfrastructureCosts != Default.InfrastructureCosts) json["infrastructure_costs"] = InfrastructureCosts;
-		if (WarSpread != Default.WarSpread) json["war_spread"] = WarSpread;
-		if (Detection != Default.Detection) json["detection"] = Detection;
-		if (ImplementCosts != Default.ImplementCosts) json["implement_costs"] = ImplementCosts;
+		if (GlobalMigration != 1.0f) json["global_migration"] = GlobalMigration;
+		if (RegionMigration != 1.0f) json["region_migration"] = RegionMigration;
+		if (GlobalWarming != 1.0f) json["global_warming"] = GlobalWarming;
+		if (ClimateCosts != 1.0f) json["climate_costs"] = ClimateCosts;
+		if (CultSpread != 1.0f) json["cult_spread"] = CultSpread;
+		if (Recovery != 1.0f) json["recovery"] = Recovery;
+		if (InfrastructureCosts != 1.0f) json["infrastructure_costs"] = InfrastructureCosts;
+		if (WarSpread != 1.0f) json["war_spread"] = WarSpread;
+		if (Detection != 1.0f) json["detection"] = Detection;
+		if (ImplementCosts != 1.0f) json["implement_costs"] = ImplementCosts;
 		foreach (var (key, value) in Storm.ToJson())
 		{
 			json[key] = value;
 		}
 		foreach (var (key, value) in Geopolitical.ToJson())
-			{
-				json[key] = value;
-			}
+		{
+			json[key] = value;
+		}
 		return json;
 	}
 }
@@ -463,9 +462,9 @@ public class TechTree<T, V> where T : TechNode<V>, new() where V : IVars<V> {
 
 	public T GetNode(string search)
 	{  // Returns node by name search, whether available or locked
-		if (_nodes.ContainsKey(search))
+		if (_nodes.TryGetValue(search, out T value))
 		{
-			return _nodes[search];
+			return value;
 		}
 		return null;
 	}
@@ -476,7 +475,7 @@ public class TechTree<T, V> where T : TechNode<V>, new() where V : IVars<V> {
 
 	public bool BuyNode(T node, ref float balance)
 	{
-		if (node == null || _nodes == null || !_nodes.ContainsKey(node.Name) || _nodes[node.Name] != node)
+		if (node == null || _nodes == null || !_nodes.TryGetValue(node.Name, out T value) || value != node)
 		{
 			GD.PrintErr($"Node {node?.Name} not found in the tech tree.");
 			return false; // Node not found
@@ -492,10 +491,9 @@ public class TechTree<T, V> where T : TechNode<V>, new() where V : IVars<V> {
 
 	public bool BuyNode(string name, ref float balance)
 	{
-		if (_nodes.ContainsKey(name))
+		if (_nodes.TryGetValue(name, out T node))
 		{
-			var node = _nodes[name];
-			return BuyNode(node, ref balance);
+            return BuyNode(node, ref balance);
 		}
 		return false; // Node not found
 	}
