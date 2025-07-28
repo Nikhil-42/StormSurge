@@ -108,7 +108,7 @@ public partial class UI : Control
 	{
 		while (true)
 		{
-			await Task.Delay(1000); // every 10 seconds
+			await Task.Delay(10000); // every 10 seconds
 
 			var percent = GameManager.Instance.Game.PercentCompletion;
 			CompletionBar.Value = percent * 100f;
