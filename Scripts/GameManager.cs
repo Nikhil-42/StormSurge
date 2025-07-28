@@ -112,7 +112,6 @@ public partial class GameManager : Node
 		Solar += (float)(_game.PassiveIncome * (1f + (0.01f * _game.stormTree.Vars.Storm.SeaLevel)) * deltaTime);
 
 		// Update globe water level
-		if (PrintDebug) GD.Print("Updating globe water level...");
 		Globe.WaterLevel = _game.stormTree.Vars.Storm.SeaLevel;
 	}
 
