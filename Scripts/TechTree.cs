@@ -134,7 +134,6 @@ public class StormVars : IVars<StormVars>
 
 public class GeopoliticalVars : IVars<GeopoliticalVars>
 {
-	public float GlobalMigration { get; init; }
 	public float Communications { get; init; }
 	public float InternationalCooperation { get; init; }
 	public float Transportation { get; init; }
@@ -145,7 +144,6 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 
 	public static GeopoliticalVars Default => new GeopoliticalVars
 	{
-		GlobalMigration = 1.0f,
 		Communications = 1.0f,
 		InternationalCooperation = 1.0f,
 		Transportation = 1.0f,
@@ -164,7 +162,6 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	{
 		return new GeopoliticalVars
 		{
-			GlobalMigration = lhs.GlobalMigration + rhs.GlobalMigration,
 			Communications = lhs.Communications + rhs.Communications,
 			InternationalCooperation = lhs.InternationalCooperation + rhs.InternationalCooperation,
 			Transportation = lhs.Transportation + rhs.Transportation,
@@ -179,34 +176,33 @@ public class GeopoliticalVars : IVars<GeopoliticalVars>
 	{
 		return new GeopoliticalVars
 		{
-			GlobalMigration = json.ContainsKey("global_migration") ? (float)json["global_migration"] : 0.0f,
-			Communications = json.ContainsKey("communications") ? (float)json["communications"] : 0.0f,
-			InternationalCooperation = json.ContainsKey("international_cooperation") ? (float)json["international_cooperation"] : 0.0f,
-			Transportation = json.ContainsKey("transportation") ? (float)json["transportation"] : 0.0f,
-			GovernmentFunction = json.ContainsKey("government_function") ? (float)json["government_function"] : 0.0f,
-			Resources = json.ContainsKey("resources") ? (float)json["resources"] : 0.0f,
-			Compliance = json.ContainsKey("compliance") ? (float)json["compliance"] : 0.0f,
-			Preparation = json.ContainsKey("preparation") ? (float)json["preparation"] : 0.0f
+			Communications = json.ContainsKey("communications") ? (float)json["communications"] : Default.Communications,
+			InternationalCooperation = json.ContainsKey("international_cooperation") ? (float)json["international_cooperation"] : Default.InternationalCooperation,
+			Transportation = json.ContainsKey("transportation") ? (float)json["transportation"] : Default.Transportation,
+			GovernmentFunction = json.ContainsKey("government_function") ? (float)json["government_function"] : Default.GovernmentFunction,
+			Resources = json.ContainsKey("resources") ? (float)json["resources"] : Default.Resources,
+			Compliance = json.ContainsKey("compliance") ? (float)json["compliance"] : Default.Compliance,
+			Preparation = json.ContainsKey("preparation") ? (float)json["preparation"] : Default.Preparation,
 		};
 	}
 
 	public Godot.Collections.Dictionary<string, Variant> ToJson()
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
-		if (GlobalMigration != 0.0) json["global_migration"] = GlobalMigration;
-		if (Communications != 0.0) json["communications"] = Communications;
-		if (InternationalCooperation != 0.0) json["international_cooperation"] = InternationalCooperation;
-		if (Transportation != 0.0) json["transportation"] = Transportation;
-		if (GovernmentFunction != 0.0) json["government_function"] = GovernmentFunction;
-		if (Resources != 0.0) json["resources"] = Resources;
-		if (Compliance != 0.0) json["compliance"] = Compliance;
-		if (Preparation != 0.0) json["preparation"] = Preparation;
+		if (Communications != Default.Communications) json["communications"] = Communications;
+		if (InternationalCooperation != Default.InternationalCooperation) json["international_cooperation"] = InternationalCooperation;
+		if (Transportation != Default.Transportation) json["transportation"] = Transportation;
+		if (GovernmentFunction != Default.GovernmentFunction) json["government_function"] = GovernmentFunction;
+		if (Resources != Default.Resources) json["resources"] = Resources;
+		if (Compliance != Default.Compliance) json["compliance"] = Compliance;
+		if (Preparation != Default.Preparation) json["preparation"] = Preparation;
 		return json;
 	}
 }
 
 public class RegionVars : IVars<RegionVars>
 {
+	public float GlobalMigration { get; init; }
 	public float RegionMigration { get; init; }
 	public float GlobalWarming { get; init; }
 	public float ClimateCosts { get; init; }
@@ -222,6 +218,7 @@ public class RegionVars : IVars<RegionVars>
 
 	public static RegionVars Default => new RegionVars
 	{
+		GlobalMigration = 1.0f,
 		RegionMigration = 1.0f,
 		GlobalWarming = 1.0f,
 		ClimateCosts = 1.0f,
@@ -233,7 +230,7 @@ public class RegionVars : IVars<RegionVars>
 		ImplementCosts = 1.0f,
 		Storm = new StormVars
 		{
-			Temperature = 0.0f,
+			Temperature = 0.0f,  // Kelvin
 			SeaLevel = 0.0f,  // km
 			Range = 0.0f,  // km
 			FloodDamage = 1.0f,  // multiplier
@@ -253,6 +250,7 @@ public class RegionVars : IVars<RegionVars>
 	{
 		return new RegionVars
 		{
+			GlobalMigration = lhs.GlobalMigration + rhs.GlobalMigration,
 			RegionMigration = lhs.RegionMigration + rhs.RegionMigration,
 			GlobalWarming = lhs.GlobalWarming + rhs.GlobalWarming,
 			ClimateCosts = lhs.ClimateCosts + rhs.ClimateCosts,
@@ -271,15 +269,16 @@ public class RegionVars : IVars<RegionVars>
 	{
 		return new RegionVars
 		{
-			RegionMigration = json.ContainsKey("region_migration") ? (float)json["region_migration"] : 0.0f,
-			GlobalWarming = json.ContainsKey("global_warming") ? (float)json["global_warming"] : 0.0f,
-			ClimateCosts = json.ContainsKey("climate_costs") ? (float)json["climate_costs"] : 0.0f,
-			CultSpread = json.ContainsKey("cult_spread") ? (float)json["cult_spread"] : 0.0f,
-			Recovery = json.ContainsKey("recovery") ? (float)json["recovery"] : 0.0f,
-			InfrastructureCosts = json.ContainsKey("infrastructure_costs") ? (float)json["infrastructure_costs"] : 0.0f,
-			WarSpread = json.ContainsKey("war_spread") ? (float)json["war_spread"] : 0.0f,
-			Detection = json.ContainsKey("detection") ? (float)json["detection"] : 0.0f,
-			ImplementCosts = json.ContainsKey("implement_costs") ? (float)json["implement_costs"] : 0.0f,
+			GlobalMigration = json.ContainsKey("global_migration") ? (float)json["global_migration"] : Default.GlobalMigration,
+			RegionMigration = json.ContainsKey("region_migration") ? (float)json["region_migration"] : Default.RegionMigration,
+			GlobalWarming = json.ContainsKey("global_warming") ? (float)json["global_warming"] : Default.GlobalWarming,
+			ClimateCosts = json.ContainsKey("climate_costs") ? (float)json["climate_costs"] : Default.ClimateCosts,
+			CultSpread = json.ContainsKey("cult_spread") ? (float)json["cult_spread"] : Default.CultSpread,
+			Recovery = json.ContainsKey("recovery") ? (float)json["recovery"] : Default.Recovery,
+			InfrastructureCosts = json.ContainsKey("infrastructure_costs") ? (float)json["infrastructure_costs"] : Default.InfrastructureCosts,
+			WarSpread = json.ContainsKey("war_spread") ? (float)json["war_spread"] : Default.WarSpread,
+			Detection = json.ContainsKey("detection") ? (float)json["detection"] : Default.Detection,
+			ImplementCosts = json.ContainsKey("implement_costs") ? (float)json["implement_costs"] : Default.ImplementCosts,
 			Storm = StormVars.FromJson(json),
 			Geopolitical = GeopoliticalVars.FromJson(json),
 		};
@@ -288,15 +287,16 @@ public class RegionVars : IVars<RegionVars>
 	public Godot.Collections.Dictionary<string, Variant> ToJson()
 	{
 		var json = new Godot.Collections.Dictionary<string, Variant>();
-		if (RegionMigration != 0.0) json["region_migration"] = RegionMigration;
-		if (GlobalWarming != 0.0) json["global_warming"] = GlobalWarming;
-		if (ClimateCosts != 0.0) json["climate_costs"] = ClimateCosts;
-		if (CultSpread != 0.0) json["cult_spread"] = CultSpread;
-		if (Recovery != 0.0) json["recovery"] = Recovery;
-		if (InfrastructureCosts != 0.0) json["infrastructure_costs"] = InfrastructureCosts;
-		if (WarSpread != 0.0) json["war_spread"] = WarSpread;
-		if (Detection != 0.0) json["detection"] = Detection;
-		if (ImplementCosts != 0.0) json["implement_costs"] = ImplementCosts;
+		if (GlobalMigration != Default.GlobalMigration) json["global_migration"] = GlobalMigration;
+		if (RegionMigration != Default.RegionMigration) json["region_migration"] = RegionMigration;
+		if (GlobalWarming != Default.GlobalWarming) json["global_warming"] = GlobalWarming;
+		if (ClimateCosts != Default.ClimateCosts) json["climate_costs"] = ClimateCosts;
+		if (CultSpread != Default.CultSpread) json["cult_spread"] = CultSpread;
+		if (Recovery != Default.Recovery) json["recovery"] = Recovery;
+		if (InfrastructureCosts != Default.InfrastructureCosts) json["infrastructure_costs"] = InfrastructureCosts;
+		if (WarSpread != Default.WarSpread) json["war_spread"] = WarSpread;
+		if (Detection != Default.Detection) json["detection"] = Detection;
+		if (ImplementCosts != Default.ImplementCosts) json["implement_costs"] = ImplementCosts;
 		foreach (var (key, value) in Storm.ToJson())
 		{
 			json[key] = value;
