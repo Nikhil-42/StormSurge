@@ -71,6 +71,7 @@ public partial class TechNodeButton : TextureButton
 			ButtonPressed = true;
 			isLocked = true;
 			NameLabel.AddThemeColorOverride("font_color", Colors.White);
+			Modulate = new Color(1f, 1f, 1f, 1f); // Set the button to full brightness and opacity
 			MouseFilter = MouseFilterEnum.Ignore;
 		}
 		else if (BoundNode.Available)
@@ -79,6 +80,7 @@ public partial class TechNodeButton : TextureButton
 			isLocked = false;
 			Disabled = false;
 			NameLabel.AddThemeColorOverride("font_color", Colors.White);
+			Modulate = new Color(1f, 1f, 1f, 1f); // Keep the button fully visible and bright
 			MouseFilter = MouseFilterEnum.Stop;
 
 		}
@@ -87,7 +89,7 @@ public partial class TechNodeButton : TextureButton
 			ButtonPressed = false;
 			isLocked = true;
 			NameLabel.AddThemeColorOverride("font_color", Colors.Gray);
-			Modulate = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Dim the button
+			Modulate = new Color(0.5f, 0.5f, 0.5f, 1f); // Dim the button
 			
 			// Hover allowed, disable clicks
 			MouseFilter = MouseFilterEnum.Stop; 
