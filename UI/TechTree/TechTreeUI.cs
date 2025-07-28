@@ -70,12 +70,17 @@ public partial class TechTreeUI : Control
 			{
 				if (!nameToButton.TryGetValue(parentName, out var parentBtn))
 					continue;
+				
+				var modulate = btn.BoundNode.Blocked && parentBtn.BoundNode.Blocked
+					? new Color(1f, 0.5f, 0.5f, 0.5f) // Dimmed red for blocked nodes
+					: new Color(1f, 1f, 1f, 1f); // Normal white for available nodes
 
 				var line = new Line2D
 				{
 					Width = 2,
 					DefaultColor = new Color(1, 1, 1, 1),
 					Antialiased = true,
+					Modulate = modulate, // Dim the line
 					ZIndex = 1
 				};
 
@@ -98,6 +103,7 @@ public partial class TechTreeUI : Control
 
 		// Rebind to updated state and update visuals
 		UpdateAllNodeButtons();
+		DrawConnectionLines();
 	}
 	
 	// Update all node visuals 

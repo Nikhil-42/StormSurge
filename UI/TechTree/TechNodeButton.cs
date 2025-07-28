@@ -85,7 +85,7 @@ public partial class TechNodeButton : TextureButton
 			ButtonPressed = false;
 			isLocked = true;
 			NameLabel.AddThemeColorOverride("font_color", Colors.Gray);
-			Modulate = new Color(0.5f, 0.5f, 0.5f, 0.5f); // Dim the button
+			Modulate = new Color(0.5f, 0.5f, 0.5f, 1f); // Dim the button
 			
 			// Hover allowed, disable clicks
 			MouseFilter = MouseFilterEnum.Stop; 
