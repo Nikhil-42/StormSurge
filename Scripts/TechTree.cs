@@ -313,7 +313,7 @@ public class TechNode<T> : ITechNode where T : IVars<T>
 
 	internal void AddPrerequisite(ITechNode prerequisite)
 	{
-		_prerequisites.Append(prerequisite);
+		_prerequisites = _prerequisites.Append(prerequisite).ToArray();
 	}
 
 	/// <summary>
