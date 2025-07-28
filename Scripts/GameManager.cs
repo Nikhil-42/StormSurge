@@ -12,6 +12,9 @@ public partial class GameManager : Node
 	// ================= GLOBAL VARIABLES ================================
 	public bool PrintDebug => _printDebug;
 	public GameState Game => _game;
+	
+	public NotificationManager NotificationManager { get; private set; }
+	public UI UI { get; private set; }
 
 	[Export]
 	private string regionStatsPath = "res://Library/regionstats.txt";
@@ -85,6 +88,13 @@ public partial class GameManager : Node
 		ambience = GetNode<AudioStreamPlayer>("StormAmbience");
 		uiSounds = GetNode<AudioStreamPlayer>("ClickSound");
 		regionSelectSound = GetNode<AudioStreamPlayer>("SelectSound");
+		
+		UI = GetNode<UI>("Control2");
+		
+		// Notification system
+		var notificationJson = GD.Load<Json>("res://Library/notifications.json");
+		NotificationManager = new NotificationManager(notificationJson);
+		UI.SetNotificationManager(NotificationManager);
 	}
 
 	public override void _Ready()
