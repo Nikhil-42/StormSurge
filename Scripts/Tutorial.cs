@@ -3,6 +3,10 @@ using System;
 
 public partial class Tutorial : Node
 {
+	[Export] public Texture2D StartNormal;
+	[Export] public Texture2D StartHover;
+	[Export] public Texture2D StartPressed;
+	
 	private Label _label;
 	private TextureButton _nextButton;
 	private int _step = 0;
@@ -105,6 +109,11 @@ public partial class Tutorial : Node
 				
 			case 9:
 				_label.Text = "You are now ready to destroy the world!";
+				
+				_nextButton.TextureNormal = StartNormal;
+				_nextButton.TextureHover = StartHover;
+				_nextButton.TexturePressed = StartPressed;
+
 
 				// Re-enable game control scripts
 				GetNodeOrNull("Root/CameraRig")?.Set("IsTutorialMode", false);
