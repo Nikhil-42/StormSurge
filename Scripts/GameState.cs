@@ -6,6 +6,9 @@ public class GameState {  // Move node attributes, make not a node, make private
 	// ================= GLOBAL TECH TREE VARIABLES ================================
 	public TechTree<TechNode<GlobalVars>, GlobalVars> stormTree = null;  // global default
 	public TechTree<GlobalNode, GlobalVars> humanityTree = null;  // global default
+	
+	public float PercentCompletion => (float)humanityTree.GetAllNodes().Count(node => node.Purchased) / humanityTree.GetAllNodes().Count();
+	
 	public GlobalVars GlobalVars => stormTree.Vars + humanityTree.Vars;
 
 	private int _religionLevel = 1;  // 1: 1% cult followers = 0.2%/0.5%, 2: 1% = 0.5%/1%, 3: 1% = 2%/2%

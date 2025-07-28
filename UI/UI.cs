@@ -14,6 +14,8 @@ public partial class UI : Control
 
 	[Export] private PackedScene _notificationCardScene;
 	
+	[Export] public TextureProgressBar CompletionBar;
+	
 	private NotificationManager _notificationManager; 
 
 	// Tutorial mode
@@ -40,6 +42,9 @@ public partial class UI : Control
 		
 		// Start Generic Notifications Function
 		_ = RunNotificationTestLoop();
+		
+		// Update the bar 
+		_ = UpdateCompletionBarLoop();
 	}
 
 	private void ToggleHistory()
@@ -81,7 +86,7 @@ public partial class UI : Control
 
 		while (educationIndex <= 13)
 		{
-			await Task.Delay(10000); // 10 seconds for now
+			await Task.Delay(60000); // Every 1 minute
 
 			string key = $"Education {educationIndex}";
 			string msg = _notificationManager.GetMessage(key);
@@ -96,6 +101,17 @@ public partial class UI : Control
 			}
 
 			educationIndex++;
+		}
+	}
+	
+	private async Task UpdateCompletionBarLoop()
+	{
+		while (true)
+		{
+			await Task.Delay(1000); // every 10 seconds
+
+			var percent = GameManager.Instance.Game.PercentCompletion;
+			CompletionBar.Value = percent * 100f;
 		}
 	}
 	
@@ -169,5 +185,9 @@ public partial class UI : Control
 		ShowPopupNotification(message, popupDuration);
 		AddNotificationToHistory(message);
 	}
-
+	
+	public void SetNotificationManager(NotificationManager manager)
+	{
+		_notificationManager = manager;
+	}
 }

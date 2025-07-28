@@ -127,6 +127,7 @@ public partial class RegionAI
 	public void Process(double deltaTime, GameState gameState)
 	{
 		float currentIncome = (float)(chars.income * deltaTime * _progress.health);
+
 		ActionType decision = Decide(gameState);
 		switch (decision)
 		{
@@ -138,6 +139,16 @@ public partial class RegionAI
 				if (_progress.monies >= node.Cost)
 				{
 					regionTree.BuyNode(node, ref _progress.monies); // Buy node if affordable
+					
+					if (GD.Randf() <= 0.04f) // 4% chance of notifying
+					{
+						var message = GameManager.Instance.NotificationManager?.GetMessage(node.Name);
+						if (!string.IsNullOrEmpty(message))
+						{
+							string fullMessage = $"{regionStats.name}: {message}";
+							GameManager.Instance.UI?.Notify(fullMessage);
+						}
+					}
 				}
 				_progress.monies += currentIncome; // Passive income based on health
 				break;
