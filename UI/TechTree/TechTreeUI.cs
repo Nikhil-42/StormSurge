@@ -95,20 +95,9 @@ public partial class TechTreeUI : Control
 
 		var tree = GameManager.Instance?.Game?.stormTree;
 		if (tree == null) return;
-		
+
 		// Rebind to updated state and update visuals
-		foreach (Node child in techTreeContent.GetChildren())
-		{
-			if (child is TechNodeButton btn)
-			{	
-				var node = tree.GetNode(btn.NodeName);
-				if (node != null)
-				{
-					btn.BoundNode = node;
-					btn.UpdateVisual();
-				}
-			}
-		}
+		UpdateAllNodeButtons();
 	}
 	
 	// pdate all node visuals 

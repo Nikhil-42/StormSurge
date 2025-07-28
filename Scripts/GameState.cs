@@ -52,6 +52,9 @@ public class GameState {  // Move node attributes, make not a node, make private
 			humanityTree.PrintNodes();  // debug, no UI
 		}
 
+		stormTree.UpdatePrerequisites(null);
+		humanityTree.UpdatePrerequisites(null);
+
 		Dictionary<string, ITechNode> externalNodes = new();
 		foreach (var node in stormTree.GetAllNodes())
 		{
