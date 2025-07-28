@@ -100,7 +100,7 @@ public partial class TechTreeUI : Control
 		UpdateAllNodeButtons();
 	}
 	
-	// pdate all node visuals 
+	// Update all node visuals 
 	public void UpdateAllNodeButtons()
 	{
 		//GD.Print("[TechTreeUi] UpdateAllNodeButtons called");
