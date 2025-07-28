@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class StormDirectionIndicator : Node3D
 {
@@ -159,7 +158,7 @@ public partial class StormDirectionIndicator : Node3D
 		}
 
 		// Minimum drag distance threshold (in radians)
-		const float minDragDistance = 0.01f;
+		const float minDragDistance = 0.2f;
 		if (stormDirection.Length() < minDragDistance)
 		{
 			if (GameManager.Instance.PrintDebug)
