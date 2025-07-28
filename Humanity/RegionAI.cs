@@ -240,8 +240,8 @@ public partial class RegionAI
 		int currentChance = 0;
 
 		for (int i=0; i<nodeNames.Count; i++) {
-			// Square to increase chance better nodes will be selected
-			currentChance = (int)Math.Round(nodeValues[i] * nodeValues[i] * nodeValues[i] * 100);
+			// FIXME: Square(?) to increase chance better nodes will be selected
+			currentChance = (int)Math.Round(nodeValues[i] * 100);
 			probabilities.Add(currentCutoff + currentChance);
 			currentCutoff += currentChance;
 		}
@@ -270,16 +270,18 @@ public partial class RegionAI
 
 		float value = 0.0f;
 
+		// FIXME: Add in effects of region's values, for now it is just global value
+
 		// ================================= STORM VARIABLES ==================================================
 		// Wind resistance [0]
 		// INCREASE: current wind damage in region, higher wind speeds, higher wind damage
 		if (vars.Storm.WindDamage != 0.0f) {
-			float windValue = Math.Abs(vars.Storm.WindDamage);
+			float windValue = Math.Abs(vars.Storm.WindDamage * 10);
 			if (WindDamage > 0) {
 				windValue *= (1+WindDamage);
 			}
-			windValue *= stormVars.WindSpeed/100.0f;
-			windValue *= stormVars.WindDamage;
+			windValue *= (stormVars.WindSpeed + regionTree.Vars.Storm.WindSpeed)/100.0f;
+			windValue *= stormVars.WindDamage + regionTree.Vars.Storm.WindDamage;
 
 			value += windValue;
 		}
@@ -287,11 +289,11 @@ public partial class RegionAI
 		// Flood resistance [1]
 		// INCREASE: sustained flood damage, higher sea level (TBA), coastal population
 		if (vars.Storm.FloodDamage != 0.0f) {
-			float floodValue = Math.Abs(vars.Storm.FloodDamage);
+			float floodValue = Math.Abs(vars.Storm.FloodDamage * 10);
 			if (FloodDamage > 0) {
 				floodValue *= (1+FloodDamage);
 			}
-			floodValue *= stormVars.FloodDamage;
+			floodValue *= stormVars.FloodDamage + regionTree.Vars.Storm.FloodDamage;
 			floodValue *= (1+regionStats.coastalPopulation);
 			// floodValue *= stormVars.SeaLevel;  // FIXME: later
 
@@ -301,8 +303,8 @@ public partial class RegionAI
 		// ================================= GEOPOLITICAL VARIABLES ==================================================
 		// Communications [2]
 		if (vars.Geopolitical.Communications != 0.0f) {
-			float communicationValue = Math.Abs(vars.Geopolitical.Communications);
-			communicationValue *= Math.Abs(geoVars.Communications);
+			float communicationValue = Math.Abs(vars.Geopolitical.Communications * 10);
+			communicationValue *= geoVars.Communications + regionTree.Vars.Geopolitical.Communications;
 
 			value += communicationValue;
 		}
@@ -310,7 +312,7 @@ public partial class RegionAI
 		// International Cooperation [3]
 		// DECREASE: global war presence (TBA), global cult presence (TBA)
 		if (vars.Geopolitical.InternationalCooperation != 0.0f) {
-			float internationalCooperationValue = Math.Abs(vars.Geopolitical.InternationalCooperation);
+			float internationalCooperationValue = Math.Abs(vars.Geopolitical.InternationalCooperation * 10);
 			internationalCooperationValue *= Math.Abs(geoVars.InternationalCooperation);
 
 			value += internationalCooperationValue;
@@ -319,7 +321,7 @@ public partial class RegionAI
 		// Transportation [4]
 		// INCREASE: high gov't function (TBA)
 		if (vars.Geopolitical.Transportation != 0.0f) {
-			float transportationValue = Math.Abs(vars.Geopolitical.Transportation);
+			float transportationValue = Math.Abs(vars.Geopolitical.Transportation * 10);
 			transportationValue *= Math.Abs(geoVars.Transportation);
 
 			value += transportationValue;
@@ -329,7 +331,7 @@ public partial class RegionAI
 		// INCREASE: lower gdp
 		// DECREASE: higher gdp, further along tech tree (TBA)
 		if (vars.Geopolitical.Resources != 0.0f) {
-			float resourcesValue = Math.Abs(vars.Geopolitical.Resources);
+			float resourcesValue = Math.Abs(vars.Geopolitical.Resources * 10);
 			resourcesValue *= Math.Abs(geoVars.Resources);
 
 			if (regionStats.gdp > 10000) resourcesValue *= 0.5f;
@@ -344,7 +346,7 @@ public partial class RegionAI
 		// Compliance [6]
 		// INCREASE: global war presence (TBA), global cult presence (TBA)
 		if (vars.Geopolitical.Compliance != 0.0f) {
-			float complianceValue = Math.Abs(vars.Geopolitical.Compliance);
+			float complianceValue = Math.Abs(vars.Geopolitical.Compliance * 10);
 			complianceValue *= Math.Abs(geoVars.Compliance);
 
 			value += complianceValue;
@@ -353,9 +355,9 @@ public partial class RegionAI
 		// Preparation [7]
 		// INCREASE: number of prior storms in region (TBA), current damage in region
 		if (vars.Geopolitical.Preparation != 0.0f) {
-			float preparationValue = Math.Abs(vars.Geopolitical.Preparation);
+			float preparationValue = Math.Abs(vars.Geopolitical.Preparation * 10);
 			preparationValue *= Math.Abs(geoVars.Preparation);
-			preparationValue *= (1+((FloodDamage+WindDamage+SecondaryDamage)/2));
+			preparationValue *= (1 + ((FloodDamage + WindDamage + SecondaryDamage) / 2));
 
 			value += preparationValue;
 		}
@@ -366,7 +368,7 @@ public partial class RegionAI
 		// Global Warming [2]
 		// INCREASE: higher global temperature
 		if (vars.GlobalWarming != 0.0f) {
-			float globalWarmingValue = Math.Abs(vars.GlobalWarming);
+			float globalWarmingValue = Math.Abs(vars.GlobalWarming * 10);
 			globalWarmingValue *= Math.Abs(stormVars.Temperature);
 
 			value += globalWarmingValue;
@@ -377,7 +379,7 @@ public partial class RegionAI
 		// Cult Spread [4]
 		// INCREASE: cult presence (TBA), current cult population in country (TBA)
 		if (vars.CultSpread != 0.0f) {
-			float cultSpreadValue = Math.Abs(vars.CultSpread);
+			float cultSpreadValue = Math.Abs(vars.CultSpread * 10);
 
 			value += cultSpreadValue;
 		}
@@ -385,8 +387,8 @@ public partial class RegionAI
 		// Recovery [5]
 		// INCREASE: current storm damage, number of prior storms in region (TBA)
 		if (vars.Recovery != 0.0f) {
-			float recoveryValue = Math.Abs(vars.Recovery);
-			recoveryValue *= (1+(FloodDamage+WindDamage+SecondaryDamage));
+			float recoveryValue = Math.Abs(vars.Recovery * 10);
+			recoveryValue *= (1 + (FloodDamage + WindDamage + SecondaryDamage));
 
 			value += recoveryValue;
 		}
