@@ -7,7 +7,7 @@ public partial class Globe : Node3D
 		get => _waterPercent * Utils.EVEREST_HEIGHT;
 		set {
 			_waterPercent = value / Utils.EVEREST_HEIGHT;
-			_globeMaterial.SetShaderParameter("water_level", _waterPercent);
+			_globeMaterial.SetShaderParameter("water_level", Mathf.Max(0.01, _waterPercent));
 		}
 	} // Water level in meters
 
@@ -51,6 +51,12 @@ public partial class Globe : Node3D
 	public override void _Process(double delta)
 	{
 		Transform.Rotated(Vector3.Up, (float)delta * 0.1f);
+		var regionAIs = GameManager.Instance.Game.RegionAIs;
+		float[] health = new float[regionAIs.Length];
+		for (int i = 0; i < regionAIs.Length; i++) {
+			health[i] = regionAIs[i].Health;
+		}
+		_globeMaterial.SetShaderParameter("health", health);
 	}
 
 	Vector2 NormalizeLatLon(Vector2 latLon)
