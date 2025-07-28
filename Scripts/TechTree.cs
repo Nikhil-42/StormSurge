@@ -217,6 +217,8 @@ public class RegionVars : IVars<RegionVars>
 	public float Detection { get; init; }
 	public float ImplementCosts { get; init; }
 
+	public GeopoliticalVars Geopolitical { get; init; }
+
 	public static RegionVars Default => new RegionVars
 	{
 		RegionMigration = 1.0f,
@@ -227,7 +229,8 @@ public class RegionVars : IVars<RegionVars>
 		InfrastructureCosts = 1.0f,
 		WarSpread = 1.0f,
 		Detection = 1.0f,
-		ImplementCosts = 1.0f
+		ImplementCosts = 1.0f,
+		Geopolitical = GeopoliticalVars.Default,
 	};
 
 	public static RegionVars Add(RegionVars lhs, RegionVars rhs)
@@ -247,7 +250,8 @@ public class RegionVars : IVars<RegionVars>
 			InfrastructureCosts = lhs.InfrastructureCosts + rhs.InfrastructureCosts,
 			WarSpread = lhs.WarSpread + rhs.WarSpread,
 			Detection = lhs.Detection + rhs.Detection,
-			ImplementCosts = lhs.ImplementCosts + rhs.ImplementCosts
+			ImplementCosts = lhs.ImplementCosts + rhs.ImplementCosts,
+			Geopolitical = lhs.Geopolitical + rhs.Geopolitical,
 		};
 	}
 
@@ -263,7 +267,8 @@ public class RegionVars : IVars<RegionVars>
 			InfrastructureCosts = json.ContainsKey("infrastructure_costs") ? (float)json["infrastructure_costs"] : 0.0f,
 			WarSpread = json.ContainsKey("war_spread") ? (float)json["war_spread"] : 0.0f,
 			Detection = json.ContainsKey("detection") ? (float)json["detection"] : 0.0f,
-			ImplementCosts = json.ContainsKey("implement_costs") ? (float)json["implement_costs"] : 0.0f
+			ImplementCosts = json.ContainsKey("implement_costs") ? (float)json["implement_costs"] : 0.0f,
+			Geopolitical = GeopoliticalVars.FromJson(json),
 		};
 	}
 
@@ -279,6 +284,10 @@ public class RegionVars : IVars<RegionVars>
 		if (WarSpread != 0.0) json["war_spread"] = WarSpread;
 		if (Detection != 0.0) json["detection"] = Detection;
 		if (ImplementCosts != 0.0) json["implement_costs"] = ImplementCosts;
+		foreach (var (key, value) in Geopolitical.ToJson())
+		{
+			json[key] = value;
+		}
 		return json;
 	}
 }
