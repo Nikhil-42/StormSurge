@@ -142,7 +142,7 @@ public class StormVars : IVars<StormVars>
 		var json = new Godot.Collections.Dictionary<string, Variant>();
 		if (Temperature != 0.0f) json["temperature"] = Temperature;
 		if (SeaLevel != 0.0f) json["sea_level"] = SeaLevel;
-		if (Range != 0.0f) json["range"] = Range;
+		if (Range != 0.0f) json["storm_range"] = Range;
 		if (FloodDamage != 1.0f) json["flood_damage"] = FloodDamage;
 		if (WindDamage != 1.0f) json["wind_damage"] = WindDamage;
 		if (WindSpeed != 0.0f) json["wind_speed"] = WindSpeed;
