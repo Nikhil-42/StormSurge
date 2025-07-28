@@ -65,13 +65,33 @@ public class GlobalVars : IVars<GlobalVars>
 
 public class StormVars : IVars<StormVars>
 {
-	// Zeros defaults for node contributions
+	/// <summary>
+	/// The global temperature in Kelvin.
+	/// </summary>
 	public float Temperature { get; init; }
+	/// <summary>
+	/// The sea level in meters.
+	/// </summary>
 	public float SeaLevel { get; init; }
+	/// <summary>
+	/// The distance in kilometers until the storm dissipates.
+	/// </summary>
 	public float Range { get; init; }
+	/// <summary>
+	/// The multiplier for flood damage.
+	/// </summary>
 	public float FloodDamage { get; init; }
+	/// <summary>
+	/// The multiplier for wind damage.
+	/// </summary>
 	public float WindDamage { get; init; }
+	/// <summary>
+	/// The speed of the wind in meters per second.
+	/// </summary>
 	public float WindSpeed { get; init; }
+	/// <summary>
+	/// The radius of the storm in kilometers.
+	/// </summary>
 	public float Radius { get; init; }
 
 	public static StormVars Default => new StormVars
@@ -135,12 +155,24 @@ public class StormVars : IVars<StormVars>
 
 public class GeopoliticalVars : IVars<GeopoliticalVars>
 {
-	public float Communications { get; init; }
+	public float Communications { get; init; }  // TODO: reevaluate this later
+	/// <summary>
+	/// The multiplier for the likelihood of countries contributing to international efforts (global tree, alliance, etc).
+	/// </summary>
 	public float InternationalCooperation { get; init; }
-	public float Transportation { get; init; }
-	public float GovernmentFunction { get; init; }
+	public float Transportation { get; init; }  // TODO: reevaluate this later
+	public float GovernmentFunction { get; init; }  // TODO: reevaluate this later
+	/// <summary>
+	/// The multiplier for the amount of income a country can utilize
+	/// </summary>
 	public float Resources { get; init; }
+	/// <summary>
+	/// The multiplier for the effectiveness of technology upgrades
+	/// </summary>
 	public float Compliance { get; init; }
+	/// <summary>
+	/// The multiplier for all types of damage a storm a storm causes
+	/// </summary>
 	public float Preparation { get; init; }
 
 	public static GeopoliticalVars Default => new GeopoliticalVars
