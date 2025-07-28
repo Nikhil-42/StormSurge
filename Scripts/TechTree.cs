@@ -217,6 +217,7 @@ public class RegionVars : IVars<RegionVars>
 	public float Detection { get; init; }
 	public float ImplementCosts { get; init; }
 
+	public StormVars Storm { get; init; }
 	public GeopoliticalVars Geopolitical { get; init; }
 
 	public static RegionVars Default => new RegionVars
@@ -230,6 +231,16 @@ public class RegionVars : IVars<RegionVars>
 		WarSpread = 1.0f,
 		Detection = 1.0f,
 		ImplementCosts = 1.0f,
+		Storm = new StormVars
+		{
+			Temperature = 0.0f,
+			SeaLevel = 0.0f,  // km
+			Range = 0.0f,  // km
+			FloodDamage = 1.0f,  // multiplier
+			WindDamage = 1.0f,  // multiplier
+			WindSpeed = 0.0f,  // m/s
+			Radius = 0.0f,  // km
+		},
 		Geopolitical = GeopoliticalVars.Default,
 	};
 
@@ -251,6 +262,7 @@ public class RegionVars : IVars<RegionVars>
 			WarSpread = lhs.WarSpread + rhs.WarSpread,
 			Detection = lhs.Detection + rhs.Detection,
 			ImplementCosts = lhs.ImplementCosts + rhs.ImplementCosts,
+			Storm = lhs.Storm + rhs.Storm,
 			Geopolitical = lhs.Geopolitical + rhs.Geopolitical,
 		};
 	}
@@ -268,6 +280,7 @@ public class RegionVars : IVars<RegionVars>
 			WarSpread = json.ContainsKey("war_spread") ? (float)json["war_spread"] : 0.0f,
 			Detection = json.ContainsKey("detection") ? (float)json["detection"] : 0.0f,
 			ImplementCosts = json.ContainsKey("implement_costs") ? (float)json["implement_costs"] : 0.0f,
+			Storm = StormVars.FromJson(json),
 			Geopolitical = GeopoliticalVars.FromJson(json),
 		};
 	}
@@ -284,10 +297,14 @@ public class RegionVars : IVars<RegionVars>
 		if (WarSpread != 0.0) json["war_spread"] = WarSpread;
 		if (Detection != 0.0) json["detection"] = Detection;
 		if (ImplementCosts != 0.0) json["implement_costs"] = ImplementCosts;
-		foreach (var (key, value) in Geopolitical.ToJson())
+		foreach (var (key, value) in Storm.ToJson())
 		{
 			json[key] = value;
 		}
+		foreach (var (key, value) in Geopolitical.ToJson())
+			{
+				json[key] = value;
+			}
 		return json;
 	}
 }
