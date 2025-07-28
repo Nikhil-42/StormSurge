@@ -38,35 +38,45 @@ public class Characteristics {  // Variables different for each country that are
     public Characteristics(RegionStats stats) {
         // income, globalResearchFunding, Money's, emissions
         float perCapitaGDP = stats.gdp * 1000 / stats.population;
+
+        float normalizedGDP = 700 * Math.Log((stats.gdp + 200) / 4000) + 1000;
+
         if (perCapitaGDP > 50000) {
-            income = stats.gdp * 0.5f;
-            globalResearchFunding = stats.gdp * 0.5f;
+            income = 0.5f;
+            globalResearchFunding = 0.5f;
 
-            goodMoney = stats.gdp * 0.9f;
-            midMoney = stats.gdp * 0.75f;
-            poorMoney = stats.gdp * 0.5f;
+            goodMoney = 0.9f;
+            midMoney = 0.75f;
+            poorMoney = 0.5f;
         } else if (perCapitaGDP > 20000) {
-            income = stats.gdp * 0.4f;
-            globalResearchFunding = stats.gdp * 0.2f;
+            income = 0.4f;
+            globalResearchFunding = 0.2f;
 
-            goodMoney = stats.gdp * 0.8f;
-            midMoney = stats.gdp * 0.6f;
-            poorMoney = stats.gdp * 0.3f;
+            goodMoney = 0.8f;
+            midMoney = 0.6f;
+            poorMoney = 0.3f;
         } else if (perCapitaGDP > 10000) {
-            income = stats.gdp * 0.3f;
-            globalResearchFunding = stats.gdp * 0.1f;
+            income = 0.3f;
+            globalResearchFunding = 0.1f;
 
-            goodMoney = stats.gdp * 0.7f;
-            midMoney = stats.gdp * 0.5f;
-            poorMoney = stats.gdp * 0.2f;
+            goodMoney = 0.7f;
+            midMoney = 0.5f;
+            poorMoney = 0.2f;
         } else {
-            income = stats.gdp * 0.2f;
-            globalResearchFunding = stats.gdp * 0.05f;
+            income = 0.2f;
+            globalResearchFunding = 0.05f;
 
-            goodMoney = stats.gdp * 0.6f;
-            midMoney = stats.gdp * 0.4f;
-            poorMoney = stats.gdp * 0.2f;
+            goodMoney = 0.6f;
+            midMoney = 0.4f;
+            poorMoney = s0.2f;
         }
+        // Normalized GDP
+        income *= normalizedGDP;
+        globalResearchFunding *= normalizedGDP;
+        goodMoney *= normalizedGDP;
+        midMoney *= normalizedGDP;
+        poorMoney *= normalizedGDP;
+
         // Convert yearly income to hourly income 
         income /= 8760.0f;  // 365 days * 24 hours
 

@@ -9,8 +9,8 @@
 		"name": "Government Training",
 		"category": "Response",
 		"cost": 300.0,
-		"government_function": 1.1,
-		"preparation": 1.1,
+		"government_function": 10.0,
+		"preparation": 10.0,
 		"prereqs": [
 			"Disaster Response Training"
 		]
@@ -19,9 +19,9 @@
 		"name": "State of Emergency",
 		"category": "Response",
 		"cost": 500.0,
-		"government_function": 1.2,
-		"compliance": 1.1,
-		"preparation": 1.1,
+		"government_function": 20.0,
+		"compliance": 10.0,
+		"preparation": 10.0,
 		"prereqs": [
 			"Government Training"
 		]
@@ -30,9 +30,9 @@
 		"name": "Mobilize Military",
 		"category": "Response",
 		"cost": 900.0,
-		"government_function": 1.1,
-		"compliance": 1.2,
-		"preparation": 1.1,
+		"government_function": 10.0,
+		"compliance": 20.0,
+		"preparation": 10.0,
 		"prereqs": [
 			"State of Emergency"
 		]
@@ -41,17 +41,17 @@
 		"name": "Public Education 1",
 		"category": "Research & Education",
 		"cost": 200.0,
-		"compliance": 1.1,
-		"preparation": 1.1,
+		"compliance": 10.0,
+		"preparation": 10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Public Education 2",
 		"category": "Research & Education",
 		"cost": 400.0,
-		"compliance": 1.1,
-		"preparation": 1.1,
-		"cult_spread": 0.9,
+		"compliance": 10.0,
+		"preparation": 10.0,
+		"cult_spread": -10.0,
 		"prereqs": [
 			"Public Education 1"
 		]
@@ -60,7 +60,7 @@
 		"name": "Anti-Cult Education",
 		"category": "Research & Education",
 		"cost": 600.0,
-		"cult_spread": 0.7,
+		"cult_spread": -30.0,
 		"prereqs": [
 			"Public Education 2"
 		]
@@ -69,58 +69,58 @@
 		"name": "Neutralize Carbon Emissions",
 		"category": "Research & Education",
 		"cost": 300.0,
-		"global_warming": 0.9,
+		"global_warming": -10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Utilize Renewable Energy",
 		"category": "Research & Education",
 		"cost": 300.0,
-		"global_warming": 0.9,
+		"global_warming": -10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Limit Energy Usage",
 		"category": "Research & Education",
 		"cost": 300.0,
-		"resources": 0.9,
-		"global_warming": 0.9,
+		"resources": -10.0,
+		"global_warming": -10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Filter Air Pollutants",
 		"category": "Research & Education",
 		"cost": 400.0,
-		"global_warming": 0.9,
+		"global_warming": -10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Sustainable Agriculture",
 		"category": "Research & Education",
 		"cost": 700.0,
-		"resources": 1.1,
-		"global_warming": 0.9,
+		"resources": 10.0,
+		"global_warming": -10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Recapture Atmospheric Carbon",
 		"category": "Research & Education",
 		"cost": 1100.0,
-		"global_warming": 0.8,
+		"global_warming": -20.0,
 		"prereqs": []
 	},
 	{
 		"name": "Criminalize Cults",
 		"category": "Geopolitical",
 		"cost": 300.0,
-		"cult_spread": 0.8,
+		"cult_spread": -20.0,
 		"prereqs": []
 	},
 	{
 		"name": "Raid Cult Hideouts",
 		"category": "Geopolitical",
 		"cost": 500.0,
-		"cult_spread": 0.8,
+		"cult_spread": -20.0,
 		"prereqs": [
 			"Criminalize Cults"
 		]
@@ -129,7 +129,7 @@
 		"name": "Imprison Cult Followers",
 		"category": "Geopolitical",
 		"cost": 800.0,
-		"cult_spread": 0.7,
+		"cult_spread": -30.0,
 		"prereqs": [
 			"Raid Cult Hideouts"
 		]
@@ -138,16 +138,16 @@
 		"name": "Shutters and Sand Bags",
 		"category": "Infrastructure",
 		"cost": 200.0,
-		"wind_damage": 0.9,
-		"flood_damage": 0.9,
+		"wind_damage": -10.0,
+		"flood_damage": -10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Building Reinforcements",
 		"category": "Infrastructure",
 		"cost": 400.0,
-		"wind_damage": 0.8,
-		"flood_damage": 0.9,
+		"wind_damage": -20.0,
+		"flood_damage": -10.0,
 		"prereqs": [
 			"Shutters and Sand Bags"
 		]
@@ -156,7 +156,7 @@
 		"name": "Storm Walls 1",
 		"category": "Infrastructure",
 		"cost": 300.0,
-		"flood_damage": 0.8,
+		"flood_damage": -20.0,
 		"prereqs": [
 			"Drainage Systems"
 		]
@@ -165,40 +165,40 @@
 		"name": "Drainage Systems",
 		"category": "Infrastructure",
 		"cost": 300.0,
-		"flood_damage": 0.9,
-		"recovery": 1.1,
+		"flood_damage": -10.0,
+		"recovery": 10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Upgrade Materials",
 		"category": "Infrastructure",
 		"cost": 800.0,
-		"wind_damage": 0.7,
-		"flood_damage": 0.9,
-		"recovery": 1.2,
+		"wind_damage": -30.0,
+		"flood_damage": -10.0,
+		"recovery": 20.0,
 		"prereqs": []
 	},
 	{
 		"name": "Storm Walls 2",
 		"category": "Infrastructure",
 		"cost": 800.0,
-		"flood_damage": 0.5,
+		"flood_damage": -50.0,
 		"prereqs": []
 	},
 	{
 		"name": "Bury Communication Lines",
 		"category": "Infrastructure",
 		"cost": 100.0,
-		"government_function": 1.1,
+		"government_function": 10.0,
 		"prereqs": []
 	},
 	{
 		"name": "Cell Service Range",
 		"category": "Infrastructure",
 		"cost": 400.0,
-		"communications": 1.1,
-		"government_function": 1.1,
-		"compliance": 1.1,
+		"communications": 10.0,
+		"government_function": 10.0,
+		"compliance": 10.0,
 		"prereqs": [
 			"Bury Communication Lines"
 		]
@@ -207,16 +207,16 @@
 		"name": "Early Warning Systems",
 		"category": "Infrastructure",
 		"cost": 500.0,
-		"compliance": 1.1,
-		"preparation": 1.2,
+		"compliance": 10.0,
+		"preparation": 20.0,
 		"prereqs": []
 	},
 	{
 		"name": "Live Storm Broadcasts",
 		"category": "Infrastructure",
 		"cost": 200.0,
-		"communications": 1.1,
-		"preparation": 1.1,
+		"communications": 10.0,
+		"preparation": 10.0,
 		"prereqs": [
 			"Early Warning Systems"
 		]
@@ -225,8 +225,8 @@
 		"name": "Disaster Relief Broadcasts",
 		"category": "Infrastructure",
 		"cost": 300.0,
-		"communications": 1.1,
-		"recovery": 1.3,
+		"communications": 10.0,
+		"recovery": 30.0,
 		"prereqs": [
 			"Early Warning Systems"
 		]
