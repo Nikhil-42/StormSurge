@@ -10,6 +10,9 @@ public partial class TechTreeUI : Control
 	private HoverPopup hoverPopup;
 	[Export] private PackedScene popupScene;
 
+	[Signal]
+	public delegate void UIClickEventHandler();
+
 	public override void _Ready()
 	{
 		// Close button
@@ -34,7 +37,7 @@ public partial class TechTreeUI : Control
 		// Get actual storm tree
 		var tree = GameManager.Instance?.Game?.stormTree;
 		if (tree == null) return;
-		
+
 		// lookup table
 		nameToButton.Clear();
 		foreach (Node child in techTreeContent.GetChildren())
@@ -42,14 +45,15 @@ public partial class TechTreeUI : Control
 			if (child is TechNodeButton btn)
 				nameToButton[btn.NodeName] = btn;
 		}
-		
+
 		UpdateAllNodeButtons();
 		DrawConnectionLines();
 	}
 	
 	private void OnClosePressed()
 	{
-		QueueFree(); // Remove UI from the scene
+		EmitSignal(SignalName.UIClick);
+		QueueFree();
 	}
 	
 	private void DrawConnectionLines()
@@ -96,8 +100,6 @@ public partial class TechTreeUI : Control
 	// NodePurchased signal received
 	private void OnNodePurchased(string nodeName)
 	{
-		GD.Print($"[TechTreeUi] Node purchased: {nodeName}");
-
 		var tree = GameManager.Instance?.Game?.stormTree;
 		if (tree == null) return;
 

@@ -13,8 +13,12 @@ public partial class TechNodeButton : TextureButton
 	private bool _bound = false;
 	private bool isLocked = false;
 
+	private AudioStreamPlayer purchaseSound;
+
 	public override void _Ready()
 	{
+		purchaseSound = GetNode<AudioStreamPlayer>("PurchaseSound");
+
 		NameLabel = GetNode<Label>("Label");
 		Pressed += OnPressed;
 
@@ -29,9 +33,9 @@ public partial class TechNodeButton : TextureButton
 		NameLabel.Text = BoundNode.Name;
 
 		UpdateVisual();
-		
+
 		//GD.Print($"[Bind] Button {NodeName} → BoundNode: {BoundNode} (Hash: {BoundNode.GetHashCode()})");
-		
+
 		// Hover signals
 		MouseEntered += () => EmitSignal(SignalName.Hovered, NodeName, GetGlobalMousePosition());
 		MouseExited += () => EmitSignal(SignalName.Unhovered);
@@ -92,15 +96,23 @@ public partial class TechNodeButton : TextureButton
 			Disabled = true;  
 		}
 	}
-	
+
 	// Buy node 
 	private void OnPressed()
 	{
 		float balance = GameManager.Instance.Game.Solar;
-		GameManager.Instance.Game.stormTree.BuyNode(BoundNode, ref balance);
-		GameManager.Instance.Solar = balance;
-		UpdateVisual();
-		EmitSignal(SignalName.NodePurchased, BoundNode.Name);
+		if (GameManager.Instance.Game.stormTree.BuyNode(BoundNode, ref balance))
+		{
+			GameManager.Instance.Solar = balance;
+			UpdateVisual();
+			EmitSignal(SignalName.NodePurchased, BoundNode.Name);
+			purchaseSound.Play();
+		}
+		else
+		{
+			GD.Print($"[TechNodeButton] Failed to purchase node {BoundNode.Name}. Insufficient funds.");
+			UpdateVisual();
+		}
 	}
 
 }

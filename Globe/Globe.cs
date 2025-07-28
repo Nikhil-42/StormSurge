@@ -162,6 +162,11 @@ public partial class Globe : Node3D
 				{
 					var region = gameManager.GetRegion(id);
 					
+					if (region != null)
+					{
+						GameManager.Instance?.PlayRegionSelectSound();
+					}
+					
 					var popup = GetNode<RegionStatsPopup>("../RegionStatsPopup");
 					popup?.ShowRegionStats(region);
 				}

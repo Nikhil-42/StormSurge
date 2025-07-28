@@ -38,6 +38,8 @@ public partial class GameManager : Node
 	private AudioStreamPlayer intro;
 	private AudioStreamPlayer loop;
 	private AudioStreamPlayer ambience;
+	private AudioStreamPlayer uiSounds;
+	private AudioStreamPlayer regionSelectSound;
 
 	Vector2 baseResolution = new Vector2(1280, 720);
 
@@ -81,6 +83,8 @@ public partial class GameManager : Node
 		intro = GetNode<AudioStreamPlayer>("IntroMusic");
 		loop = GetNode<AudioStreamPlayer>("LoopMusic");
 		ambience = GetNode<AudioStreamPlayer>("StormAmbience");
+		uiSounds = GetNode<AudioStreamPlayer>("ClickSound");
+		regionSelectSound = GetNode<AudioStreamPlayer>("SelectSound");
 	}
 
 	public override void _Ready()
@@ -144,6 +148,22 @@ public partial class GameManager : Node
 		ambience.Seek(0);
 		loop.Play();
 		ambience.Play();
+	}
+	
+	public void PlayUIClickSound()
+	{
+		if (uiSounds != null && uiSounds.Stream != null)
+		{
+			uiSounds.Play();
+		}
+	}
+	
+	public void PlayRegionSelectSound()
+	{
+		if (regionSelectSound != null && regionSelectSound.Stream != null)
+		{
+			regionSelectSound.Play();
+		}
 	}
 
 	public Vector2 ScaleUI(Vector2 toScale) {
