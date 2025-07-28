@@ -31,10 +31,12 @@ public partial class UI : Control
 
 		// Setup button signal
 		NotificationButton.Pressed += ToggleHistory;
+		NotificationButton.Pressed += () => GameManager.Instance?.PlayUIClickSound();
 		
 		
 		// Tech Tree button
 		TechTreeButton.Pressed += OpenTechTree;
+		TechTreeButton.Pressed += () => GameManager.Instance?.PlayUIClickSound();
 		
 		// Start Generic Notifications Function
 		_ = RunNotificationTestLoop();
@@ -115,6 +117,12 @@ public partial class UI : Control
 		}
 
 		var treeUI = TechTreeUIScene.Instantiate();
+
+		// Connect UI click sound signal
+		if (treeUI is TechTreeUI techTreeUIInstance)
+		{
+			techTreeUIInstance.Connect(TechTreeUI.SignalName.UIClick, new Callable(GameManager.Instance, nameof(GameManager.PlayUIClickSound)));
+		}
 
 		// Add to UI or main scene
 		AddChild(treeUI);
