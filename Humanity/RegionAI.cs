@@ -85,6 +85,9 @@ public partial class RegionAI
 		} else {
 			switch (_state)
 			{
+			// FIXME: should have cooldown before switching states again
+			// FIXME: when health is not full but above cutoff for poor/mid health,
+			// state should depend on how much money region has
 				case ReactionState.Research:
 					if (_progress.health < chars.poorHealth) // Hardcoded decision points, should be members later
 					{
@@ -139,6 +142,7 @@ public partial class RegionAI
 				if (_progress.monies >= node.Cost)
 				{
 					regionTree.BuyNode(node, ref _progress.monies); // Buy node if affordable
+					GD.Print(regionStats.name + " purchased " + node.Name);
 					
 					if (GD.Randf() <= 0.04f) // 4% chance of notifying
 					{
@@ -181,9 +185,11 @@ public partial class RegionAI
 		{
 			case ReactionState.Research:
 				// Chooses a random available node to research
-				var availableNodes = regionTree.Available;
+				// FIXME: Should have cooldown before buying another node
+				GD.Print(regionStats.name + " searching for node to research...");
 				string targetNode = TargetNextNode();
 				var targetPurchase = regionTree.GetNode(targetNode);
+				// var availableNodes = regionTree.Available;
 				// var targetPurchase = availableNodes[(int)(GD.Randi() % (uint)availableNodes.Count)];
 				if (targetPurchase.Cost <= _progress.monies)
 				{
@@ -252,7 +258,9 @@ public partial class RegionAI
 
 		for (int i=0; i<nodeNames.Count; i++) {
 			// FIXME: Square(?) to increase chance better nodes will be selected
-			currentChance = (int)Math.Round(nodeValues[i] * 100);
+			// float nodeCost = regionTree.GetNode(nodeNames[i]).Cost;
+			// currentChance = (int)Math.Round((nodeValues[i] * 100) / (nodeCost/10));
+			currentChance = (int)Math.Round((nodeValues[i]));
 			probabilities.Add(currentCutoff + currentChance);
 			currentCutoff += currentChance;
 		}
@@ -266,6 +274,8 @@ public partial class RegionAI
 
 		for (int i=0; i<nodeNames.Count; i++) {
 			if (randomNumber <= probabilities[i]) {
+				GD.Print("TARGET NODE (" + regionStats.name + "): " + nodeNames[i] + ", Value: " + (int)Mathf.Round(nodeValues[i]));
+				// FIXME: add print debug statement for region's next target node
 				return nodeNames[i];
 			}
 		}
@@ -405,6 +415,12 @@ public partial class RegionAI
 		}
 
 		// Infrastructure Costs (N/A), War Spread (N/A), Detection (N/A), Implementation Costs (N/A)
+
+		// Balance for Cost
+		value = (value * 100) / node.Cost;
+
+		GD.Print("\t>NODE EVAL (" + nodeName + "): " + (int)Mathf.Round(value));
+
 		return value;
 	}
 }

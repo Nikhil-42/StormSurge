@@ -80,7 +80,7 @@ public class Characteristics {  // Variables different for each country that are
 		// Convert yearly income to hourly income 
 		income /= 8760.0f;  // 365 days * 24 hours
 
-		emissions = stats.gdp / 1000f;
+		emissions = normalizedGDP / 1000f;
 
 		// Health's, alarm thresholds, damage multipliers, etc.
 		goodHealth = 0.8f + (0.2f * stats.developmentIndex);
