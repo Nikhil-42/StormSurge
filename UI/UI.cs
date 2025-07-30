@@ -162,6 +162,14 @@ public partial class UI : Control
 		card.SetText(message);
 
 		card.Modulate = new Color(1, 1, 1, 0); // Fully transparent
+		
+		// Check if NotificationPopup is still valid before adding child
+		if (NotificationPopup == null || IsInstanceValid(NotificationPopup) == false)
+		{
+			card.QueueFree();
+			return;
+		}
+		
 		NotificationPopup.AddChild(card);
 
 		// Fade-in
@@ -171,12 +179,24 @@ public partial class UI : Control
 		// Display for set duration
 		await ToSignal(GetTree().CreateTimer(duration), "timeout");
 
+		// Check if objects are still valid after the delay
+		if (NotificationPopup == null || IsInstanceValid(NotificationPopup) == false || 
+			card == null || IsInstanceValid(card) == false)
+		{
+			return;
+		}
+
 		// Fade out
 		var fadeOutTween = CreateTween();
 		fadeOutTween.TweenProperty(card, "modulate:a", 0f, 0.6f).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.In);
 
 		await ToSignal(fadeOutTween, "finished");
-		card.QueueFree();
+		
+		// Final check before cleanup
+		if (card != null && IsInstanceValid(card))
+		{
+			card.QueueFree();
+		}
 	}
 
 	// Notify function
