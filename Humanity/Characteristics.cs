@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,8 +39,11 @@ public class Characteristics {  // Variables different for each country that are
 	public Characteristics(RegionStats stats) {
 		// income, globalResearchFunding, Money's, emissions
 		float perCapitaGDP = stats.gdp * 1000 / stats.population;
+		GD.Print("stats.gdp of " + stats.name + " is " + stats.gdp);
 
-		float normalizedGDP = 700 * Mathf.Log((stats.gdp + 200) / 4000) + 1000;
+		float normalizedGDP = ((700 * (float)Math.Log10((stats.gdp + 200) / 4000)) + 1000);
+		normalizedGDP *= 1000.0f;
+		GD.Print("normalizedGDP is " + normalizedGDP);
 
 		if (perCapitaGDP > 50000) {
 			income = 0.5f;
@@ -80,7 +84,11 @@ public class Characteristics {  // Variables different for each country that are
 		// Convert yearly income to hourly income 
 		income /= 8760.0f;  // 365 days * 24 hours
 
-		emissions = stats.gdp / 1000f;
+		int printIncome = (int)Mathf.Round(income);
+		int printMidMoney = (int)Mathf.Round(midMoney);
+		GD.Print("Income " + stats.name + ": " + printIncome + ", " + printMidMoney);
+
+		emissions = normalizedGDP / 1000f;
 
 		// Health's, alarm thresholds, damage multipliers, etc.
 		goodHealth = 0.8f + (0.2f * stats.developmentIndex);

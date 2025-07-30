@@ -140,7 +140,7 @@ public partial class RegionAI
 				{
 					regionTree.BuyNode(node, ref _progress.monies); // Buy node if affordable
 					
-					if (GD.Randf() <= 0.04f) // 4% chance of notifying
+					if (GD.Randf() <= 0.25f) // 25% chance of notifying
 					{
 						var message = GameManager.Instance.NotificationManager?.GetMessage(node.Name);
 						if (!string.IsNullOrEmpty(message))
@@ -182,6 +182,8 @@ public partial class RegionAI
 			case ReactionState.Research:
 				// Chooses a random available node to research
 				var availableNodes = regionTree.Available;
+				// FIXME: Should have cooldown before buying another node
+				// GD.Print(regionStats.name + " searching for node to research...");
 				string targetNode = TargetNextNode();
 				var targetPurchase = regionTree.GetNode(targetNode);
 				// var targetPurchase = availableNodes[(int)(GD.Randi() % (uint)availableNodes.Count)];
@@ -246,6 +248,13 @@ public partial class RegionAI
 			totalValue += currentValue;
 		}
 
+		/*foreach (var node in GameManager.Instance.Game.humanityTree.Available) {
+			nodeNames.Add(node.Name);
+			currentValue = EvaluateNode(node.Name);
+			nodeValues.Add(currentValue);
+			totalValue += currentValue;
+		}*/
+
 		List<int> probabilities = new List<int>();
 		int currentCutoff = 0;
 		int currentChance = 0;
@@ -266,6 +275,8 @@ public partial class RegionAI
 
 		for (int i=0; i<nodeNames.Count; i++) {
 			if (randomNumber <= probabilities[i]) {
+				// GD.Print("TARGET NODE (" + regionStats.name + "): " + nodeNames[i] + ", Value: " + (int)Mathf.Round(nodeValues[i]));
+				// FIXME: add print debug statement for region's next target node
 				return nodeNames[i];
 			}
 		}
@@ -405,6 +416,12 @@ public partial class RegionAI
 		}
 
 		// Infrastructure Costs (N/A), War Spread (N/A), Detection (N/A), Implementation Costs (N/A)
+
+		// Balance for Cost
+		value = (value * 100) / node.Cost;
+
+		//GD.Print("\t>NODE EVAL (" + nodeName + "): " + (int)Mathf.Round(value));
+
 		return value;
 	}
 }

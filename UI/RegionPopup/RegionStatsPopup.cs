@@ -82,7 +82,7 @@ public partial class RegionStatsPopup : Control
 
 		_healthLabel.Text = $"Health: {_currentRegion.Health:P1}";
 		_stateLabel.Text = $"State: {_currentRegion.State}";
-		_moneyLabel.Text = $"Money: ${_currentRegion.Money*1000:F0}";
+		_moneyLabel.Text = $"Money: ${_currentRegion.Money:F0}";
 		_populationLabel.Text = $"Population: {FormatPopulation(_currentRegion.Population):F0}";
 
 		_windDamageLabel.Text = $"Wind Damage: {_currentRegion.WindDamage:F1}";
