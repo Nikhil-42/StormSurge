@@ -139,13 +139,14 @@ public partial class RegionAI
 				if (_progress.monies >= node.Cost)
 				{
 					regionTree.BuyNode(node, ref _progress.monies); // Buy node if affordable
+					GD.Print(regionStats.name + " purchased " + node.Name);
 					
-					if (GD.Randf() <= 0.25f) // 25% chance of notifying
+					if (GD.Randf() <= 0.50f) // 50% chance of notifying
 					{
 						var message = GameManager.Instance.NotificationManager?.GetMessage(node.Name);
 						if (!string.IsNullOrEmpty(message))
 						{
-							string fullMessage = $"{regionStats.name}: {message}";
+							string fullMessage = $"{regionStats.name}:\n{message}";
 							GameManager.Instance.UI?.Notify(fullMessage);
 						}
 					}

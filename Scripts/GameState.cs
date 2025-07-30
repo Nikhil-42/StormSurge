@@ -17,7 +17,7 @@ public class GameState {  // Move node attributes, make not a node, make private
 	private RandomNumberGenerator _rng = new RandomNumberGenerator();
 
 	// ================= GLOBAL MONEY & RESEARCH VARIABLES ================================
-	private float _solar = 1500.0f;
+	private float _solar = 2000.0f;
 	private float _passiveIncome = 1.0f;  // Rate multiplier
 
 	private float _globalFunding = 0.0f;  // Funding for global research upgrades, FIXME: need to find reasonable rate
