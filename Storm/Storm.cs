@@ -88,12 +88,14 @@ public partial class Storm : Node3D
 	public bool IsTutorialMode = false; 
 	
 	// Audio for storm effects
-	private AudioStream thunderSoundStream; 
+	private AudioStream thunderSoundStream;
+	private float _thunderSoundDb; 
 
 	public override void _Ready()
 	{
 		var thunderSoundPlayer = GetNode<AudioStreamPlayer>("StormDamage");
 		thunderSoundStream = thunderSoundPlayer.Stream;
+		_thunderSoundDb = thunderSoundPlayer.VolumeDb;
 		
 		// Initialize the direction indicator
 		if (DirectionIndicatorScene != null)
@@ -282,6 +284,7 @@ public partial class Storm : Node3D
 					var newThunderPlayer = new AudioStreamPlayer();
 					AddChild(newThunderPlayer);
 					newThunderPlayer.Stream = thunderSoundStream;
+					newThunderPlayer.VolumeDb = _thunderSoundDb;
 					newThunderPlayer.Play();
 					
 					// Clean up the AudioStreamPlayer

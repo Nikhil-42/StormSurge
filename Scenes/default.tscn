@@ -45,7 +45,7 @@ MoveSpeedRadPerSec = 0.1
 
 [node name="StormDamage" type="AudioStreamPlayer" parent="Storm"]
 stream = ExtResource("6_hbynb")
-volume_db = 5.0
+volume_db = -12.0
 
 [node name="Map3DFeatures" type="Node3D" parent="."]
 script = ExtResource("6_p4pkd")
