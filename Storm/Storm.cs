@@ -2,364 +2,334 @@ using Godot;
 using System.Collections.Generic;
 using System;
 
-public enum DamageType
-{
-	Flood,
-	Wind,
-	Secondary
+public enum DamageType {
+    Flood,
+    Wind,
+    Secondary
 }
 
 
-internal struct StormState
-{
-	// Position and Movement
-	public Vector2 position;
-	public Vector2 moveDirection;
-	public float rotationAngle;
-	public float totalDistanceTraveled;
-	
-	// Visual Representation
-	public List<Node3D> particles;
-	public List<Vector2> offsets;
-	
-	// Storm Properties
-	public float strength;
-	public float windSpeed;
-	public float radius;
-	public float range;
-	
-	// Damage Multipliers
-	public float windDamageMult;
-	public float floodDamageMult;
-	
-	// State Tracking
-	public float fadeTimer;
-	public float solarGenerated;
-	public bool hasCausedDamage;
+internal struct StormState {
+    // Position and Movement
+    public Vector2 position;
+    public Vector2 moveDirection;
+    public float rotationAngle;
+    public float totalDistanceTraveled;
 
-	// Constructor to initialize storm state
-	public StormState(Vector2 position, Vector2 direction, List<Node3D> particles, List<Vector2> offsets,
-		float windSpeed, float radius, float range, float windDamage, float floodDamage)
-	{
-		this.position = position;
-		this.moveDirection = direction.Normalized();
-		this.rotationAngle = 0.0f;
-		this.totalDistanceTraveled = 0.0f;
+    // Visual Representation
+    public List<Node3D> particles;
+    public List<Vector2> offsets;
 
-		this.particles = particles;
-		this.offsets = offsets;
+    // Storm Properties
+    public float strength;
+    public float windSpeed;
+    public float radius;
+    public float range;
 
-		this.strength = 1.0f;
-		this.windSpeed = windSpeed;
-		this.radius = radius;
-		this.range = range;
+    // Damage Multipliers
+    public float windDamageMult;
+    public float floodDamageMult;
 
-		this.windDamageMult = windDamage;
-		this.floodDamageMult = floodDamage;
+    // State Tracking
+    public float fadeTimer;
+    public float solarGenerated;
+    public bool hasCausedDamage;
 
-		this.fadeTimer = 0.0f;
-		this.solarGenerated = 0.0f;
-		this.hasCausedDamage = false;
-	}
+    // Constructor to initialize storm state
+    public StormState(Vector2 position, Vector2 direction, List<Node3D> particles, List<Vector2> offsets,
+        float windSpeed, float radius, float range, float windDamage, float floodDamage) {
+        this.position = position;
+        this.moveDirection = direction.Normalized();
+        this.rotationAngle = 0.0f;
+        this.totalDistanceTraveled = 0.0f;
+
+        this.particles = particles;
+        this.offsets = offsets;
+
+        this.strength = 1.0f;
+        this.windSpeed = windSpeed;
+        this.radius = radius;
+        this.range = range;
+
+        this.windDamageMult = windDamage;
+        this.floodDamageMult = floodDamage;
+
+        this.fadeTimer = 0.0f;
+        this.solarGenerated = 0.0f;
+        this.hasCausedDamage = false;
+    }
 }
 
-public partial class Storm : Node3D
-{
-	// Storm Particle Params
-	[Export] public float ParticleDensity = 0.2f;
-	[Export] public float ParticleSize = 0.04f;
-	[Export] public float SpiralTurns = 6.0f;
-	[Export] public float EyeRadius = 4.0f;
-	[Export] public PackedScene ParticleScene;
-	[Export] public float RotationSpeed = 2.0f;
+public partial class Storm : Node3D {
+    // Storm Particle Params
+    [Export] public float ParticleDensity = 0.2f;
+    [Export] public float ParticleSize = 0.04f;
+    [Export] public float SpiralTurns = 6.0f;
+    [Export] public float EyeRadius = 4.0f;
+    [Export] public PackedScene ParticleScene;
+    [Export] public float RotationSpeed = 2.0f;
 
 
-	// Movement Params
-	[Export] public float MoveSpeedRadPerSec = 2.0f;
+    // Movement Params
+    [Export] public float MoveSpeedRadPerSec = 2.0f;
 
-	// Direction indicator component
-	[Export] public PackedScene DirectionIndicatorScene;
-	private StormDirectionIndicator _directionIndicator;
+    // Direction indicator component
+    [Export] public PackedScene DirectionIndicatorScene;
+    private StormDirectionIndicator _directionIndicator;
 
-	// Internal state
-	private List<StormState> _storms = [];
+    // Internal state
+    private List<StormState> _storms = [];
 
-	// Tutorial mode
-	public bool IsTutorialMode = false; 
-	
-	// Audio for storm effects
-	private AudioStream thunderSoundStream;
-	private float _thunderSoundDb; 
+    // Tutorial mode
+    public bool IsTutorialMode = false;
 
-	public override void _Ready()
-	{
-		var thunderSoundPlayer = GetNode<AudioStreamPlayer>("StormDamage");
-		thunderSoundStream = thunderSoundPlayer.Stream;
-		_thunderSoundDb = thunderSoundPlayer.VolumeDb;
-		
-		// Initialize the direction indicator
-		if (DirectionIndicatorScene != null)
-		{
-			_directionIndicator = DirectionIndicatorScene.Instantiate<StormDirectionIndicator>();
-		}
-		else
-		{
-			_directionIndicator = new StormDirectionIndicator();
-		}
+    // Audio for storm effects
+    private AudioStream thunderSoundStream;
+    private float _thunderSoundDb;
 
-		_directionIndicator.Name = "StormDirectionIndicator";
-		AddChild(_directionIndicator);
+    public override void _Ready() {
+        var thunderSoundPlayer = GetNode<AudioStreamPlayer>("StormDamage");
+        thunderSoundStream = thunderSoundPlayer.Stream;
+        _thunderSoundDb = thunderSoundPlayer.VolumeDb;
 
-		// Connect to direction indicator signals
-		_directionIndicator.DirectionSet += OnDirectionSet;
-	}
+        // Initialize the direction indicator
+        if (DirectionIndicatorScene != null) {
+            _directionIndicator = DirectionIndicatorScene.Instantiate<StormDirectionIndicator>();
+        } else {
+            _directionIndicator = new StormDirectionIndicator();
+        }
 
-	private void OnDirectionSet(Vector2 startLatLon, Vector2 direction)
-	{
-		// Block storm spawning during tutorial
-		if (IsTutorialMode)
-		return; 
-		
-		SpawnStormAt(startLatLon.X, startLatLon.Y, direction);
-	}
+        _directionIndicator.Name = "StormDirectionIndicator";
+        AddChild(_directionIndicator);
 
-	// Get total solar generated by all active storms
-	public float GetTotalSolarGenerated()
-	{
-		float total = 0.0f;
-		foreach (var storm in _storms)
-		{
-			total += storm.solarGenerated;
-		}
-		return total;
-	}
+        // Connect to direction indicator signals
+        _directionIndicator.DirectionSet += OnDirectionSet;
+    }
 
-	private void SpawnStormAt(float lat, float lon, Vector2 direction)
-	{
-		if (GameManager.Instance.Solar < 100.0)
-		{
-			GD.Print("Not enough Solar to spawn a storm!");
-			return;
-		}
+    private void OnDirectionSet(Vector2 startLatLon, Vector2 direction) {
+        // Block storm spawning during tutorial
+        if (IsTutorialMode)
+            return;
 
-		if (GameManager.Instance.GetRegion(GameManager.Instance.Globe.GetRegionID(new Vector2(lat, lon)))?.Alive == true)
-		{
-			GD.Print("Cannot spawn storm in a living region!");
-			return;
-		}
+        SpawnStormAt(startLatLon.X, startLatLon.Y, direction);
+    }
 
-		// Spawn storm at clicked location and remove Solar cost
-		GameManager.Instance.Solar -= 100.0f;
+    // Get total solar generated by all active storms
+    public float GetTotalSolarGenerated() {
+        float total = 0.0f;
+        foreach (var storm in _storms) {
+            total += storm.solarGenerated;
+        }
+        return total;
+    }
 
-		var stormParticles = new List<Node3D>();
-		var initialOffsets = new List<Vector2>();
+    private void SpawnStormAt(float lat, float lon, Vector2 direction) {
+        if (GameManager.Instance.Solar < 100.0) {
+            GD.Print("Not enough Solar to spawn a storm!");
+            return;
+        }
 
-		// Get tech tree values for storm properties
-		var stormVars = GameManager.Instance.Game.stormTree.Vars.Storm;
+        if (GameManager.Instance.GetRegion(GameManager.Instance.Globe.GetRegionID(new Vector2(lat, lon)))?.Alive == true) {
+            GD.Print("Cannot spawn storm in a living region!");
+            return;
+        }
 
-		// Calculate storm properties based on tech tree upgrades (base values modified by upgrades)
-		int particleCount = (int)(ParticleDensity * stormVars.Radius * stormVars.Radius);
+        // Spawn storm at clicked location and remove Solar cost
+        GameManager.Instance.Solar -= 100.0f;
 
-		for (int i = 0;  i < particleCount; i++)
-		{
-			float t = (float)i / particleCount;
-			float angle = t * SpiralTurns * Mathf.Tau;
-			float radius = t * stormVars.Radius;
-			float x = Mathf.Cos(angle) * radius;
-			float z = Mathf.Sin(angle) * radius;
+        var stormParticles = new List<Node3D>();
+        var initialOffsets = new List<Vector2>();
 
-			if (radius < EyeRadius)
-				continue;
+        // Get tech tree values for storm properties
+        var stormVars = GameManager.Instance.Game.stormTree.Vars.Storm;
 
-			var instance = ParticleScene.Instantiate<Node3D>();
-			instance.Visible = true;
-			instance.Position = Vector3.Zero;
-			instance.Scale = new Vector3(ParticleSize, ParticleSize, ParticleSize) / ParticleDensity; // Scale down particles
-			AddChild(instance);
+        // Calculate storm properties based on tech tree upgrades (base values modified by upgrades)
+        int particleCount = (int)(ParticleDensity * stormVars.Radius * stormVars.Radius);
 
-			stormParticles.Add(instance);
-			initialOffsets.Add(new Vector2(x, z));
-		}
+        for (int i = 0; i < particleCount; i++) {
+            float t = (float)i / particleCount;
+            float angle = t * SpiralTurns * Mathf.Tau;
+            float radius = t * stormVars.Radius;
+            float x = Mathf.Cos(angle) * radius;
+            float z = Mathf.Sin(angle) * radius;
 
-		var storm = new StormState(
-			new Vector2(lat, lon),
-			direction,
-			stormParticles,
-			initialOffsets,
-			stormVars.WindSpeed,
-			stormVars.Radius,
-			stormVars.Range,
-			stormVars.WindDamage,
-			stormVars.FloodDamage
-		);
+            if (radius < EyeRadius)
+                continue;
 
-		_storms.Add(storm);
+            var instance = ParticleScene.Instantiate<Node3D>();
+            instance.Visible = true;
+            instance.Position = Vector3.Zero;
+            instance.Scale = new Vector3(ParticleSize, ParticleSize, ParticleSize) / ParticleDensity; // Scale down particles
+            AddChild(instance);
 
-		if (GameManager.Instance.PrintDebug)
-		{
-			GD.Print($"[Storm] Spawned storm with radius: {stormVars.Radius:F1}, wind speed: {stormVars.WindSpeed:F1}, range: {stormVars.Range:F1}, direction: ({direction.X:F2}, {direction.Y:F2})");
-		}
-	}
+            stormParticles.Add(instance);
+            initialOffsets.Add(new Vector2(x, z));
+        }
 
-	public override void _Process(double delta)
-	{
-		var stormsToRemove = new List<int>();
+        var storm = new StormState(
+            new Vector2(lat, lon),
+            direction,
+            stormParticles,
+            initialOffsets,
+            stormVars.WindSpeed,
+            stormVars.Radius,
+            stormVars.Range,
+            stormVars.WindDamage,
+            stormVars.FloodDamage
+        );
 
-		for (int stormIdx = 0; stormIdx < _storms.Count; stormIdx++)
-		{
-			var storm = _storms[stormIdx];
-			storm.rotationAngle += RotationSpeed * storm.windSpeed * (float)delta;
-			var moveDelta = storm.moveDirection * MoveSpeedRadPerSec * (float)delta;
-			float distanceDelta = Utils.HaversineDistance(storm.position, storm.position + moveDelta);
-			storm.position += moveDelta;
-			storm.totalDistanceTraveled += distanceDelta;
+        _storms.Add(storm);
 
-			float depletion = 0.0f;             // Reduce strength based on distance traveled (storms weaken over distance) and latitude
-			depletion += storm.totalDistanceTraveled > storm.range ? 0.35f : 0.0f;
-			depletion += Mathf.Abs(storm.position.X) * 2.0f / Mathf.Pi;
+        if (GameManager.Instance.PrintDebug) {
+            GD.Print($"[Storm] Spawned storm with radius: {stormVars.Radius:F1}, wind speed: {stormVars.WindSpeed:F1}, range: {stormVars.Range:F1}, direction: ({direction.X:F2}, {direction.Y:F2})");
+        }
+    }
 
-			// --- Storm strength and fading ---
-			float strength = storm.strength;
-			if (strength < 0.2f)
-			{
-				// Some fade effect will need to be applied/created
+    public override void _Process(double delta) {
+        var stormsToRemove = new List<int>();
 
-				float fade_timer = storm.fadeTimer;
-				fade_timer += (float)delta;
-				storm.fadeTimer = fade_timer;
-				float fade = Mathf.Clamp(1.0f - fade_timer / 2.0f, 0.0f, 1.0f); // 2 seconds fade
+        for (int stormIdx = 0; stormIdx < _storms.Count; stormIdx++) {
+            var storm = _storms[stormIdx];
+            storm.rotationAngle += RotationSpeed * storm.windSpeed * (float)delta;
+            var moveDelta = storm.moveDirection * MoveSpeedRadPerSec * (float)delta;
+            float distanceDelta = Utils.HaversineDistance(storm.position, storm.position + moveDelta);
+            storm.position += moveDelta;
+            storm.totalDistanceTraveled += distanceDelta;
 
-				// Delete particles if fade is complete
-				if (fade <= 0.0f)
-				{
-					foreach (var p in storm.particles)
-						if (IsInstanceValid(p)) p.QueueFree();
-					stormsToRemove.Add(stormIdx);
+            float depletion = 0.0f;             // Reduce strength based on distance traveled (storms weaken over distance) and latitude
+            depletion += storm.totalDistanceTraveled > storm.range ? 0.35f : 0.0f;
+            depletion += Mathf.Abs(storm.position.X) * 2.0f / Mathf.Pi;
 
-					// Log final stats for this storm
-					float totalSolar = storm.solarGenerated;
-					if (GameManager.Instance.PrintDebug && totalSolar > 0)
-					{
-						GD.Print($"[Storm] Storm completed. Total Solar generated: {totalSolar:F1}");
-					}
-					// Save changes to struct before continue
-					_storms[stormIdx] = storm;
-					continue;
-				}
-			}
+            // --- Storm strength and fading ---
+            float strength = storm.strength;
+            if (strength < 0.2f) {
+                // Some fade effect will need to be applied/created
 
-			// --- Particle positioning ---
-			for (int i = 0; i < storm.particles.Count; i++)
-			{
-				var offset = storm.offsets[i].Rotated(storm.rotationAngle);
-				offset.Y /= Mathf.Cos(storm.position.X);
-				offset /= Utils.EARTH_RADIUS;
+                float fade_timer = storm.fadeTimer;
+                fade_timer += (float)delta;
+                storm.fadeTimer = fade_timer;
+                float fade = Mathf.Clamp(1.0f - fade_timer / 2.0f, 0.0f, 1.0f); // 2 seconds fade
 
-				Vector2 latLon = storm.position + offset;
-				var globePoint = GameManager.Instance.Globe.GetSurfacePoint(latLon);
-				storm.particles[i].GlobalPosition = 1.025f * (globePoint.Position - GameManager.Instance.Globe.Position) + GameManager.Instance.Globe.Position;
-			}
+                // Delete particles if fade is complete
+                if (fade <= 0.0f) {
+                    foreach (var p in storm.particles)
+                        if (IsInstanceValid(p)) p.QueueFree();
+                    stormsToRemove.Add(stormIdx);
 
-			int regionID = GameManager.Instance.Globe.GetRegionID(storm.position);
-			var region = GameManager.Instance.GetRegion(regionID);
-			if (region != null && region.Alive)
-			{
-				// Get storm-specific damage multipliers
-				float windDamageMult = storm.windDamageMult;
-				float floodDamageMult = storm.floodDamageMult;
-				float stormRadius = storm.radius;
+                    // Log final stats for this storm
+                    float totalSolar = storm.solarGenerated;
+                    if (GameManager.Instance.PrintDebug && totalSolar > 0) {
+                        GD.Print($"[Storm] Storm completed. Total Solar generated: {totalSolar:F1}");
+                    }
+                    // Save changes to struct before continue
+                    _storms[stormIdx] = storm;
+                    continue;
+                }
+            }
 
-				float baseDamagePerSecond = 0.3f;
+            // --- Particle positioning ---
+            for (int i = 0; i < storm.particles.Count; i++) {
+                var offset = storm.offsets[i].Rotated(storm.rotationAngle);
+                offset.Y /= Mathf.Cos(storm.position.X);
+                offset /= Utils.EARTH_RADIUS;
 
-				float strengthMultiplier = Mathf.Pow(strength, 1.2f);
+                Vector2 latLon = storm.position + offset;
+                var globePoint = GameManager.Instance.Globe.GetSurfacePoint(latLon);
+                storm.particles[i].GlobalPosition = 1.025f * (globePoint.Position - GameManager.Instance.Globe.Position) + GameManager.Instance.Globe.Position;
+            }
 
-				// Calculate damage based on multipliers (flood/secondary damage is reduced compared to wind)
-				float windDamage = baseDamagePerSecond * windDamageMult * strengthMultiplier;
-				float floodDamage = baseDamagePerSecond * floodDamageMult * strengthMultiplier * 0.5f;
-				float secondaryDamage = baseDamagePerSecond * strengthMultiplier * 0.25f; // Infrastructure damage
+            int regionID = GameManager.Instance.Globe.GetRegionID(storm.position);
+            var region = GameManager.Instance.GetRegion(regionID);
+            if (region != null && region.Alive) {
+                // Get storm-specific damage multipliers
+                float windDamageMult = storm.windDamageMult;
+                float floodDamageMult = storm.floodDamageMult;
+                float stormRadius = storm.radius;
 
-				// Play thunder sound effect on first damage
-				if (!storm.hasCausedDamage && thunderSoundStream != null)
-				{
-					var newThunderPlayer = new AudioStreamPlayer();
-					AddChild(newThunderPlayer);
-					newThunderPlayer.Stream = thunderSoundStream;
-					newThunderPlayer.VolumeDb = _thunderSoundDb;
-					newThunderPlayer.Play();
-					
-					// Clean up the AudioStreamPlayer
-					newThunderPlayer.Finished += () => newThunderPlayer.QueueFree();
-					
-					storm.hasCausedDamage = true;
-				}
+                float baseDamagePerSecond = 0.3f;
 
-				// Apply damage to region
-				GameManager.Instance.ApplyDamage(regionID, (float)(windDamage * delta), DamageType.Wind);
-				GameManager.Instance.ApplyDamage(regionID, (float)(floodDamage * delta), DamageType.Flood);
-				GameManager.Instance.ApplyDamage(regionID, (float)(secondaryDamage * delta), DamageType.Secondary);
+                float strengthMultiplier = Mathf.Pow(strength, 1.2f);
 
-				// Storms decrease in strength as they travel over land
-				float totalDamage = windDamage + floodDamage + secondaryDamage;
-				float solarGenerated = (float)(CalculateSolarFromDamage(regionID, strength, windDamage, floodDamage, windDamageMult, floodDamageMult) * delta);
+                // Calculate damage based on multipliers (flood/secondary damage is reduced compared to wind)
+                float windDamage = baseDamagePerSecond * windDamageMult * strengthMultiplier;
+                float floodDamage = baseDamagePerSecond * floodDamageMult * strengthMultiplier * 0.5f;
+                float secondaryDamage = baseDamagePerSecond * strengthMultiplier * 0.25f; // Infrastructure damage
 
-				if (solarGenerated > 0)
-				{
-					GameManager.Instance.Solar += solarGenerated;
-					storm.solarGenerated += solarGenerated;
-				}
-			}
-			else
-			{
-				// We are over the ocean
-				depletion -= 0.1f;
-			}
+                // Play thunder sound effect on first damage
+                if (!storm.hasCausedDamage && thunderSoundStream != null) {
+                    var newThunderPlayer = new AudioStreamPlayer();
+                    AddChild(newThunderPlayer);
+                    newThunderPlayer.Stream = thunderSoundStream;
+                    newThunderPlayer.VolumeDb = _thunderSoundDb;
+                    newThunderPlayer.Play();
 
-			// GD.Print($"Storm at ({totalDistance:F2}m) | Range: {stormRange:F2}");
-			// GD.Print($"Depletion {depletion:F2} | Strength {strength:F2}");
-			strength -= depletion * (float)delta; // Base deplete rate + range depletion
-			if (strength < 0.0f)
-				strength = 0.0f;
-			storm.strength = strength;
+                    // Clean up the AudioStreamPlayer
+                    newThunderPlayer.Finished += () => newThunderPlayer.QueueFree();
 
-			// Save changes to struct back to the list
-			_storms[stormIdx] = storm;
-		}
+                    storm.hasCausedDamage = true;
+                }
 
-		// Remove storms by index in reverse order to avoid shifting issues
-		stormsToRemove.Sort((a, b) => b.CompareTo(a));
-		foreach (var idx in stormsToRemove)
-			_storms.RemoveAt(idx);
-	}
+                // Apply damage to region
+                GameManager.Instance.ApplyDamage(regionID, (float)(windDamage * delta), DamageType.Wind);
+                GameManager.Instance.ApplyDamage(regionID, (float)(floodDamage * delta), DamageType.Flood);
+                GameManager.Instance.ApplyDamage(regionID, (float)(secondaryDamage * delta), DamageType.Secondary);
 
-	private float CalculateSolarFromDamage(int regionID, float strength, float windDamage, float floodDamage, float windMult, float floodMult)
-	{
-		float baseSolarRate = (windDamage * windMult + floodDamage * floodMult) * 100.0f;
-		float strengthBonus = Mathf.Pow(strength, 1.2f) * 1.5f;
+                // Storms decrease in strength as they travel over land
+                float totalDamage = windDamage + floodDamage + secondaryDamage;
+                float solarGenerated = (float)(CalculateSolarFromDamage(regionID, strength, windDamage, floodDamage, windDamageMult, floodDamageMult) * delta);
 
-		float regionMultiplier = 1.0f;
-		if (regionID >= 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length)
-		{
-			var regionAI = GameManager.Instance.Game.RegionAIs[regionID];
-			regionMultiplier = 0.5f + (regionAI.regionStats.developmentIndex * 1.5f);
-		}
+                if (solarGenerated > 0) {
+                    GameManager.Instance.Solar += solarGenerated;
+                    storm.solarGenerated += solarGenerated;
+                }
+            } else {
+                // We are over the ocean
+                depletion -= 0.1f;
+            }
 
-		float populationBonus = 0.0f;
-		if (regionID >= 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length)
-		{
-			var regionAI = GameManager.Instance.Game.RegionAIs[regionID];
-			float popFactor = Math.Min(regionAI.regionStats.population / 100.0f, 5.0f); // Scaling bonus (needs work. Has a cap at 5x)
-			populationBonus = popFactor * 0.5f;
-		}
+            // GD.Print($"Storm at ({totalDistance:F2}m) | Range: {stormRange:F2}");
+            // GD.Print($"Depletion {depletion:F2} | Strength {strength:F2}");
+            strength -= depletion * (float)delta; // Base deplete rate + range depletion
+            if (strength < 0.0f)
+                strength = 0.0f;
+            storm.strength = strength;
 
-		float finalSolar = 0.25f * (baseSolarRate + strengthBonus + populationBonus) * regionMultiplier;
+            // Save changes to struct back to the list
+            _storms[stormIdx] = storm;
+        }
 
-		/*
+        // Remove storms by index in reverse order to avoid shifting issues
+        stormsToRemove.Sort((a, b) => b.CompareTo(a));
+        foreach (var idx in stormsToRemove)
+            _storms.RemoveAt(idx);
+    }
+
+    private float CalculateSolarFromDamage(int regionID, float strength, float windDamage, float floodDamage, float windMult, float floodMult) {
+        float baseSolarRate = (windDamage * windMult + floodDamage * floodMult) * 100.0f;
+        float strengthBonus = Mathf.Pow(strength, 1.2f) * 1.5f;
+
+        float regionMultiplier = 1.0f;
+        if (regionID >= 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length) {
+            var regionAI = GameManager.Instance.Game.RegionAIs[regionID];
+            regionMultiplier = 0.5f + (regionAI.regionStats.developmentIndex * 1.5f);
+        }
+
+        float populationBonus = 0.0f;
+        if (regionID >= 0 && regionID <= GameManager.Instance.Game.RegionAIs.Length) {
+            var regionAI = GameManager.Instance.Game.RegionAIs[regionID];
+            float popFactor = Math.Min(regionAI.regionStats.population / 100.0f, 5.0f); // Scaling bonus (needs work. Has a cap at 5x)
+            populationBonus = popFactor * 0.5f;
+        }
+
+        float finalSolar = 0.25f * (baseSolarRate + strengthBonus + populationBonus) * regionMultiplier;
+
+        /*
 		// Variance in generation
 		float randomVariation = Random.Shared.Nextfloat() * 0.2 - 0.1; // ±10% variation
 		finalSolar *= (1.0 + randomVariation);
 		*/
 
-		return finalSolar;
-	}
+        return finalSolar;
+    }
 
 }
