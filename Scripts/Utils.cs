@@ -1,12 +1,10 @@
 using Godot;
 
-static public class Utils
-{
+static public class Utils {
     public const float EARTH_RADIUS = 6378.137f; // Earth's radius in kilometers
     public const float EVEREST_HEIGHT = 8848.86f; // Height of Mount Everest in meters
 
-    public static float HaversineDistance(Vector2 start, Vector2 end, float radius = EARTH_RADIUS)
-    {
+    public static float HaversineDistance(Vector2 start, Vector2 end, float radius = EARTH_RADIUS) {
         // Convert degrees to radians
         float lat1 = start.X;
         float lon1 = start.Y;

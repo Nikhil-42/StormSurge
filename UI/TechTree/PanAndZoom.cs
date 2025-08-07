@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public partial class PanAndZoom : Control
-{
+public partial class PanAndZoom : Control {
     private Vector2 _dragStart;
     private bool _dragging = false;
     private float _zoom = 1f;
@@ -13,29 +12,20 @@ public partial class PanAndZoom : Control
 
     private Control _content;
 
-    public override void _Ready()
-    {
+    public override void _Ready() {
         _content = GetChild<Control>(0);
     }
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is InputEventMouseButton mouseEvent)
-        {
-            if (mouseEvent.ButtonIndex == MouseButton.Left)
-            {
-                if (mouseEvent.Pressed)
-                {
+    public override void _Input(InputEvent @event) {
+        if (@event is InputEventMouseButton mouseEvent) {
+            if (mouseEvent.ButtonIndex == MouseButton.Left) {
+                if (mouseEvent.Pressed) {
                     _dragging = true;
                     _dragStart = GetGlobalMousePosition();
-                }
-                else
-                {
+                } else {
                     _dragging = false;
                 }
-            }
-            else if (mouseEvent.ButtonIndex == MouseButton.WheelUp || mouseEvent.ButtonIndex == MouseButton.WheelDown)
-            {
+            } else if (mouseEvent.ButtonIndex == MouseButton.WheelUp || mouseEvent.ButtonIndex == MouseButton.WheelDown) {
                 float direction = mouseEvent.ButtonIndex == MouseButton.WheelUp ? 1 : -1;
                 float newZoom = Mathf.Clamp(_zoom + direction * ZoomStep, MinZoom, MaxZoom);
 
@@ -53,9 +43,7 @@ public partial class PanAndZoom : Control
                 _content.Position -= offset / _zoom; // Adjust position to keep zoom centered on mouse
                 GetViewport().SetInputAsHandled();
             }
-        }
-        else if (@event is InputEventMouseMotion motion && _dragging)
-        {
+        } else if (@event is InputEventMouseMotion motion && _dragging) {
             Vector2 delta = motion.Relative;
             _content.Position += delta / _zoom; // Adjust position based on zoom level
         }
