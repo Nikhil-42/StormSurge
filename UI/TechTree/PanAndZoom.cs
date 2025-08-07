@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class PanAndZoom : Control {
     private Vector2 _dragStart;

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class Tutorial : Node {
     [Export] public Texture2D StartNormal;

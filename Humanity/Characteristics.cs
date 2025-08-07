@@ -1,7 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 public class Characteristics {  // Variables different for each country that are calculated based on stats
                                 // FIXME: Characteristics should be based on more detailed statistics for countries (storm susceptibility, etc.), but

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class ScrollArea : Control {
     private Vector2 dragStart;

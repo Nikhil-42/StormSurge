@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class CameraRig : Node3D {
     [Export] public Node3D Globe;
