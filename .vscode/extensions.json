@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.vscodeintellicode-csharp",
+        "neikeq.godot-csharp-vscode",
+        "geequlim.godot-tools"
+    ]
+}
