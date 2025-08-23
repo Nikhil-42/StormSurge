@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace StormSurge;
+
 public partial class GameTime : Control {
     private int _days;
     private int _hours;

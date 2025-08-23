@@ -31,7 +31,7 @@ public partial class ScrollArea : Control {
 
         // Do drag
         if (@event is InputEventMouseMotion motion && dragging) {
-            var delta = GetGlobalMousePosition() - dragStart;
+            Vector2 delta = GetGlobalMousePosition() - dragStart;
             offset += delta;
             dragStart = GetGlobalMousePosition();
             UpdateTransform();

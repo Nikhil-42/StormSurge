@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace StormSurge;
+
 // Note/TODO: Popup currently does not close if the techtree button/display is opened. 
 //            Should also probably remove the hightlight from a region if the popup is closed.
 public partial class RegionStatsPopup : Control {
@@ -45,7 +47,7 @@ public partial class RegionStatsPopup : Control {
         UpdateRegionStats();
 
         // Position the popup (top right, left of the info/techtree buttons)
-        var viewport = GetViewport().GetVisibleRect();
+        Rect2 viewport = GetViewport().GetVisibleRect();
         Position = new Vector2(viewport.Size.X - Size.X - 80, 20);
 
         Show();

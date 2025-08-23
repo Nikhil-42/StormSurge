@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace StormSurge;
 public class RegionStats {
     public int id; // Unique ID for the region, used for identification on the texture
     public string name;
@@ -17,8 +18,8 @@ public class RegionStats {
 
     public List<string> GetCountries() {
         return [.. countries
-            .Split(',')
-            .Select(c => c.Trim())];
+                .Split(',')
+                .Select(c => c.Trim())];
     }
 
     public void printRegion() {
@@ -52,4 +53,3 @@ public class RegionStats {
         };
     }
 }
-

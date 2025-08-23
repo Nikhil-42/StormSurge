@@ -1,5 +1,7 @@
 using Godot;
 
+namespace StormSurge;
+
 public partial class StormDirectionIndicator : Node3D {
     [Export] public float MaxIndicatorLength = 2.0f;
 
@@ -40,16 +42,16 @@ public partial class StormDirectionIndicator : Node3D {
         _dragCurrentPos = screenPos;
 
         // Get world position of drag start
-        var camera = GetViewport().GetCamera3D();
+        Camera3D camera = GetViewport().GetCamera3D();
         if (camera == null) {
             return;
         }
 
-        var from = camera.ProjectRayOrigin(_dragStartPos);
-        var dir = camera.ProjectRayNormal(_dragStartPos);
-        var to = from + dir * 1000.0f;
+        Vector3 from = camera.ProjectRayOrigin(_dragStartPos);
+        Vector3 dir = camera.ProjectRayNormal(_dragStartPos);
+        Vector3 to = from + dir * 1000.0f;
 
-        var result = Geometry3D.SegmentIntersectsSphere(from, to, GameManager.Instance.Globe.Position, GameManager.Instance.Globe.Radius);
+        Vector3[] result = Geometry3D.SegmentIntersectsSphere(from, to, GameManager.Instance.Globe.Position, GameManager.Instance.Globe.Radius);
         if (result != null && result.Length > 0) {
             _dragStartWorldPos = result[0];
             _dragStartLatLon = GameManager.Instance.Globe.GetLatLon(_dragStartWorldPos);
@@ -72,16 +74,16 @@ public partial class StormDirectionIndicator : Node3D {
         _dragCurrentPos = screenPos;
 
         // Update world position of current drag
-        var camera = GetViewport().GetCamera3D();
+        Camera3D camera = GetViewport().GetCamera3D();
         if (camera == null) {
             return;
         }
 
-        var from = camera.ProjectRayOrigin(_dragCurrentPos);
-        var dir = camera.ProjectRayNormal(_dragCurrentPos);
-        var to = from + dir * 1000.0f;
+        Vector3 from = camera.ProjectRayOrigin(_dragCurrentPos);
+        Vector3 dir = camera.ProjectRayNormal(_dragCurrentPos);
+        Vector3 to = from + dir * 1000.0f;
 
-        var result = Geometry3D.SegmentIntersectsSphere(from, to, GameManager.Instance.Globe.Position, GameManager.Instance.Globe.Radius);
+        Vector3[] result = Geometry3D.SegmentIntersectsSphere(from, to, GameManager.Instance.Globe.Position, GameManager.Instance.Globe.Radius);
         if (result != null && result.Length > 0) {
             _dragCurrentWorldPos = result[0];
             UpdateDirectionIndicator();
@@ -112,8 +114,8 @@ public partial class StormDirectionIndicator : Node3D {
         if (GameManager.Instance.Globe == null || _dragStartWorldPos == Vector3.Zero || _dragCurrentWorldPos == Vector3.Zero)
             return Vector2.Zero; // Default direction if no drag
 
-        var startLatLon = GameManager.Instance.Globe.GetLatLon(_dragStartWorldPos);
-        var currentLatLon = GameManager.Instance.Globe.GetLatLon(_dragCurrentWorldPos);
+        Vector2 startLatLon = GameManager.Instance.Globe.GetLatLon(_dragStartWorldPos);
+        Vector2 currentLatLon = GameManager.Instance.Globe.GetLatLon(_dragCurrentWorldPos);
 
         Vector2 direction = currentLatLon - startLatLon;
 
@@ -153,32 +155,32 @@ public partial class StormDirectionIndicator : Node3D {
 
         // Create visual line from start to current position
         if (_dragStartWorldPos != Vector3.Zero && _dragCurrentWorldPos != Vector3.Zero) {
-            var indicatorParent = new Node3D();
+            Node3D indicatorParent = new Node3D();
             AddChild(indicatorParent);
             _directionIndicator = indicatorParent;
 
             // Create the main line
-            var line = new MeshInstance3D();
-            var lineMesh = new ArrayMesh();
-            var arrays = new Godot.Collections.Array();
+            MeshInstance3D line = new MeshInstance3D();
+            ArrayMesh lineMesh = new ArrayMesh();
+            Godot.Collections.Array arrays = new Godot.Collections.Array();
             arrays.Resize((int)Mesh.ArrayType.Max);
 
             // Make the line slightly above the surface to ensure visibility
-            var startPos = _dragStartWorldPos + (_dragStartWorldPos - GameManager.Instance.Globe.Position).Normalized() * 0.1f;
-            var rawEndPos = _dragCurrentWorldPos + (_dragCurrentWorldPos - GameManager.Instance.Globe.Position).Normalized() * 0.1f;
+            Vector3 startPos = _dragStartWorldPos + (_dragStartWorldPos - GameManager.Instance.Globe.Position).Normalized() * 0.1f;
+            Vector3 rawEndPos = _dragCurrentWorldPos + (_dragCurrentWorldPos - GameManager.Instance.Globe.Position).Normalized() * 0.1f;
 
             // Clamp the line length to maximum indicator length
-            var lineDirection = (rawEndPos - startPos);
-            var lineLength = lineDirection.Length();
-            var endPos = startPos + lineDirection.Normalized() * Mathf.Min(lineLength, MaxIndicatorLength);
+            Vector3 lineDirection = (rawEndPos - startPos);
+            float lineLength = lineDirection.Length();
+            Vector3 endPos = startPos + lineDirection.Normalized() * Mathf.Min(lineLength, MaxIndicatorLength);
 
-            var vertices = new Vector3[] { startPos, endPos };
+            Vector3[] vertices = new Vector3[] { startPos, endPos };
             arrays[(int)Mesh.ArrayType.Vertex] = vertices;
 
             lineMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Lines, arrays);
             line.Mesh = lineMesh;
 
-            var material = CreateIndicatorMaterial();
+            StandardMaterial3D material = CreateIndicatorMaterial();
             line.MaterialOverride = material;
 
             indicatorParent.AddChild(line);
@@ -190,7 +192,7 @@ public partial class StormDirectionIndicator : Node3D {
 
     // Basic material for the direction indicator
     private StandardMaterial3D CreateIndicatorMaterial() {
-        var material = new StandardMaterial3D();
+        StandardMaterial3D material = new StandardMaterial3D();
         material.AlbedoColor = Colors.White;
         material.EmissionEnabled = true;
         material.Emission = Colors.White;
@@ -201,22 +203,22 @@ public partial class StormDirectionIndicator : Node3D {
     }
 
     private void CreateArrowHead(Node3D parent, Vector3 startPos, Vector3 endPos, StandardMaterial3D material) {
-        var direction = (endPos - startPos).Normalized();
-        var arrowLength = 0.5f;
-        var arrowWidth = 0.2f;
+        Vector3 direction = (endPos - startPos).Normalized();
+        float arrowLength = 0.5f;
+        float arrowWidth = 0.2f;
 
         // Calculate perpendicular vectors for arrow head
-        var up = Vector3.Up;
-        var right = direction.Cross(up).Normalized();
-        var actualUp = right.Cross(direction).Normalized();
+        Vector3 up = Vector3.Up;
+        Vector3 right = direction.Cross(up).Normalized();
+        Vector3 actualUp = right.Cross(direction).Normalized();
 
-        var arrowHead = new MeshInstance3D();
-        var arrowMesh = new ArrayMesh();
-        var arrowArrays = new Godot.Collections.Array();
+        MeshInstance3D arrowHead = new MeshInstance3D();
+        ArrayMesh arrowMesh = new ArrayMesh();
+        Godot.Collections.Array arrowArrays = new Godot.Collections.Array();
         arrowArrays.Resize((int)Mesh.ArrayType.Max);
 
         // Create simple arrow head lines
-        var arrowVertices = new Vector3[]
+        Vector3[] arrowVertices = new Vector3[]
         {
             endPos, endPos - direction * arrowLength + actualUp * arrowWidth,
             endPos, endPos - direction * arrowLength - actualUp * arrowWidth

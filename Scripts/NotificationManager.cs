@@ -6,7 +6,7 @@ public partial class NotificationManager : Control {
     private Dictionary<string, string> _messages;
 
     public NotificationManager(Json messagesJson) {
-        var rawDict = (Godot.Collections.Dictionary<string, string>)messagesJson.Data;
+        Godot.Collections.Dictionary<string, string> rawDict = (Godot.Collections.Dictionary<string, string>)messagesJson.Data;
         if (rawDict == null) {
             GD.PushError("Failed to parse JSON into a dictionary.");
             return;
@@ -19,7 +19,7 @@ public partial class NotificationManager : Control {
 
     // Get a message by its key (Generic under "Education 1, Education 2,... 13").
     public string GetMessage(string key) {
-        return _messages.TryGetValue(key, out var msg) ? msg : null;
+        return _messages.TryGetValue(key, out string msg) ? msg : null;
     }
 
     //Returns all messages as a copy.

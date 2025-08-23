@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+namespace StormSurge;
 public partial class RegionAI {
     enum ReactionState {
         Research,
@@ -74,7 +75,7 @@ public partial class RegionAI {
     }
 
     private ReactionState GetNextState() {
-        var nextState = _state;
+        ReactionState nextState = _state;
         if (_state == ReactionState.Death || _progress.health <= 0.0) {
             nextState = ReactionState.Death;
         } else {
@@ -128,7 +129,7 @@ public partial class RegionAI {
 
                     if (GD.Randf() <= 0.50f) // 50% chance of notifying
                     {
-                        var message = GameManager.Instance.NotificationManager?.GetMessage(node.Name);
+                        string message = GameManager.Instance.NotificationManager?.GetMessage(node.Name);
                         if (!string.IsNullOrEmpty(message)) {
                             string fullMessage = $"{regionStats.name}:\n{message}";
                             GameManager.Instance.UI?.Notify(fullMessage);
@@ -138,12 +139,12 @@ public partial class RegionAI {
                 _progress.monies += currentIncome; // Passive income based on health
                 break;
             case ActionType.Recover:
-                var spending = Mathf.Min(currentIncome, _progress.monies); // Spend up to 0.1 money per second)
+                float spending = Mathf.Min(currentIncome, _progress.monies); // Spend up to 0.1 money per second)
                 _progress.health += 0.01f * spending;
                 _progress.monies -= spending; // Deduct the money spent on recovery
                 break;
             case ActionType.Debauch:
-                var debauchSpending = Mathf.Min(currentIncome, _progress.monies); // Spend up to 0.1 money per second on luxuries
+                float debauchSpending = Mathf.Min(currentIncome, _progress.monies); // Spend up to 0.1 money per second on luxuries
                 _progress.monies -= debauchSpending; // Deduct the money spent on luxuries
                 break;
             case ActionType.Death:  // cannot undie
@@ -164,11 +165,11 @@ public partial class RegionAI {
         switch (_state) {
             case ReactionState.Research:
                 // Chooses a random available node to research
-                var availableNodes = regionTree.Available;
+                List<TechNode<RegionVars>> availableNodes = regionTree.Available;
                 // FIXME: Should have cooldown before buying another node
                 // GD.Print(regionStats.name + " searching for node to research...");
                 string targetNode = TargetNextNode();
-                var targetPurchase = regionTree.GetNode(targetNode);
+                TechNode<RegionVars> targetPurchase = regionTree.GetNode(targetNode);
                 // var targetPurchase = availableNodes[(int)(GD.Randi() % (uint)availableNodes.Count)];
                 if (targetPurchase.Cost <= _progress.monies) {
                     return new ActionType.Research(targetPurchase);
@@ -221,7 +222,7 @@ public partial class RegionAI {
         float currentValue = 0.0f;
         float totalValue = 0.0f;
 
-        foreach (var node in regionTree.Available) {
+        foreach (TechNode<RegionVars> node in regionTree.Available) {
             nodeNames.Add(node.Name);
             currentValue = EvaluateNode(node.Name);
             nodeValues.Add(currentValue);
@@ -229,11 +230,11 @@ public partial class RegionAI {
         }
 
         /*foreach (var node in GameManager.Instance.Game.humanityTree.Available) {
-			nodeNames.Add(node.Name);
-			currentValue = EvaluateNode(node.Name);
-			nodeValues.Add(currentValue);
-			totalValue += currentValue;
-		}*/
+            nodeNames.Add(node.Name);
+            currentValue = EvaluateNode(node.Name);
+            nodeValues.Add(currentValue);
+            totalValue += currentValue;
+        }*/
 
         List<int> probabilities = new List<int>();
         int currentCutoff = 0;
@@ -264,7 +265,7 @@ public partial class RegionAI {
     }
 
     public float EvaluateNode(string nodeName) {
-        var node = regionTree.GetNode(nodeName);
+        TechNode<RegionVars> node = regionTree.GetNode(nodeName);
         RegionVars vars = (RegionVars)node.Vars;
 
         StormVars stormVars = GameManager.Instance.Game.stormTree.Vars.Storm;

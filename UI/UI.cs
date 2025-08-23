@@ -1,6 +1,8 @@
 using Godot;
 using System.Threading.Tasks;
 
+namespace StormSurge;
+
 public partial class UI : Control {
     [Export] public TextureButton NotificationButton;
     [Export] public PanelContainer NotificationHistoryPanel;
@@ -58,7 +60,7 @@ public partial class UI : Control {
             return;
         }
 
-        var instance = _notificationCardScene.Instantiate();
+        Node instance = _notificationCardScene.Instantiate();
         if (instance is NotificationCard card) {
             card.SetText(message);
             HistoryList.AddChild(card);
@@ -92,7 +94,7 @@ public partial class UI : Control {
         while (true) {
             await Task.Delay(10000); // every 10 seconds
 
-            var percent = GameManager.Instance.Game.PercentCompletion;
+            float percent = GameManager.Instance.Game.PercentCompletion;
             CompletionBar.Value = percent * 100f;
         }
     }
@@ -111,7 +113,7 @@ public partial class UI : Control {
             return;
         }
 
-        var treeUI = TechTreeUIScene.Instantiate();
+        Node treeUI = TechTreeUIScene.Instantiate();
 
         // Connect UI click sound signal
         if (treeUI is TechTreeUI techTreeUIInstance) {
@@ -128,7 +130,7 @@ public partial class UI : Control {
             return;
         }
 
-        var instance = _notificationCardScene.Instantiate();
+        Node instance = _notificationCardScene.Instantiate();
         if (instance is not NotificationCard card) {
             GD.PrintErr("ERROR: NotificationCard could not instantiate.");
             return;
@@ -147,7 +149,7 @@ public partial class UI : Control {
         NotificationPopup.AddChild(card);
 
         // Fade-in
-        var tween = CreateTween();
+        Tween tween = CreateTween();
         tween.TweenProperty(card, "modulate:a", 1f, 0.4f).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
 
         // Display for set duration
@@ -160,7 +162,7 @@ public partial class UI : Control {
         }
 
         // Fade out
-        var fadeOutTween = CreateTween();
+        Tween fadeOutTween = CreateTween();
         fadeOutTween.TweenProperty(card, "modulate:a", 0f, 0.6f).SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.In);
 
         await ToSignal(fadeOutTween, "finished");

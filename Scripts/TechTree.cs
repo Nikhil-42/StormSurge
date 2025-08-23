@@ -97,14 +97,14 @@ public class TechTree<T, V> where T : TechNode<V>, new() where V : IVars<V> {
             GD.PrintErr($"[TechTree] Expected an array, got {serializedTree.VariantType}");
             return;
         }
-        var nodes = (Godot.Collections.Array<Variant>)serializedTree;
+        Godot.Collections.Array<Variant> nodes = (Godot.Collections.Array<Variant>)serializedTree;
 
-        foreach (var infoVariant in nodes) {
+        foreach (Variant infoVariant in nodes) {
             if (infoVariant.VariantType is not Variant.Type.Dictionary) {
                 GD.PrintErr($"[TechTree] Expected a dictionary, got {infoVariant.VariantType}");
                 continue;
             }
-            var info = (Godot.Collections.Dictionary<string, Variant>)infoVariant;
+            Godot.Collections.Dictionary<string, Variant> info = (Godot.Collections.Dictionary<string, Variant>)infoVariant;
             T node = new();
             node.LoadFromJson(info);
             _nodes[node.Name] = node;
@@ -113,7 +113,7 @@ public class TechTree<T, V> where T : TechNode<V>, new() where V : IVars<V> {
 
 
     public void UpdatePrerequisites(Dictionary<string, ITechNode> externalNodes) {
-        foreach (var node in _nodes.Values) {
+        foreach (T node in _nodes.Values) {
             foreach (string prerequisiteName in node.Parents) {
                 ITechNode prerequisite = _nodes.GetValueOrDefault(prerequisiteName);
                 if (prerequisite == null) externalNodes.GetValueOrDefault(prerequisiteName);

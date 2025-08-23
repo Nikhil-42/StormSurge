@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace StormSurge;
+
 public class Characteristics {  // Variables different for each country that are calculated based on stats
                                 // FIXME: Characteristics should be based on more detailed statistics for countries (storm susceptibility, etc.), but
                                 // for now everything based on GDP or development pretty much

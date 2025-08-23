@@ -1,5 +1,7 @@
 using Godot;
 
+namespace StormSurge;
+
 public partial class Tutorial : Node {
     [Export] public Texture2D StartNormal;
     [Export] public Texture2D StartHover;

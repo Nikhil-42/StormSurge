@@ -1,54 +1,49 @@
 using Godot;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
-public struct City {
-    public string region;
-    public string name;
-    public int population;
-    public int elevation;
-    public float latitude;
-    public float longitude;
-
-    public City(string r, string n, int p, int e, float lat, float lon) {
-        region = r;
-        name = n;
-        population = p;
-        elevation = e;
-        latitude = lat;
-        longitude = lon;
-    }
+namespace StormSurge;
+internal readonly struct City(string region, string name, int population, float latitude, float longitude, int elevation) {
+    public readonly string region = region;
+    public readonly string name = name;
+    public readonly int population = population;
+    public readonly int elevation = elevation;
+    public readonly float latitude = latitude;
+    public readonly float longitude = longitude;
 }
 
-public class CityMarkers {
-    public List<City> cities = new List<City>();
-    public string dataPath = "res://Library/citydata.txt";
+internal partial class CityMarkers {
+    private const string DATA_PATH = "res://Library/citydata.txt";
+    private static readonly Regex LINE_PATTERN = CitiesRegex();
+    public readonly List<City> cities = [];
 
-    private static Regex linePattern = new Regex("^\"([^\"]+)\"\\s+(\\S+(?:\\s+\\S+)*)\\s+(\\d+)\\s+([-+]?[0-9]*\\.?[0-9]+)\\s+([-+]?[0-9]*\\.?[0-9]+)\\s+(\\d+)$");
 
     public CityMarkers() {
-        if (!FileAccess.FileExists(dataPath)) {
-            GD.PrintErr($"File not found: {dataPath}");
+        if (!FileAccess.FileExists(DATA_PATH)) {
+            GD.PrintErr($"File not found: {DATA_PATH}");
             return;
         }
 
-        using FileAccess cityFile = FileAccess.Open(dataPath, FileAccess.ModeFlags.Read);
+        using FileAccess cityFile = FileAccess.Open(DATA_PATH, FileAccess.ModeFlags.Read);
 
         while (!cityFile.EofReached()) {
-            var line = cityFile.GetLine().Trim();
-            if (string.IsNullOrEmpty(line))
-                continue;
+            string line = cityFile.GetLine().Trim();
 
-            var match = linePattern.Match(line);
+            if (string.IsNullOrEmpty(line)) {
+                continue;
+            }
+
+            Match match = LINE_PATTERN.Match(line);
             if (match.Success) {
-                var current = new City {
-                    name = match.Groups[1].Value,
-                    region = match.Groups[2].Value,
-                    population = int.Parse(match.Groups[3].Value),
-                    latitude = float.Parse(match.Groups[4].Value),
-                    longitude = float.Parse(match.Groups[5].Value),
-                    elevation = int.Parse(match.Groups[6].Value)
-                };
+                City current = new(
+                    match.Groups[1].Value,
+                    match.Groups[2].Value,
+                    int.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture),
+                    float.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture),
+                    float.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture),
+                    int.Parse(match.Groups[6].Value, CultureInfo.InvariantCulture)
+                );
                 cities.Add(current);
             } else {
                 GD.PrintErr($"Could not parse line: {line}");
@@ -56,17 +51,21 @@ public class CityMarkers {
         }
         cityFile.Close();
     }
+
+
+    [GeneratedRegex("^\"([^\"]+)\"\\s+(\\S+(?:\\s+\\S+)*)\\s+(\\d+)\\s+([-+]?[0-9]*\\.?[0-9]+)\\s+([-+]?[0-9]*\\.?[0-9]+)\\s+(\\d+)$")]
+    private static partial Regex CitiesRegex();
 }
 
 public partial class Map3dFeatures : Node3D {
     [Export]
-    float _pin_scale = 0.5f; // Scale for the pin asset
+    private float _pin_scale = 0.5f; // Scale for the pin asset
 
     [Export]
-    PackedScene _pinPrefab;
+    private PackedScene _pinPrefab;
 
     public override void _Ready() {
-        CityMarkers cityData = new CityMarkers();
+        CityMarkers cityData = new();
 
         foreach (City c in cityData.cities) {
             Node3D pinInstance = _pinPrefab.Instantiate<Node3D>();

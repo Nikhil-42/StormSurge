@@ -29,8 +29,8 @@ public class GlobalVars : IVars<GlobalVars> {
     }
 
     public static GlobalVars FromJson(Godot.Collections.Dictionary<string, Variant> json) {
-        var stormVars = StormVars.FromJson(json);
-        var geopoliticalVars = GeopoliticalVars.FromJson(json);
+        StormVars stormVars = StormVars.FromJson(json);
+        GeopoliticalVars geopoliticalVars = GeopoliticalVars.FromJson(json);
         return new GlobalVars {
             Storm = stormVars,
             Geopolitical = geopoliticalVars
@@ -38,12 +38,12 @@ public class GlobalVars : IVars<GlobalVars> {
     }
 
     public Godot.Collections.Dictionary<string, Variant> ToJson() {
-        var json = new Godot.Collections.Dictionary<string, Variant>();
-        foreach ((string key, var item) in Storm.ToJson()) {
+        Godot.Collections.Dictionary<string, Variant> json = new Godot.Collections.Dictionary<string, Variant>();
+        foreach ((string key, Variant item) in Storm.ToJson()) {
             json[key] = item;
         }
 
-        foreach ((string key, var item) in Geopolitical.ToJson()) {
+        foreach ((string key, Variant item) in Geopolitical.ToJson()) {
             json[key] = item;
         }
 
@@ -121,7 +121,7 @@ public class StormVars : IVars<StormVars> {
     }
 
     public Godot.Collections.Dictionary<string, Variant> ToJson() {
-        var json = new Godot.Collections.Dictionary<string, Variant>();
+        Godot.Collections.Dictionary<string, Variant> json = new Godot.Collections.Dictionary<string, Variant>();
         if (Temperature != 0.0f) json["temperature"] = Temperature;
         if (SeaLevel != 0.0f) json["sea_level"] = SeaLevel;
         if (Range != 0.0f) json["storm_range"] = Range;
@@ -194,7 +194,7 @@ public class GeopoliticalVars : IVars<GeopoliticalVars> {
     }
 
     public Godot.Collections.Dictionary<string, Variant> ToJson() {
-        var json = new Godot.Collections.Dictionary<string, Variant>();
+        Godot.Collections.Dictionary<string, Variant> json = new Godot.Collections.Dictionary<string, Variant>();
         if (Communications != 1.0f) json["communications"] = Communications;
         if (InternationalCooperation != 1.0f) json["international_cooperation"] = InternationalCooperation;
         if (Transportation != 1.0f) json["transportation"] = Transportation;
@@ -284,7 +284,7 @@ public class RegionVars : IVars<RegionVars> {
     }
 
     public Godot.Collections.Dictionary<string, Variant> ToJson() {
-        var json = new Godot.Collections.Dictionary<string, Variant>();
+        Godot.Collections.Dictionary<string, Variant> json = new Godot.Collections.Dictionary<string, Variant>();
         if (GlobalMigration != 1.0f) json["global_migration"] = GlobalMigration;
         if (RegionMigration != 1.0f) json["region_migration"] = RegionMigration;
         if (GlobalWarming != 1.0f) json["global_warming"] = GlobalWarming;
@@ -295,10 +295,10 @@ public class RegionVars : IVars<RegionVars> {
         if (WarSpread != 1.0f) json["war_spread"] = WarSpread;
         if (Detection != 1.0f) json["detection"] = Detection;
         if (ImplementCosts != 1.0f) json["implement_costs"] = ImplementCosts;
-        foreach (var (key, value) in Storm.ToJson()) {
+        foreach ((string key, Variant value) in Storm.ToJson()) {
             json[key] = value;
         }
-        foreach (var (key, value) in Geopolitical.ToJson()) {
+        foreach ((string key, Variant value) in Geopolitical.ToJson()) {
             json[key] = value;
         }
         return json;

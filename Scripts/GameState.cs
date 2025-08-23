@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
+namespace StormSurge;
 public class GameState {  // Move node attributes, make not a node, make private
                           // ================= GLOBAL TECH TREE VARIABLES ================================
     public TechTree<TechNode<GlobalVars>, GlobalVars> stormTree = null;  // global default
@@ -59,10 +60,10 @@ public class GameState {  // Move node attributes, make not a node, make private
         humanityTree.UpdatePrerequisites(null);
 
         Dictionary<string, ITechNode> externalNodes = new();
-        foreach (var node in stormTree.GetAllNodes()) {
+        foreach (TechNode<GlobalVars> node in stormTree.GetAllNodes()) {
             externalNodes[node.Name] = node;
         }
-        foreach (var node in humanityTree.GetAllNodes()) {
+        foreach (GlobalNode node in humanityTree.GetAllNodes()) {
             externalNodes[node.Name] = node;
         }
 
@@ -70,7 +71,7 @@ public class GameState {  // Move node attributes, make not a node, make private
 
         _regionAIs = new RegionAI[regionStats.Length];
         for (int i = 0; i < regionStats.Length; i++) {
-            var regionTree = new TechTree<TechNode<RegionVars>, RegionVars>(regionJson.Data);
+            TechTree<TechNode<RegionVars>, RegionVars> regionTree = new TechTree<TechNode<RegionVars>, RegionVars>(regionJson.Data);
             regionTree.UpdatePrerequisites(externalNodes);
             _regionAIs[i] = new RegionAI(regionStats[i], regionTree);
             GD.Print(i, "Name: ", regionStats[i].name, ", ID: ", _regionAIs[i].Id);

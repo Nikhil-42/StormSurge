@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
+namespace StormSurge;
 public partial class GameManager : Node {
     // Singleton instance
     public static GameManager Instance => _instance;
@@ -65,18 +66,18 @@ public partial class GameManager : Node {
         _instance = this;
 
         if (Instance.PrintDebug) GD.Print("\nLoading region geographic data...");
-        var file = FileAccess.Open(ProjectSettings.GlobalizePath(regionStatsPath), FileAccess.ModeFlags.Read);
+        FileAccess file = FileAccess.Open(ProjectSettings.GlobalizePath(regionStatsPath), FileAccess.ModeFlags.Read);
         if (file == null) {
             GD.PrintErr("Failed to open region geographic data file: " + regionStatsPath);
             return;
         }
 
-        var regionsStats = new Dictionary<string, RegionStats>();
-        var header = file.GetCsvLine();
+        Dictionary<string, RegionStats> regionsStats = new Dictionary<string, RegionStats>();
+        string[] header = file.GetCsvLine();
         while (!file.EofReached()) {
-            var line = file.GetCsvLine();
+            string[] line = file.GetCsvLine();
             if (line == null || line.Length == 0) continue;  // Skip empty lines
-            var stats = RegionStats.FromCsvLine(line);
+            RegionStats stats = RegionStats.FromCsvLine(line);
             regionsStats.Add(stats.name, stats);
         }
 
@@ -92,14 +93,14 @@ public partial class GameManager : Node {
         UI = GetNode<UI>("Control2");
 
         // Notification system
-        var notificationJson = GD.Load<Json>("res://Library/notifications.json");
+        Json notificationJson = GD.Load<Json>("res://Library/notifications.json");
         NotificationManager = new NotificationManager(notificationJson);
         UI.SetNotificationManager(NotificationManager);
     }
 
     public override void _Ready() {
         // Music controls
-        var timer = new Timer();
+        Timer timer = new Timer();
         AddChild(timer);
         timer.OneShot = true;
         timer.WaitTime = (float)intro.Stream.GetLength();

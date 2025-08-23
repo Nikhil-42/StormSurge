@@ -1,5 +1,6 @@
 using Godot;
 
+namespace StormSurge;
 public partial class Globe : Node3D {
     public float WaterLevel {
         get => _waterPercent * Utils.EVEREST_HEIGHT;
@@ -22,15 +23,15 @@ public partial class Globe : Node3D {
     private Texture2D _heightmap;
     private Image _regionmapImage;
 
-    private float _waterPercent = 0.0f;  // Percentange of the height of Everest that the water level is at
+    private float _waterPercent;  // Percentange of the height of Everest that the water level is at
 
-    public bool IsTutorialMode = false; // Tutorial mode
+    private bool IsTutorialMode; // Tutorial mode
 
-    public struct SurfacePoint {
+    internal struct SurfacePoint {
         public Vector2 LatLon;
         public Vector3 Position;
         public Vector3 Normal;
-        public readonly Vector2 UV => new(LatLon.Y / Mathf.Tau + 0.5f, LatLon.X / Mathf.Pi + 0.5f); // Placeholder for UV mapping, can be calculated based on LatLon)
+        public readonly Vector2 UV => new((LatLon.Y / Mathf.Tau) + 0.5f, (LatLon.X / Mathf.Pi) + 0.5f); // Placeholder for UV mapping, can be calculated based on LatLon)
         public readonly Vector3 Tangent => Normal.Cross(Vector3.Up).Normalized();
         public readonly Vector3 Bitangent => -Tangent.Cross(Normal);
     }
@@ -45,35 +46,14 @@ public partial class Globe : Node3D {
     }
 
     public override void _Process(double delta) {
-        Transform.Rotated(Vector3.Up, (float)delta * 0.1f);
-        var regionAIs = GameManager.Instance.Game.RegionAIs;
+        Transform = Transform.Rotated(Vector3.Up, (float)delta * 0.1f);
+
+        RegionAI[] regionAIs = GameManager.Instance.Game.RegionAIs;
         float[] health = new float[regionAIs.Length];
         for (int i = 0; i < regionAIs.Length; i++) {
             health[i] = regionAIs[i].Health;
         }
         _globeMaterial.SetShaderParameter("health", health);
-    }
-
-    Vector2 NormalizeLatLon(Vector2 latLon) {
-        float lat = latLon.X;
-        float lon = latLon.Y;
-
-        // Wrap longitude to [-π, π]
-        lon = ((lon + Mathf.Pi) % Mathf.Tau + Mathf.Tau) % Mathf.Tau - Mathf.Pi;
-
-        // Normalize latitude to [-π/2, π/2], flipping over-pole values
-        if (lat > Mathf.Pi / 2) {
-            lat = Mathf.Pi - lat;
-            lon += Mathf.Pi;
-        } else if (lat < -Mathf.Pi / 2) {
-            lat = -Mathf.Pi - lat;
-            lon += Mathf.Pi;
-        }
-
-        // Wrap longitude again in case it was flipped
-        lon = ((lon + Mathf.Pi) % Mathf.Tau + Mathf.Tau) % Mathf.Tau - Mathf.Pi;
-
-        return new Vector2(lat, lon);
     }
 
 
@@ -94,10 +74,10 @@ public partial class Globe : Node3D {
     /// </summary>
     /// <param name="latLon">[latitdude, longitude] (rad)</param>
     /// <returns>A SurfacePoint containing position, and normal information</returns>
-    public SurfacePoint GetSurfacePoint(Vector2 latLon) {
-        var latLonNormalized = NormalizeLatLon(latLon);
-        var lat = latLonNormalized.X; // Latitude in radians
-        var lon = latLonNormalized.Y; // Longitude in radians
+    internal SurfacePoint GetSurfacePoint(Vector2 latLon) {
+        Vector2 latLonNormalized = Utils.NormalizeLatLon(latLon);
+        float lat = latLonNormalized.X; // Latitude in radians
+        float lon = latLonNormalized.Y; // Longitude in radians
 
         // Calculate the position on the globe's surface
         float radius = ((SphereMesh)_globe.Mesh).Radius;
@@ -117,45 +97,47 @@ public partial class Globe : Node3D {
 
     public int GetRegionID(Vector2 latLon) {
         // Convert latitude and longitude to a point on the region map
-        var point = GetSurfacePoint(latLon);
+        SurfacePoint point = GetSurfacePoint(latLon);
         Vector2I pointi = new((int)(point.UV.X * _regionmapImage.GetWidth()), (int)((1.0f - point.UV.Y) * _regionmapImage.GetHeight()));
-        var id = Mathf.RoundToInt(_regionmapImage.GetPixelv(pointi).R * 256);
+        int id = Mathf.RoundToInt(_regionmapImage.GetPixelv(pointi).R * 256);
         return id - 1;
     }
 
     public override void _Input(InputEvent @event) {
         // Block Input in tutorial
-        if (IsTutorialMode)
+        if (IsTutorialMode) {
             return;
+        }
 
         if (@event is InputEventMouseButton mouseEvent
             && mouseEvent.Pressed
             && mouseEvent.ButtonIndex == MouseButton.Right) {
-            var camera = GetViewport().GetCamera3D();
-            if (camera == null)
+            Camera3D camera = GetViewport().GetCamera3D();
+            if (camera == null) {
                 return;
+            }
 
-            var mousePos = mouseEvent.Position;
-            var from = camera.ProjectRayOrigin(mousePos);
-            var dir = camera.ProjectRayNormal(mousePos);
-            var to = from + (dir * 1000.0f);
+            Vector2 mousePos = mouseEvent.Position;
+            Vector3 from = camera.ProjectRayOrigin(mousePos);
+            Vector3 dir = camera.ProjectRayNormal(mousePos);
+            Vector3 to = from + (dir * 1000.0f);
 
-            var result = Geometry3D.SegmentIntersectsSphere(from, to, Position, Radius);
+            Vector3[] result = Geometry3D.SegmentIntersectsSphere(from, to, Position, Radius);
             if (result != null && result.Length > 0) {
-                var hitPoint = result[0];
-                var id = GetRegionID(GetLatLon(hitPoint));
+                Vector3 hitPoint = result[0];
+                int id = GetRegionID(GetLatLon(hitPoint));
                 _globeMaterial.SetShaderParameter("selected_region", (uint)(id + 1));
 
                 // Show region stats popup
-                var gameManager = GameManager.Instance;
+                GameManager gameManager = GameManager.Instance;
                 if (gameManager != null) {
-                    var region = gameManager.GetRegion(id);
+                    RegionAI region = gameManager.GetRegion(id);
 
                     if (region != null) {
                         GameManager.Instance?.PlayRegionSelectSound();
                     }
 
-                    var popup = GetNode<RegionStatsPopup>("../RegionStatsPopup");
+                    RegionStatsPopup popup = GetNode<RegionStatsPopup>("../RegionStatsPopup");
                     popup?.ShowRegionStats(region);
                 }
             }

@@ -1,5 +1,7 @@
 using Godot;
 
+namespace StormSurge;
+
 public partial class TechNodeButton : TextureButton {
     [Export] public string NodeName;
     [Signal] public delegate void NodePurchasedEventHandler(string nodeName);
@@ -20,7 +22,7 @@ public partial class TechNodeButton : TextureButton {
         Pressed += OnPressed;
 
         // Bind to the tree node
-        var tree = GameManager.Instance?.Game?.stormTree;
+        TechTree<TechNode<GlobalVars>, GlobalVars> tree = GameManager.Instance?.Game?.stormTree;
         if (tree == null) return;
 
         BoundNode = tree.GetNode(NodeName);
@@ -41,7 +43,7 @@ public partial class TechNodeButton : TextureButton {
     public void UpdateVisual() {
         if (!_bound) {
             // Bind to the tree node
-            var tree = GameManager.Instance?.Game?.stormTree;
+            TechTree<TechNode<GlobalVars>, GlobalVars> tree = GameManager.Instance?.Game?.stormTree;
             if (tree == null) return;
 
             BoundNode = tree.GetNode(NodeName);

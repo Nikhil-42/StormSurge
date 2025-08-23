@@ -1,5 +1,7 @@
 using Godot;
 
+namespace StormSurge;
+
 public partial class SolarLabel : Label {
     public override void _Ready() {
         // Connect to the money changed signal

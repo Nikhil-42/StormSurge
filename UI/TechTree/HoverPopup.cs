@@ -19,8 +19,8 @@ public partial class HoverPopup : Panel {
         }
 
         // Add one label per effect
-        foreach (var (name, value) in node.Vars.ToJson()) {
-            var label = new Label();
+        foreach ((string name, Variant value) in node.Vars.ToJson()) {
+            Label label = new Label();
             label.Text = $"{name}: {(float)value:F2}";
             // FIXME: multiply only percent values by 100
 
